@@ -1,0 +1,10 @@
+module org.proyecto.proyecto {
+    requires javafx.controls;
+    requires javafx.fxml;
+
+
+    opens org.proyecto.proyecto to javafx.fxml;
+    exports org.proyecto.proyecto;
+    exports org.proyecto.proyecto.controller;
+    opens org.proyecto.proyecto.controller to javafx.fxml;
+}
