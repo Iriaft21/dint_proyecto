@@ -1,34 +1,57 @@
 package org.proyecto.proyecto.controller;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.PantallaUtils;
 
 import java.io.IOException;
 
 public class CalculadoraController {
 
-    public void showSecondFrame(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/proyecto/proyecto/calculadora-view.fxml"));
+    @FXML
+    private Button btn_calcular;
 
-        Stage secondStage = new Stage();
-        secondStage.setScene(new Scene(loader.load(),400,440));
+    @FXML
+    private Button btn_limpiarCampos;
 
-        // Obtener el controlador de la segunda ventana y pasar el texto
-        CalculadoraController calculadoraController = loader.getController();
+    @FXML
+    private Button btn_salir;
 
-        // Mostrar la segunda ventana
-        secondStage.setTitle("Calculadora");
-        secondStage.show();
+    @FXML
+    private TextField txt_alto;
 
-        //CERRAR LA VENTANA ANTERIOR
-        // Minimizar la ventana principal (bloquearla)
-        primaryStage.setIconified(true); // Minimiza la ventana principal
+    @FXML
+    private TextField txt_largo;
 
-        // Opción alternativa: deshabilitar la ventana principal completamente
-        // primaryStage.setOpacity(0.5); // Desactiva la ventana principal (con opacidad reducida)
+    @FXML
+    void onClickCalcular(ActionEvent event) {
+        //Mostrar los datos en otra pantalla
+    }
 
-        // Cerrar la ventana principal cuando la segunda ventana se cierre
-        secondStage.setOnCloseRequest(e -> primaryStage.close());
+    @FXML
+    void onClickLimpiarCampos(ActionEvent event) {
+
+    }
+
+    @FXML
+    void onClickSalir(ActionEvent event) {
+        Platform.exit();
+    }
+
+    public CalculadoraController showEstaPantalla(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_CALCULADORA.getDescripcion(),Constantes.TITULO_PANTALLA_CALCULADORA.getDescripcion(),600,600);
+        CalculadoraController controller = fxmlLoader.getController();
+
+        //PASAMOS EL CONTENIDO QUE HA INTRODUCIDO EL USUARIO EN EL TEXTFIELD DE ESTA PANTALLA
+        //A LA SEGUNDA PANTALLA
+        //controller.setTextFromMain(textField.getText());
+        return controller;
     }
 }

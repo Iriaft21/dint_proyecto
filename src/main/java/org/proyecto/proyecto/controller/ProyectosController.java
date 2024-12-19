@@ -1,34 +1,42 @@
 package org.proyecto.proyecto.controller;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.PantallaUtils;
 
 import java.io.IOException;
 
 public class ProyectosController {
 
-    public void showSecondFrame(Stage primaryStage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/proyecto/proyecto/proyectos-view.fxml"));
+    @FXML
+    private Button btn_salir;
 
-        Stage secondStage = new Stage();
-        secondStage.setScene(new Scene(loader.load(),400,440));
+    @FXML
+    void onClickSalir(ActionEvent event) {
+        //https://jenkov.com/tutorials/javafx/listview.html  listview
+        //https://stackoverflow.com/questions/22542015/how-to-add-a-mouse-doubleclick-event-listener-to-the-cells-of-a-listview-in-java  //evento clicks listview
 
-        // Obtener el controlador de la segunda ventana y pasar el texto
-        ProyectosController proyectosController = loader.getController();
 
-        // Mostrar la segunda ventana
-        secondStage.setTitle("Proyectos");
-        secondStage.show();
+    }
 
-        //CERRAR LA VENTANA ANTERIOR
-        // Minimizar la ventana principal (bloquearla)
-        primaryStage.setIconified(true); // Minimiza la ventana principal
+    @FXML
+    void onMouseClickedListView(MouseEvent event) {
+        //al hacer click en uno de los elementos, pasa a otra pantalla que muestra el proyecto en mas detalle
+    }
 
-        // Opción alternativa: deshabilitar la ventana principal completamente
-        // primaryStage.setOpacity(0.5); // Desactiva la ventana principal (con opacidad reducida)
+    public void initialize(){
+        //mostrar nombre, progreso porcentaje, imagen(?)
+    }
 
-        // Cerrar la ventana principal cuando la segunda ventana se cierre
-        secondStage.setOnCloseRequest(e -> primaryStage.close());
+    public ProyectosController showEstaPantalla(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_PROYECTOS.getDescripcion(),Constantes.TITULO_PANTALLA_PROYECTOS.getDescripcion(),600,600);
+        ProyectosController controller = fxmlLoader.getController();
+        return controller;
     }
 }

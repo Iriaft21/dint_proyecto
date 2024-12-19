@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.PantallaUtils;
 
 import java.io.IOException;
 
@@ -25,13 +27,25 @@ public class MenuController {
     @FXML
     private Button btn_salir;
 
+    public MenuController showMenu(Stage stage){
+        FXMLLoader fxmlLoader = null;
+        try {
+            fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_INICIAL.getDescripcion(),Constantes.TITULO_PAGINA_INICIAL.getDescripcion(),300,200);
+            //OBTENER EL CONTROLADOR DE ESTA VENTANA, PARA PODER REFRESCAR DATOS DE COMPONENTES
+            MenuController controller = fxmlLoader.getController();
+            return controller;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     @FXML
     void onClickCalculadora(ActionEvent event) {
         try {
             // Obtén el Stage (ventana principal)
-            Stage primaryStage = (Stage) btn_calculadora.getScene().getWindow();
-
-            new CalculadoraController().showSecondFrame(primaryStage);
+            Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_calculadora);
+            CalculadoraController controller = new CalculadoraController().showEstaPantalla(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,9 +55,8 @@ public class MenuController {
     void onClickInventario(ActionEvent event) {
         try {
             // Obtén el Stage (ventana principal)
-            Stage primaryStage = (Stage) btn_inventario.getScene().getWindow();
-
-            new InventarioController().showSecondFrame(primaryStage);
+            Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_inventario);
+            InventarioController controller = new InventarioController().showEstaPantalla(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,13 +65,15 @@ public class MenuController {
     @FXML
     void onClickProyectos(ActionEvent event) {
         try {
-            // Obtén el Stage (ventana principal)
-            Stage primaryStage = (Stage) btn_proyectos.getScene().getWindow();
-
-            new ProyectosController().showSecondFrame(primaryStage);
+            Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_proyectos);
+            ProyectosController controller = new ProyectosController().showEstaPantalla(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void buttonActionProyectos(){
+
     }
 
     @FXML
@@ -66,19 +81,4 @@ public class MenuController {
         Platform.exit();
     }
 
-
-    public void startPrimeFrame() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/proyecto/proyecto/menu-view.fxml"));
-        GridPane root = loader.load();
-
-        Scene scene = new Scene(root, 300, 240);
-        Stage primaryStage = new Stage();
-
-        //scene.getStylesheets().add(getClass().getResource("/org/proyecto/proyecto/css/application.css").toExternalForm());
-        primaryStage.setScene(scene);
-        //primaryStage.getIcons().add(new Image("images/punto-de-cruz.png"));
-        primaryStage.setTitle("Menú");
-
-        primaryStage.show();
-    }
 }

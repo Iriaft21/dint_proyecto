@@ -6,6 +6,8 @@ public class Hilo {
     private String marca;
     private String cantidad;
 
+
+
     public Hilo(String numero, String marca, String cantidad) {
         this.numero = numero;
         this.marca = marca;

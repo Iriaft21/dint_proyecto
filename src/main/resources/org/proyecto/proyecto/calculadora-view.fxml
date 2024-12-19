@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.proyecto.proyecto.controller.CalculadoraController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="148.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="104.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="154.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="316.0" minWidth="10.0" prefWidth="143.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="233.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="365.0" minHeight="0.0" prefHeight="51.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="0.0" prefHeight="61.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <MenuBar GridPane.columnSpan="2147483647" GridPane.valignment="TOP">
+        <menus>
+          <Menu mnemonicParsing="false" text="Menú" />
+          <Menu mnemonicParsing="false" text="Inventario" />
+          <Menu mnemonicParsing="false" text="Proyectos" />
+        </menus>
+      </MenuBar>
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" />
+      <Label text="Calculadora de tela" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Label text=" Alto (en puntadas):" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label text="Dimensiones del dibujo:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label text="Largo(en puntadas):" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <TextField fx:id="txt_alto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="txt_largo" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <Label text="Conteo de la tela:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <ComboBox prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <Label text="Tela a dejar como borde:" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+      <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <TextField GridPane.columnIndex="3" GridPane.rowIndex="5" />
+      <Label text="Tela  a dejar para acabado:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <Button fx:id="btn_calcular" mnemonicParsing="false" onAction="#onClickCalcular" text="Calcular" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" text="Limpiar campos" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+   </children>
+   <padding>
+      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+   </padding>
+</GridPane>
