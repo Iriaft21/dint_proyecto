@@ -5,12 +5,14 @@ package org.proyecto.proyecto.utils;
  */
 public enum Constantes {
     PAGINA_INICIAL("menu-view.fxml"),
-    PAGINA_PANTALLA_INVENTARIO("inventario_view.fxml"),
+    PAGINA_PANTALLA_INVENTARIO("inventario-view.fxml"),
     PAGINA_PANTALLA_CALCULADORA("calculadora-view.fxml"),
+    PAGINA_PANTALLA_RESULTADO_CALCULADORA("resultadoCalculo-view.fxml"),
     PAGINA_PANTALLA_PROYECTOS("proyectos-view.fxml"),
     TITULO_PAGINA_INICIAL("Menú"),
     TITULO_PANTALLA_INVENTARIO("Inventario"),
     TITULO_PANTALLA_CALCULADORA("Calculadora"),
+    TITULO_PANTALLA_RESULTADO_CALCULADORA("Resultados"),
     TITULO_PANTALLA_PROYECTOS("Proyectos"),
     TITULO_AVISO_DATOS_VACIOS("Datos vacíos"),
     AVISO_DATOS_VACIOS("Alguno de los datos se encuentra vacío, rellene el formulario completo"),

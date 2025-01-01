@@ -3,15 +3,15 @@ package org.proyecto.proyecto.modelo;
 public class CalculoTela {
 
     private int alto;
-    private int ancho;
-    private float tipoTela;
+    private int largo;
+    private float ctTela;
     private int tela_bordes;
     private int tela_acabado;
 
-    public CalculoTela(int alto, int ancho, float tipoTela, int tela_bordes, int tela_acabado) {
+    public CalculoTela(int alto, int largo, float ctTela, int tela_bordes, int tela_acabado) {
         this.alto = alto;
-        this.ancho = ancho;
-        this.tipoTela = tipoTela;
+        this.largo = largo;
+        this.ctTela = ctTela;
         this.tela_bordes = tela_bordes;
         this.tela_acabado = tela_acabado;
     }
@@ -24,20 +24,20 @@ public class CalculoTela {
         this.alto = alto;
     }
 
-    public int getAncho() {
-        return ancho;
+    public int getLargo() {
+        return largo;
     }
 
-    public void setAncho(int ancho) {
-        this.ancho = ancho;
+    public void setLargo(int ancho) {
+        this.largo = ancho;
     }
 
-    public float getTipoTela() {
-        return tipoTela;
+    public float getCtTela() {
+        return ctTela;
     }
 
-    public void setTipoTela(float tipoTela) {
-        this.tipoTela = tipoTela;
+    public void setCtTela(float tipoTela) {
+        this.ctTela = ctTela;
     }
 
     public int getTela_bordes() {
@@ -56,14 +56,29 @@ public class CalculoTela {
         this.tela_acabado = tela_acabado;
     }
 
+    public float tamanhoBordadoAlto(){
+        return (alto / ctTela);
+    }
+
+    public float tamanhoBordadoLargo(){
+        return (largo / ctTela);
+    }
+
+    public float tamanhoTelaAlto(){
+        return (alto / ctTela) + (tela_bordes * 2) + (tela_acabado * 2) + 3.50f;
+    }
+
+    public float tamanhoTelaLargo(){
+        return (largo / ctTela) + (tela_bordes * 2) + (tela_acabado * 2) + 3.50f;
+    }
+
     @Override
     public String toString() {
-        return "CalculoTela{" +
-                "alto=" + alto +
-                ", ancho=" + ancho +
-                ", tipoTela=" + tipoTela +
-                ", tela_bordes=" + tela_bordes +
-                ", tela_acabado=" + tela_acabado +
-                '}';
+        return "Características del bordado y la tela: " +
+                "alto " + alto +
+                ", largo " + largo +
+                ", conteo de la tela " + ctTela +
+                ", tela a dejar en los bordes " + tela_bordes +
+                ", tela a dejar en el acabado " + tela_acabado;
     }
 }

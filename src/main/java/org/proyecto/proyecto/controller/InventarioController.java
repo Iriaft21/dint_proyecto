@@ -76,6 +76,15 @@ public class InventarioController {
     }
 
     public void initialize(){
+        crearTabla();
+
+        ObservableList<Hilo> datosHilos = FXCollections.observableArrayList();
+        table_hilos.setItems(datosHilos);
+
+        modificarDatos();
+    }
+
+    void crearTabla(){
         marcasHilos = FXCollections.observableArrayList("DMC", "Anchor", "Kreinik", "Madeira", "Otros");
         table_hilos.setEditable(true);
         txt_marca.setItems(marcasHilos);
@@ -92,11 +101,6 @@ public class InventarioController {
         colCant.setCellValueFactory(new PropertyValueFactory<Hilo, String>("cantidad"));
         colCant.setText("Cantidad");
         colCant.setPrefWidth(175);
-
-        ObservableList<Hilo> datosHilos = FXCollections.observableArrayList();
-        table_hilos.setItems(datosHilos);
-
-        modificarDatos();
     }
 
     @FXML
@@ -112,7 +116,7 @@ public class InventarioController {
         } else {
             try {
                 int cantidad = Integer.parseInt(cantStr);
-                if(cantidad > 0){
+                if(cantidad >= 0){
                     Hilo hilo = new Hilo(numero, marca, cantStr);
                     table_hilos.getItems().add(hilo);
                 }else{
@@ -147,7 +151,7 @@ public class InventarioController {
             ((Hilo) t.getTableView().getItems().get(
                     t.getTablePosition().getRow())).setCantidad(t.getNewValue());
             //Aqui si modificas la cantidad a 0 podri saltar un aviso de que hay que comprar mas. Podría sugerir una pagina(?)
-            //https://www.dmc.com/ES/es/products/mouline-stranded-thread/mouline-special
+            //https://www.casacenina.es/hilos-y-hilados.html
         });
     }
 

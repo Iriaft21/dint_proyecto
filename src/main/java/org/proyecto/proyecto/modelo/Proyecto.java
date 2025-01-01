@@ -1,6 +1,8 @@
 package org.proyecto.proyecto.modelo;
 
-public class WIP {
+import javafx.scene.image.Image;
+
+public class Proyecto {
 
     private String nombre;
     private String descripcion;
@@ -9,10 +11,12 @@ public class WIP {
     private int ancho;
     private String estado;
     private int progreso;
+    private String fechaInicio;
+    private String fechaFin;
+    private Image imagen;
 
-    public WIP(String nombre, String diseñador, int alto, int ancho, String estado) {
+    public Proyecto(String nombre, int alto, int ancho, String estado) {
         this.nombre = nombre;
-        this.diseñador = diseñador;
         this.alto = alto;
         this.ancho = ancho;
         this.estado = estado;
@@ -74,16 +78,42 @@ public class WIP {
         this.nombre = nombre;
     }
 
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public Image getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(Image imagen) {
+        this.imagen = imagen;
+    }
+
     @Override
     public String toString() {
-        return "WIP{" +
-                "alto=" + alto +
-                ", nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", diseñador='" + diseñador + '\'' +
-                ", ancho=" + ancho +
-                ", estado='" + estado + '\'' +
-                ", progreso=" + progreso +
-                '}';
+        return "Proyecto: " +
+                "nombre " + nombre + '\'' +
+                ", descripcion " + descripcion + '\'' +
+                ", diseñador " + diseñador + '\'' +
+                ", alto " + alto +
+                ", ancho " + ancho +
+                ", estado " + estado + '\'' +
+                ", progreso " + progreso +
+                ", fecha de inicio " + fechaInicio + '\'' +
+                ", fecha de fin " + fechaFin + '\'' +
+                ", imagen " + imagen;
     }
 }

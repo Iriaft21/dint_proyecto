@@ -4,10 +4,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
@@ -32,8 +29,7 @@ public class MenuController {
         try {
             fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_INICIAL.getDescripcion(),Constantes.TITULO_PAGINA_INICIAL.getDescripcion(),300,200);
             //OBTENER EL CONTROLADOR DE ESTA VENTANA, PARA PODER REFRESCAR DATOS DE COMPONENTES
-            MenuController controller = fxmlLoader.getController();
-            return controller;
+            return fxmlLoader.getController();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -41,35 +37,38 @@ public class MenuController {
     }
 
     @FXML
-    void onClickCalculadora(ActionEvent event) {
+    CalculadoraController onClickCalculadora(ActionEvent event) {
         try {
             // Obtén el Stage (ventana principal)
             Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_calculadora);
-            CalculadoraController controller = new CalculadoraController().showEstaPantalla(primaryStage);
+            return new CalculadoraController().showEstaPantalla(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @FXML
-    void onClickInventario(ActionEvent event) {
+    InventarioController onClickInventario(ActionEvent event) {
         try {
             // Obtén el Stage (ventana principal)
             Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_inventario);
-            InventarioController controller = new InventarioController().showEstaPantalla(primaryStage);
+            return new InventarioController().showEstaPantalla(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @FXML
-    void onClickProyectos(ActionEvent event) {
+    ProyectosController onClickProyectos(ActionEvent event) {
         try {
             Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_proyectos);
-            ProyectosController controller = new ProyectosController().showEstaPantalla(primaryStage);
+            return new ProyectosController().showEstaPantalla(primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     private void buttonActionProyectos(){
