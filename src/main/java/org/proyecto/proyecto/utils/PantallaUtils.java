@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.MenuApplication;
 
+import java.io.File;
 import java.io.IOException;
 
 public class PantallaUtils {
@@ -20,7 +21,13 @@ public class PantallaUtils {
     public FXMLLoader showEstaPantalla(Stage stage, String vista, String titulo, int ancho, int alto) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MenuApplication.class.getResource(vista));
         Scene scene = new Scene(fxmlLoader.load(), ancho, alto);
-        //scene.getStylesheets().add(MenuApplication.class.getResource("org/proyecto/proyecto/css/application.css").toExternalForm());
+
+        // Por algun motivo esto no funciona de ninguna forma:
+        // scene.getStylesheets().add(MenuApplication.class.getResource("css/application.css").toExternalForm());
+        // Workaround para que funcione, forzandolo con el path absoluto:
+        File f = new File("src/main/java/css/application.css");
+        scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
+
         stage.setTitle(titulo);
         stage.setScene(scene);
         stage.show();

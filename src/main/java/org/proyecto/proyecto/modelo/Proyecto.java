@@ -6,27 +6,34 @@ public class Proyecto {
 
     private String nombre;
     private String descripcion;
-    private String diseñador;
+    private String diseniador;
     private int alto;
-    private int ancho;
+    private int largo;
     private String estado;
-    private int progreso;
+    private float progreso;
+    private int puntadasTotales;
     private String fechaInicio;
     private String fechaFin;
     private Image imagen;
 
-    public Proyecto(String nombre, int alto, int ancho, String estado) {
+    public Proyecto(String nombre, String descripcion, String diseniador, int alto, int largo, String estado, int puntadasTotales, String fechaInicio, String fechaFin, Image imagen) {
         this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.diseniador = diseniador;
         this.alto = alto;
-        this.ancho = ancho;
+        this.largo = largo;
         this.estado = estado;
+        this.puntadasTotales = puntadasTotales;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.imagen = imagen;
     }
 
-    public int getProgreso() {
+    public float getProgreso() {
         return progreso;
     }
 
-    public void setProgreso(int progreso) {
+    public void setProgreso(float progreso) {
         this.progreso = progreso;
     }
 
@@ -38,12 +45,12 @@ public class Proyecto {
         this.alto = alto;
     }
 
-    public int getAncho() {
-        return ancho;
+    public int getLargo() {
+        return largo;
     }
 
-    public void setAncho(int ancho) {
-        this.ancho = ancho;
+    public void setLargo(int ancho) {
+        this.largo = ancho;
     }
 
     public String getDescripcion() {
@@ -54,12 +61,12 @@ public class Proyecto {
         this.descripcion = descripcion;
     }
 
-    public String getDiseñador() {
-        return diseñador;
+    public String getDiseniador() {
+        return diseniador;
     }
 
-    public void setDiseñador(String diseñador) {
-        this.diseñador = diseñador;
+    public void setDiseniador(String diseñador) {
+        this.diseniador = diseniador;
     }
 
     public String getEstado() {
@@ -68,6 +75,14 @@ public class Proyecto {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public int getPuntadasTotales() {
+        return puntadasTotales;
+    }
+
+    public void setPuntadasTotales(int puntadasTotales) {
+        this.puntadasTotales = puntadasTotales;
     }
 
     public String getNombre() {
@@ -102,18 +117,23 @@ public class Proyecto {
         this.imagen = imagen;
     }
 
+    public float calcularProgreso(int puntadasHechas){
+        int puntadasRegistradas =+ puntadasHechas;
+        return ((float) puntadasRegistradas / puntadasTotales) * 100;
+    }
+
     @Override
     public String toString() {
-        return "Proyecto: " +
-                "nombre " + nombre + '\'' +
-                ", descripcion " + descripcion + '\'' +
-                ", diseñador " + diseñador + '\'' +
-                ", alto " + alto +
-                ", ancho " + ancho +
-                ", estado " + estado + '\'' +
-                ", progreso " + progreso +
-                ", fecha de inicio " + fechaInicio + '\'' +
-                ", fecha de fin " + fechaFin + '\'' +
-                ", imagen " + imagen;
+        return "Nombre del proyecto: " + nombre +
+                ", descripcion: " + (descripcion != null? descripcion : "Sin descripción") +
+                ", diseñador: " + (diseniador != null? diseniador : "Desconocido") +
+                ", alto: " + alto +
+                ", largo: " + largo +
+                ", estado: " + estado +
+                ", puntadas totales" + puntadasTotales +
+                ", progreso: " + progreso + "% " +
+                ", fecha de inicio: " + (fechaInicio != null? fechaInicio : "Sin especificar" ) +
+                ", fecha de fin: " + (fechaFin != null? fechaFin : "Sin especificar" ) +
+                ", imagen: " + (imagen!= null? imagen : "Sin imagen");
     }
 }

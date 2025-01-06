@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -57,11 +58,13 @@
       <Label text="Número:" GridPane.rowIndex="3" />
       <Label text="Cantidad:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <Label text="Marca:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <MenuBar fx:id="menu_bar" GridPane.columnSpan="4" GridPane.valignment="TOP">
+      <MenuBar GridPane.columnSpan="4" GridPane.valignment="TOP">
         <menus>
-          <Menu fx:id="menu" mnemonicParsing="false" onAction="#onClickMenu" text="Menú" />
-          <Menu fx:id="menu_calc" mnemonicParsing="false" onAction="#onClickMenuCalculadora" text="Calculadora" />
-          <Menu fx:id="menu_proyectos" mnemonicParsing="false" onAction="#onClickMenuProyectos" text="Proyectos" />
+          <Menu mnemonicParsing="false" text="Menú">
+               <items>
+                  <MenuItem fx:id="menuItem_calculadora" mnemonicParsing="false" onAction="#onClickMenuItemCalculadora" text="Calculadora" />
+                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" text="Proyectos" />
+               </items></Menu>
         </menus>
       </MenuBar>
    </children>

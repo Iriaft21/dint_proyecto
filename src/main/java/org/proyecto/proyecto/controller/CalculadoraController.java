@@ -6,9 +6,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.CalculoTela;
@@ -32,6 +32,12 @@ public class CalculadoraController {
     private Button btn_salir;
 
     @FXML
+    private MenuItem menuItem_inventario;
+
+    @FXML
+    private MenuItem menuItem_proyectos;
+
+    @FXML
     private ComboBox<String> spinner_ct;
 
     @FXML
@@ -48,37 +54,23 @@ public class CalculadoraController {
 
     private ObservableList<String> tiposTelas;
 
-    private CalculoTela calculoTela;
-
     @FXML
-    ResultadoCalculoController onClickCalcular(ActionEvent event) {
+    private void  onClickCalcular(ActionEvent event) {
         int alto = validarCampoEntero(txt_alto);
         int largo = validarCampoEntero(txt_largo);
         float hilosTela = extraerHilos();
         int telaAcabado = validarCampoEntero(txt_telaAcabado);
         int telaBorde = validarCampoEntero(txt_telaBorde);
-        calculoTela = new CalculoTela(alto, largo, hilosTela, telaBorde, telaAcabado);
+        CalculoTela calculoTela = new CalculoTela(alto, largo, hilosTela, telaBorde, telaAcabado);
 
-        //enviar a la otra pantalla la clase
         try {
-            Stage primaryStage = new Stage();
-            FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(
-                    primaryStage,
-                    Constantes.PAGINA_PANTALLA_RESULTADO_CALCULADORA.getDescripcion(),
-                    Constantes.TITULO_PANTALLA_RESULTADO_CALCULADORA.getDescripcion(),
-                    500,
-                    500
-            );
+            Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_calcular);
 
-            ResultadoCalculoController resultadoCalculoController = fxmlLoader.getController();
-            resultadoCalculoController.setClassFromMain(calculoTela);
-            resultadoCalculoController.actualizarDatos();
-            primaryStage.show();
-            return resultadoCalculoController;
+            ResultadoCalculoController resultadoCalculoController = new ResultadoCalculoController().showEstaPantalla(stage);
+            resultadoCalculoController.setCalculoFromMain(calculoTela);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     private int validarCampoEntero(TextField textField) throws IllegalArgumentException {
@@ -90,12 +82,12 @@ public class CalculadoraController {
         try {
             int valor = Integer.parseInt(texto);
             if (valor < 0) {
-                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
                 throw  new IllegalArgumentException("El número no puede ser negativo");
             }
             return valor;
         } catch (NumberFormatException e) {
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
             throw new IllegalArgumentException("El campo debe contener solo números");
         }
     }
@@ -116,7 +108,6 @@ public class CalculadoraController {
 
         if(matcher.find()){
             String hilosStr = matcher.group(1).replace(",", ".");
-            // Reemplazar coma por punto decimal
             return Float.parseFloat(hilosStr);
         }
         return 0;
@@ -127,6 +118,29 @@ public class CalculadoraController {
                 "18 ct (7 hilos/cm)", "20 ct (7,8 hilos/cm)", "22 ct (8,5 hilos/cm)", "24 ct (9,3 hilos/cm)");
         spinner_ct.setItems(tiposTelas);
         spinner_ct.setValue("14 ct (5,4 hilos/cm)");
+    }
+
+
+    @FXML
+    void onClickMenuItemInventario(ActionEvent event) {
+        try {
+            Stage stage = (Stage) menuItem_inventario.getParentPopup().getOwnerWindow().getScene().getWindow();
+            stage.close();
+            InventarioController inventarioController = new InventarioController().showEstaPantalla(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void onClickMenuItemProyectos(ActionEvent event) {
+        try {
+            Stage stage = (Stage) menuItem_proyectos.getParentPopup().getOwnerWindow().getScene().getWindow();
+            stage.close();
+            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

@@ -51,16 +51,13 @@ public class InventarioController {
     private TextField txt_num;
 
     @FXML
-    private MenuBar menu_bar;
+    private Button btn_eliminar;
 
     @FXML
-    private Menu menu;
+    private MenuItem menuItem_calculadora;
 
     @FXML
-    private Menu menu_calc;
-
-    @FXML
-    private Menu menu_proyectos;
+    private MenuItem menuItem_proyectos;
 
     private ObservableList<String> marcasHilos;
 
@@ -109,6 +106,7 @@ public class InventarioController {
         String marca = txt_marca.getValue();
         String cantStr = txt_cant.getText();
 
+        //TODO revisar lo de validar, que sea parecido al del calculadora
         if (numero == null || numero.trim().isEmpty() ||
                 marca == null || marca.trim().isEmpty() ||
                 cantStr == null || cantStr.trim().isEmpty()) {
@@ -120,10 +118,10 @@ public class InventarioController {
                     Hilo hilo = new Hilo(numero, marca, cantStr);
                     table_hilos.getItems().add(hilo);
                 }else{
-                    AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
                 }
             } catch (NumberFormatException e) {
-                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
             }
         }
         limpiarCampos();
@@ -148,10 +146,14 @@ public class InventarioController {
 
         colCant.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
         colCant.setOnEditCommit((TableColumn.CellEditEvent<Hilo, String> t) ->{
-            ((Hilo) t.getTableView().getItems().get(
-                    t.getTablePosition().getRow())).setCantidad(t.getNewValue());
-            //Aqui si modificas la cantidad a 0 podri saltar un aviso de que hay que comprar mas. Podría sugerir una pagina(?)
-            //https://www.casacenina.es/hilos-y-hilados.html
+            Hilo hilo=  t.getTableView().getItems().get(
+                    t.getTablePosition().getRow());
+            String nuevoValor =t.getNewValue();
+            hilo.setCantidad(nuevoValor);
+
+            if(nuevoValor.trim().equals("0")){
+                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_SIN_HILO.getDescripcion(), Constantes.AVISO_SIN_HILO.getDescripcion());
+            }
         });
     }
 
@@ -168,17 +170,24 @@ public class InventarioController {
     }
 
     @FXML
-    void onClickMenuCalculadora(ActionEvent event) {
-        //llevar a la calculadora
+    void onClickMenuItemCalculadora(ActionEvent event) {
+        try {
+            Stage stage = (Stage) menuItem_calculadora.getParentPopup().getOwnerWindow().getScene().getWindow();
+            stage.close();
+            CalculadoraController calculadoraController = new CalculadoraController().showEstaPantalla(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
-    void onClickMenuProyectos(ActionEvent event) {
-        //llevar a proyectos
-    }
-
-    @FXML
-    void onClickMenu(ActionEvent event) {
-        //llevar al menu
+    void onClickMenuItemProyectos(ActionEvent event) {
+        try {
+            Stage stage = (Stage) menuItem_proyectos.getParentPopup().getOwnerWindow().getScene().getWindow();
+            stage.close();
+            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

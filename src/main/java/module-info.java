@@ -1,6 +1,7 @@
 module org.proyecto.proyecto {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens org.proyecto.proyecto to javafx.fxml, javafx.base;

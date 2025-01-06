@@ -10,4 +10,11 @@ public class AlertaUtils {
         alert.setContentText(sms);
         alert.showAndWait();
     }
+
+    public static void showAlertError(String title, String sms){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setContentText(sms);
+        alert.showAndWait();
+    }
 }

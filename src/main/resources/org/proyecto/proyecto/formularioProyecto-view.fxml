@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="550.0" vgap="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="550.0" vgap="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.proyecto.proyecto.controller.FormularioProyectoController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="129.0" minWidth="10.0" prefWidth="82.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="217.0" minWidth="10.0" prefWidth="133.0" />
@@ -49,7 +49,7 @@
       <Label text="Fecha fin:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
       <Label text="Descripción:" GridPane.rowIndex="6" />
       <Button fx:id="btn_crear" mnemonicParsing="false" onAction="#onClickCrear" text="Crear" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
-      <Label text="Ancho*:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <Label text="Largo*:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
       <Label text="Los campos que contienen un * es necesario cubrirlos." GridPane.columnSpan="2147483647" GridPane.rowIndex="9">
          <font>
             <Font size="14.0" />
@@ -60,12 +60,14 @@
       <TextField fx:id="txt_nombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="txt_diseniador" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="txt_alto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <TextField fx:id="txt_ancho" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+      <TextField fx:id="txt_largo" GridPane.columnIndex="3" GridPane.rowIndex="4" />
       <TextField fx:id="txt_descripcion" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
       <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
       <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" text="Limpiar campos" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
       <ComboBox fx:id="combo_estado" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <DatePicker fx:id="dp_fechaInicio" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <DatePicker fx:id="dp_fechaFin" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+      <Label text="Puntadas totales*:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <TextField fx:id="txt_puntadasTotales" GridPane.columnIndex="3" GridPane.rowIndex="3" />
    </children>
 </GridPane>

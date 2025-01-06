@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -28,13 +29,15 @@
    <children>
       <MenuBar GridPane.columnSpan="2147483647" GridPane.valignment="TOP">
         <menus>
-          <Menu mnemonicParsing="false" text="Menú" />
-          <Menu mnemonicParsing="false" text="Inventario" />
-          <Menu mnemonicParsing="false" text="Calculadora" />
+          <Menu mnemonicParsing="false" text="Menú">
+               <items>
+                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" text="Inventario" />
+                  <MenuItem fx:id="menuItem_calculadora" mnemonicParsing="false" onAction="#onClickMenuItemCalculadora" text="Calculadora" />
+               </items></Menu>
         </menus>
       </MenuBar>
       <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
-      <ListView onMouseClicked="#onMouseClickedListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.rowSpan="2" />
+      <ListView fx:id="listView" onMouseClicked="#onMouseClickedListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.rowSpan="2" />
       <Label text="Proyectos" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
             <Font size="36.0" />
