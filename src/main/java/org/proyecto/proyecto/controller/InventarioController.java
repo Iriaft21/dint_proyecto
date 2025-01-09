@@ -106,7 +106,7 @@ public class InventarioController {
         String marca = txt_marca.getValue();
         String cantStr = txt_cant.getText();
 
-        //TODO revisar lo de validar, que sea parecido al del calculadora
+        //TODO revisar lo de validar
         if (numero == null || numero.trim().isEmpty() ||
                 marca == null || marca.trim().isEmpty() ||
                 cantStr == null || cantStr.trim().isEmpty()) {

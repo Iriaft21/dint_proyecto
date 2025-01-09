@@ -35,7 +35,8 @@ public class ActualizarProgresoController {
         int puntadasNuevas = 0;
         if(txt_puntadasNuevas != null){
             puntadasNuevas = Integer.parseInt(txt_puntadasNuevas.getText());
-            proyecto.setProgreso(proyecto.calcularProgreso(puntadasNuevas));
+            float redondeado = Math.round(proyecto.calcularProgreso(puntadasNuevas) * 100)/100f;
+            proyecto.setProgreso(redondeado);
         }
 
         try {

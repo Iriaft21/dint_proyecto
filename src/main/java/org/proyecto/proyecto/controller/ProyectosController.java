@@ -71,7 +71,7 @@ public class ProyectosController {
 
             try {
                 Stage stage = (Stage)listView.getScene().getWindow();
-                stage.close();
+                stage.show();
 
                 DetallesProyectoController detallesProyectoController = new DetallesProyectoController().showEstaPantalla(stage);
                 detallesProyectoController.setProyecto(proyectoDetalle);
@@ -84,13 +84,11 @@ public class ProyectosController {
 
     public void initialize(){
         proyectos = FXCollections.observableArrayList();
-        Proyecto p1 = new Proyecto("Persephone",null, "StitchyNova", 120, 240, "En proceso", 650, null, null, null );
-        Proyecto p2 = new Proyecto("Marcapaginas medieval", "Regalo", null, 60, 30, "Completado", 120, null, null, null);
-        Proyecto p3 = new Proyecto("Final Fantasy", "Proyecyo muy colorido con referencias a la saga de juegos Final Fantasy.", "BogDragon", 153, 151, "Reuniendo materiales", 1721, null, null,  null);
+        Proyecto p1 = new Proyecto("Persephone","Sin descripción", "StitchyNova", 120, 240, "En proceso", 650, null, null, null );
+        Proyecto p2 = new Proyecto("Marcapaginas medieval", "Regalo", "No especificado", 60, 30, "Completado", 150, null, null, null);
+        Proyecto p3 = new Proyecto("Final Fantasy", "Proyecto muy colorido con referencias a la saga de juegos Final Fantasy.", "BogDragon", 153, 151, "Reuniendo materiales", 1721, null, null,  null);
         proyectos.addAll(p1, p2, p3);
         listView.setItems(proyectos);
-
-//      TODO mirar que pase bien la imagen
 
         listView.setCellFactory(param -> new ListCell<Proyecto>() {
             @Override
@@ -108,12 +106,10 @@ public class ProyectosController {
                     VBox vBox = new VBox(nombreLabel, estadoLabel, progresoLabel);
                     vBox.setSpacing(5);
 
-                    ImageView imageView = new ImageView();
+                            ImageView imageView = new ImageView();
                     if (proyecto.getImagen() != null) {
                         try {
-                            String imagenURL = getClass().getResource(proyecto.getImagen().toString()).toExternalForm();
-                            Image imagen = new Image(imagenURL);
-                            imageView.setImage(imagen);
+                            imageView.setImage(proyecto.getImagen());
                         } catch (Exception e) {
                             System.out.println("Invalid URL: " + e.getMessage());
                         }
@@ -124,10 +120,10 @@ public class ProyectosController {
                     imageView.setPreserveRatio(true);
 
                     HBox hBox = new HBox(vBox, imageView);
-                    hBox.setSpacing(10); // Espaciado entre el texto y la imagen
+                    hBox.setSpacing(350); // Espaciado entre el texto y la imagen
                     hBox.setAlignment(Pos.CENTER_LEFT);
 
-                    setGraphic(vBox);
+                    setGraphic(hBox);
                     setText(null);
                 }
             }
@@ -158,6 +154,7 @@ public class ProyectosController {
     }
 
     public void setProyectoFromMain(Proyecto proyecto){
+        //TODO al darle en detalles para atras no muestra el que añadimos
         if(proyecto!= null){
             proyectos.add(proyecto);
             listView.refresh();

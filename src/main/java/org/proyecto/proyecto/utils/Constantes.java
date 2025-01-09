@@ -27,14 +27,16 @@ public enum Constantes {
     AVISO_ERROR_FORMATO("La cantidad debe ser un valor/formato válido."),
     TITULO_AVISO_NUMERO_NEGATIVO("Número no válido"),
     AVISO_NUMERO_NEGATIVO("Debes introducir un número entero."),
+    TITULO_AVISO_PUNTADAS("Nº de puntadas inválido"),
+    AVISO_PUNTADAS("Las puntadas totales no pueden ser mayores al área del bordado."),
     TITULO_AVISO_SIN_HILO("Sin hilo"),
     // TODO mirar lo del hipervinculo mas a fondo
     AVISO_SIN_HILO("Ya no hay más unidades de este hilo. Si aún te hace falta, pasa por una merceria o cómpralo en el siguiente enlace: \n" +
             "https://www.casacenina.es/hilos-y-hilados.html "),
     TITULO_PROYECTO_CREADO("Proyecto creado"),
-    AVISO_PROYECTO_CREADO("Proyecto creado y añadido a la lista. Acuérdese de modificar el progreso en caso de que lo haya empezado.");
-//    TITULO_ERROR_COPIAR_IMAGEN("Error"),
-//    AVISO_ERROR_COPIAR_IMAGEN("Ha ocurrido un error al haber intentado copiar la imagen ");
+    AVISO_PROYECTO_CREADO("Proyecto creado y añadido a la lista. Acuérdese de modificar el progreso en caso de que lo haya empezado."),
+    TITULO_PROYECTO_MODIFICADO("Proyecto modificado"),
+    AVISO_PROYECTO_MODIFICADO("Proyecto modificado correctamente.");
 
     private final String descripcion;
 
