@@ -7,16 +7,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class InventarioController {
 
@@ -106,7 +114,6 @@ public class InventarioController {
         String marca = txt_marca.getValue();
         String cantStr = txt_cant.getText();
 
-        //TODO revisar lo de validar
         if (numero == null || numero.trim().isEmpty() ||
                 marca == null || marca.trim().isEmpty() ||
                 cantStr == null || cantStr.trim().isEmpty()) {
@@ -128,6 +135,20 @@ public class InventarioController {
     }
 
     public void modificarDatos(){
+        Hyperlink hyperlink = new Hyperlink("Comprar hilos");
+        hyperlink.setOnAction(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://www.casacenina.es/hilos-y-hilados.html"));
+            } catch (IOException | URISyntaxException ex) {
+                ex.printStackTrace();
+            }
+        });
+        modificarMarca();
+        modificarNumero();
+        modificarCantidad(hyperlink);
+    }
+
+    public void modificarMarca(){
         colMarca.setCellFactory(ComboBoxTableCell.<Hilo, String>forTableColumn(marcasHilos));
         colMarca.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
@@ -135,7 +156,9 @@ public class InventarioController {
                             t.getTablePosition().getRow())
                     ).setMarca(t.getNewValue());
                 });
+    }
 
+    public void modificarNumero(){
         colNumero.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
         colNumero.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
@@ -143,7 +166,9 @@ public class InventarioController {
                             t.getTablePosition().getRow())
                     ).setNumero(t.getNewValue());
                 });
+    }
 
+    public void modificarCantidad(Hyperlink hyperlink){
         colCant.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
         colCant.setOnEditCommit((TableColumn.CellEditEvent<Hilo, String> t) ->{
             Hilo hilo=  t.getTableView().getItems().get(
@@ -152,7 +177,7 @@ public class InventarioController {
             hilo.setCantidad(nuevoValor);
 
             if(nuevoValor.trim().equals("0")){
-                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_SIN_HILO.getDescripcion(), Constantes.AVISO_SIN_HILO.getDescripcion());
+                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_SIN_HILO.getDescripcion(), Constantes.AVISO_SIN_HILO.getDescripcion(), hyperlink);
             }
         });
     }
@@ -164,10 +189,12 @@ public class InventarioController {
     }
 
     public InventarioController showEstaPantalla(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_INVENTARIO.getDescripcion(),Constantes.TITULO_PANTALLA_INVENTARIO.getDescripcion(),600,600);
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_INVENTARIO.getDescripcion(), Constantes.TITULO_PANTALLA_INVENTARIO.getDescripcion(), 600, 600);
         InventarioController controller = fxmlLoader.getController();
+
         return controller;
     }
+
 
     @FXML
     void onClickMenuItemCalculadora(ActionEvent event) {

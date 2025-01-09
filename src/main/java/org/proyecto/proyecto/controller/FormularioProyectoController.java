@@ -112,11 +112,15 @@ public class FormularioProyectoController {
         Proyecto proyecto =  null;
         String nombre = txt_nombre.getText();
         String estado = combo_estado.getValue();
-        String fechaInicio = dp_fechaInicio.getValue() !=  null? String.valueOf(dp_fechaInicio.getValue()) : "Desconocida";
-        String fechaFin = dp_fechaFin.getValue() != null? String.valueOf(dp_fechaFin.getValue()) : "Desconocida/Sin terminar";
+        String fechaInicio = String.valueOf(dp_fechaInicio.getValue());
+        String fechaFin = String.valueOf(dp_fechaFin.getValue());
         String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : "Sin descripción";
         String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
         if(validarCampos() == true){
+            alto = Integer.parseInt(txt_alto.getText());
+            largo = Integer.parseInt(txt_largo.getText());
+            puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
+
             proyecto = new Proyecto(nombre, descripcion, diseniador, alto, largo, estado, puntadasTotales, fechaInicio, fechaFin, img.getImage());
             AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_CREADO.getDescripcion(), Constantes.AVISO_PROYECTO_CREADO.getDescripcion());
         }

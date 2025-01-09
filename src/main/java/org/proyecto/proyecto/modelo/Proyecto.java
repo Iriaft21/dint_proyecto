@@ -122,6 +122,8 @@ public class Proyecto {
         return ((float) puntadasRegistradas / puntadasTotales) * 100;
     }
 
+    //TODO hacer validaciones aqui
+
     @Override
     public String toString() {
         return "Nombre del proyecto: " + nombre +

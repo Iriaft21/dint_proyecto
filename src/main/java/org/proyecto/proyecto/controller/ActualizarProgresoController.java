@@ -38,7 +38,7 @@ public class ActualizarProgresoController {
             float redondeado = Math.round(proyecto.calcularProgreso(puntadasNuevas) * 100)/100f;
             proyecto.setProgreso(redondeado);
         }
-
+        //TODO en el lisrView no se refleja el cambio
         try {
             Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_acrualizar);
             DetallesProyectoController detallesProyectoController = new DetallesProyectoController().showEstaPantalla(stage);

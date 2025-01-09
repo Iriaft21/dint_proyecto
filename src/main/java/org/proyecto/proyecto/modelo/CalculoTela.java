@@ -72,6 +72,8 @@ public class CalculoTela {
         return (largo / ctTela) + (tela_bordes * 2) + (tela_acabado * 2) + 3.50f;
     }
 
+    //TODO poner validaciones aqui
+
     @Override
     public String toString() {
         return "Características del bordado y la tela: " +

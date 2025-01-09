@@ -5,10 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -21,6 +18,7 @@ import org.proyecto.proyecto.utils.PantallaUtils;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DetallesProyectoController {
 
@@ -52,7 +50,7 @@ public class DetallesProyectoController {
     private TextField txt_diseniador;
 
     @FXML
-    private TextField txt_estado;
+    private ComboBox<String> txt_estado;
 
     @FXML
     private DatePicker txt_fechaFin;
@@ -134,18 +132,15 @@ public class DetallesProyectoController {
     @FXML
     void onClickGuardarCambios(ActionEvent event) {
         String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
-        String fechaInicio = txt_fechaInicio.getValue() !=  null? String.valueOf(txt_fechaInicio.getValue()) : "Desconocida";
-        String fechaFin = txt_fechaFin.getValue() != null? String.valueOf(txt_fechaFin.getValue()) : "Desconocida/Sin terminar";
         String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : "Sin descripción";
         if(validarCampos()){
             proyecto.setNombre(txt_nombre.getText());
             proyecto.setDiseniador(diseniador);
             proyecto.setAlto(Integer.parseInt(txt_alto.getText()));
             proyecto.setLargo(Integer.parseInt(txt_largo.getText()));
-            //TODO mirar de poner lo de estado como spinner
-//        proyecto.setEstado();
-            proyecto.setFechaInicio(fechaInicio);
-            proyecto.setFechaFin(fechaFin);
+            proyecto.setEstado(txt_estado.getValue());
+            proyecto.setFechaInicio(String.valueOf(txt_fechaInicio.getValue()));
+            proyecto.setFechaFin(String.valueOf(txt_fechaFin.getValue()));
             proyecto.setPuntadasTotales(Integer.parseInt(txt_puntadasTotales.getText()));
             proyecto.setDescripcion(descripcion);
             proyecto.setImagen(img_proyecto.getImage());
@@ -204,9 +199,18 @@ public class DetallesProyectoController {
         txt_diseniador.setText(this.proyecto.getDiseniador());
         txt_alto.setText(String.valueOf(this.proyecto.getAlto()));
         txt_largo.setText(String.valueOf(this.proyecto.getLargo()));
-        txt_estado.setText(this.proyecto.getEstado());
-//        txt_fechaInicio.setValue(LocalDate.parse(this.proyecto.getFechaInicio()));
-//        txt_fechaFin.setValue(LocalDate.parse(this.proyecto.getFechaFin()));
+        txt_estado.setValue(this.proyecto.getEstado());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+        String fechaInicio = this.proyecto.getFechaInicio();
+        String fechaFin = this.proyecto.getFechaFin();
+        if (fechaInicio != null && !fechaInicio.isEmpty() && !fechaInicio.equals("null")) {
+            txt_fechaInicio.setValue(LocalDate.parse(fechaInicio, formatter));
+        }
+
+        if (fechaFin != null && !fechaFin.isEmpty() && !fechaFin.equals("null")) {
+            txt_fechaFin.setValue(LocalDate.parse(fechaFin, formatter));
+        }
         txt_puntadasTotales.setText(String.valueOf(this.proyecto.getPuntadasTotales()));
         txt_progreso.setText(String.valueOf(this.proyecto.getProgreso()));
         txt_descripcion.setText(this.proyecto.getDescripcion());

@@ -35,20 +35,15 @@ public class PantallaUtils {
     }
 
     /**
-     * Este método cierra la pantalla actual, a partir del stage actual.
+     * Este métodoo cierra la pantalla actual, a partir del stage actual.
      * El stage se obtiene del botón que se accionó en el momento.
      * Queda genérico para cualquier botón de esta pantalla.
      *
      * @param botonDelAction el pasamos el botón que accionó
      */
     public Stage cerrarEstaPantalla(Button botonDelAction){
-        //OBTENEMOS EL STAGE DE LA PANTALLA ACTUAL, A PARTIR DEL BOTÓN QUE SE ACCIONA
         Stage stageAhora = (Stage) botonDelAction.getScene().getWindow();
-
-        //SE CIERRA EL STAGE
         stageAhora.close();
-
-        //DEVUELVE EL STAGE PARA PODER SER REUTILIZADO EN OTRA PANTALLA POR EJEMPLO.
         return stageAhora;
     }
 }
