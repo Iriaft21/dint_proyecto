@@ -1,5 +1,8 @@
 package org.proyecto.proyecto.modelo;
 
+import org.proyecto.proyecto.utils.AlertaUtils;
+import org.proyecto.proyecto.utils.Constantes;
+
 public class CalculoTela {
 
     private int alto;
@@ -14,6 +17,10 @@ public class CalculoTela {
         this.ctTela = ctTela;
         this.tela_bordes = tela_bordes;
         this.tela_acabado = tela_acabado;
+    }
+
+    public enum TipoError {
+        NEGATIVO, SIN_ERROR
     }
 
     public int getAlto() {
@@ -72,7 +79,13 @@ public class CalculoTela {
         return (largo / ctTela) + (tela_bordes * 2) + (tela_acabado * 2) + 3.50f;
     }
 
-    //TODO poner validaciones aqui
+    public CalculoTela.TipoError validar(){
+        if(alto <= 0 || largo <= 0 || tela_acabado < 0 || ctTela < 0){
+            return TipoError.NEGATIVO;
+        }else{
+            return TipoError.SIN_ERROR;
+        }
+    }
 
     @Override
     public String toString() {

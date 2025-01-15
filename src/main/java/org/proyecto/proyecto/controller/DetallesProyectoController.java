@@ -74,6 +74,7 @@ public class DetallesProyectoController {
 
     @FXML
     void handlerSeleccionarFoto(ActionEvent event) {
+        //TODO hacer util para este metodo
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Seleccionar Imagen");
         fileChooser.getExtensionFilters().addAll(
@@ -216,6 +217,8 @@ public class DetallesProyectoController {
         txt_descripcion.setText(this.proyecto.getDescripcion());
         img_proyecto.setImage(this.proyecto.getImagen());
     }
+
+
 
     public DetallesProyectoController showEstaPantalla(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_DETALLES_PROYECTO.getDescripcion(),Constantes.TITULO_PANTALLA_DETALLES_PROYECTO.getDescripcion(),600,650);

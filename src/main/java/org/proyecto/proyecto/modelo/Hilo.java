@@ -5,22 +5,26 @@ import org.proyecto.proyecto.utils.Constantes;
 
 public class Hilo {
 
-    private String numero;
+    private String nombre;
     private String marca;
     private String cantidad;
 
-    public Hilo(String numero, String marca, String cantidad) {
-        this.numero = numero;
+    public Hilo(String nombre, String marca, String cantidad) {
+        this.nombre = nombre;
         this.marca = marca;
         this.cantidad = cantidad;
     }
 
-    public String getNumero() {
-        return numero;
+    public enum TipoError {
+        FORMATO, NEGATIVO, NUMEXCESIVO, SIN_ERROR
     }
 
-    public void setNumero(String numero) {
-        this.numero = numero;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getMarca() {
@@ -39,37 +43,30 @@ public class Hilo {
         this.cantidad = cantidad;
     }
 
-    //TODO poner validaciones aqui
-//    private boolean valoresValidos(){
-//        return !cantidadInvalida() && !datosVacios() && !formatoCantidadInvalido();
-//    }
-//
-//    private boolean cantidadInvalida(){
-//        if(Integer.parseInt(cantidad) <= 0){
-//            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private boolean datosVacios(){
-//        if(cantidad == null || cantidad.trim().isEmpty() || numero == null || numero.trim().isEmpty() || marca == null || marca.trim().isEmpty()){
-//            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private boolean formatoCantidadInvalido(){
-//        if(!cantidad.matches("\\d+")){
-//            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-//           return true;
-//        }
-//        return false;
-//    }
+    public boolean datosVacios(){
+        if(cantidad == null || cantidad.trim().isEmpty() || nombre == null || nombre.trim().isEmpty() || marca == null || marca.trim().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+    public TipoError validarCantidad() {
+        if(!cantidad.matches("-?\\d+")){
+            return TipoError.FORMATO;
+        }else{
+            int intCantidad = Integer.parseInt(cantidad);
+            if( intCantidad<= 0){
+                return TipoError.NEGATIVO;
+            }else if(intCantidad >= 100){
+                return TipoError.NUMEXCESIVO;
+            }else{
+                return TipoError.SIN_ERROR;
+            }
+        }
+    }
 
     @Override
     public String toString() {
-        return "Hilo numero " + numero + ", marca " + marca + ", cantidad " + cantidad;
+        return "Hilo numero " + nombre + ", marca " + marca + ", cantidad " + cantidad;
     }
 }

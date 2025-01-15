@@ -88,13 +88,16 @@ public class ProyectosController {
         Proyecto p2 = new Proyecto("Marcapaginas medieval", "Regalo", "No especificado", 60, 30, "Completado", 150, null, null, null);
         Proyecto p3 = new Proyecto("Final Fantasy", "Proyecto muy colorido con referencias a la saga de juegos Final Fantasy.", "BogDragon", 153, 151, "Reuniendo materiales", 1721, null, null,  null);
         proyectos.addAll(p1, p2, p3);
-        listView.setItems(proyectos);
 
+        listView.setItems(proyectos);
+        listViewPersonalizado();
+    }
+
+    public void listViewPersonalizado(){
         listView.setCellFactory(param -> new ListCell<Proyecto>() {
             @Override
             protected void updateItem(Proyecto proyecto, boolean empty) {
                 super.updateItem(proyecto, empty);
-
                 if (empty || proyecto == null) {
                     setText(null);
                     setGraphic(null);
@@ -102,11 +105,9 @@ public class ProyectosController {
                     Label nombreLabel = new Label("Nombre: " + proyecto.getNombre());
                     Label estadoLabel = new Label("Estado: " + proyecto.getEstado());
                     Label progresoLabel = new Label("Progreso: " + proyecto.getProgreso() + "%");
-
                     VBox vBox = new VBox(nombreLabel, estadoLabel, progresoLabel);
                     vBox.setSpacing(5);
-
-                            ImageView imageView = new ImageView();
+                    ImageView imageView = new ImageView();
                     if (proyecto.getImagen() != null) {
                         try {
                             imageView.setImage(proyecto.getImagen());
@@ -114,7 +115,6 @@ public class ProyectosController {
                             System.out.println("Invalid URL: " + e.getMessage());
                         }
                     }
-
                     imageView.setFitWidth(50);
                     imageView.setFitHeight(50);
                     imageView.setPreserveRatio(true);
@@ -128,7 +128,6 @@ public class ProyectosController {
                 }
             }
         });
-
     }
 
     @FXML

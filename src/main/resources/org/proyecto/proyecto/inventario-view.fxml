@@ -36,7 +36,7 @@
    <children>
       <TableView fx:id="table_hilos" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="5" GridPane.rowSpan="2">
         <columns>
-          <TableColumn fx:id="colNumero" prefWidth="100.0" />
+          <TableColumn fx:id="colNombre" prefWidth="100.0" />
           <TableColumn fx:id="colMarca" prefWidth="100.0" />
             <TableColumn fx:id="colCant" prefWidth="100.0" />
         </columns>

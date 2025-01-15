@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
@@ -41,7 +40,7 @@ public class InventarioController {
     private TableColumn<Hilo, String> colMarca;
 
     @FXML
-    private TableColumn<Hilo, String> colNumero;
+    private TableColumn<Hilo, String> colNombre;
 
     @FXML
     private Label lbl_titulo;
@@ -99,9 +98,9 @@ public class InventarioController {
         colMarca.setText("Marca");
         colMarca.setPrefWidth(175);
 
-        colNumero.setCellValueFactory(new PropertyValueFactory<Hilo, String>("numero"));
-        colNumero.setText("Numero");
-        colNumero.setPrefWidth(175);
+        colNombre.setCellValueFactory(new PropertyValueFactory<Hilo, String>("nombre"));
+        colNombre.setText("Nombre");
+        colNombre.setPrefWidth(175);
 
         colCant.setCellValueFactory(new PropertyValueFactory<Hilo, String>("cantidad"));
         colCant.setText("Cantidad");
@@ -110,28 +109,34 @@ public class InventarioController {
 
     @FXML
     void onClickAdd(ActionEvent event) {
-        String numero = txt_num.getText();
+        String nombre = txt_num.getText();
         String marca = txt_marca.getValue();
         String cantStr = txt_cant.getText();
 
-        if (numero == null || numero.trim().isEmpty() ||
-                marca == null || marca.trim().isEmpty() ||
-                cantStr == null || cantStr.trim().isEmpty()) {
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-        } else {
-            try {
-                int cantidad = Integer.parseInt(cantStr);
-                if(cantidad >= 0){
-                    Hilo hilo = new Hilo(numero, marca, cantStr);
-                    table_hilos.getItems().add(hilo);
-                }else{
-                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-                }
-            } catch (NumberFormatException e) {
-                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-            }
-        }
+        Hilo hilo = new Hilo(nombre, marca, cantStr);
+        validarDatos(hilo);
         limpiarCampos();
+    }
+
+    public void validarDatos(Hilo hilo) {
+        Hilo.TipoError tipoError = hilo.validarCantidad();
+        if (!hilo.datosVacios()) {
+            switch (tipoError) {
+                case FORMATO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+                    break;
+                case NUMEXCESIVO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_DEMASIADAS_UNIDADES.getDescripcion(), Constantes.AVISO_DEMASIADAS_UNIDADES.getDescripcion());
+                    break;
+                case NEGATIVO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+                    break;
+                case SIN_ERROR:
+                    table_hilos.getItems().add(hilo);
+            }
+        }else{
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+        }
     }
 
     public void modificarDatos(){
@@ -144,7 +149,7 @@ public class InventarioController {
             }
         });
         modificarMarca();
-        modificarNumero();
+        modificarNombre();
         modificarCantidad(hyperlink);
     }
 
@@ -158,13 +163,13 @@ public class InventarioController {
                 });
     }
 
-    public void modificarNumero(){
-        colNumero.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
-        colNumero.setOnEditCommit(
+    public void modificarNombre(){
+        colNombre.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
+        colNombre.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
                     ((Hilo) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
-                    ).setNumero(t.getNewValue());
+                    ).setNombre(t.getNewValue());
                 });
     }
 
