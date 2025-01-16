@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.ImagenesUtils;
 import org.proyecto.proyecto.utils.PantallaUtils;
 
 import java.io.File;
@@ -70,21 +71,11 @@ public class DetallesProyectoController {
     @FXML
     private TextField txt_puntadasTotales;
 
-    private ObservableList<String> estados;
+    private boolean editable = false;
 
     @FXML
     void handlerSeleccionarFoto(ActionEvent event) {
-        //TODO hacer util para este metodo
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar Imagen");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.jpeg")
-        );
-        File selectedFile = fileChooser.showOpenDialog(null);
-        if (selectedFile != null) {
-            Image image = new Image(selectedFile.toURI().toString());
-            img_proyecto.setImage(image);
-        }
+        ImagenesUtils.seleccionarImagen(img_proyecto);
     }
 
     private Proyecto proyecto;
@@ -116,72 +107,106 @@ public class DetallesProyectoController {
 
     @FXML
     void onClickModificable(ActionEvent event) {
-        txt_nombre.setEditable(true);
-        txt_diseniador.setEditable(true);
-        txt_alto.setEditable(true);
-        txt_largo.setEditable(true);
-        txt_estado.setEditable(true);
-        txt_fechaInicio.setEditable(true);
-        txt_fechaFin.setEditable(true);
-        txt_puntadasTotales.setEditable(true);
-        txt_descripcion.setEditable(true);
-
-        btn_addFoto.setVisible(true);
-        btn_guardarCambios.setVisible(true);
+        if(editable){
+            editable= false;
+            txt_nombre.setEditable(false);
+            txt_diseniador.setEditable(false);
+            txt_alto.setEditable(false);
+            txt_largo.setEditable(false);
+            txt_estado.setEditable(false);
+            txt_fechaInicio.setEditable(false);
+            txt_fechaFin.setEditable(false);
+            txt_puntadasTotales.setEditable(false);
+            txt_descripcion.setEditable(false);
+            btn_addFoto.setVisible(false);
+            btn_guardarCambios.setVisible(false);
+        }else{
+            editable = true;
+            txt_nombre.setEditable(true);
+            txt_diseniador.setEditable(true);
+            txt_alto.setEditable(true);
+            txt_largo.setEditable(true);
+            txt_estado.setEditable(true);
+            ObservableList<String> estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
+            txt_estado.setItems(estados);
+            txt_fechaInicio.setEditable(true);
+            txt_fechaFin.setEditable(true);
+            txt_puntadasTotales.setEditable(true);
+            txt_descripcion.setEditable(true);
+            btn_addFoto.setVisible(true);
+            btn_guardarCambios.setVisible(true);
+        }
     }
 
     @FXML
     void onClickGuardarCambios(ActionEvent event) {
-        String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
-        String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : "Sin descripción";
-        if(validarCampos()){
-            proyecto.setNombre(txt_nombre.getText());
-            proyecto.setDiseniador(diseniador);
-            proyecto.setAlto(Integer.parseInt(txt_alto.getText()));
-            proyecto.setLargo(Integer.parseInt(txt_largo.getText()));
-            proyecto.setEstado(txt_estado.getValue());
-            proyecto.setFechaInicio(String.valueOf(txt_fechaInicio.getValue()));
-            proyecto.setFechaFin(String.valueOf(txt_fechaFin.getValue()));
-            proyecto.setPuntadasTotales(Integer.parseInt(txt_puntadasTotales.getText()));
-            proyecto.setDescripcion(descripcion);
-            proyecto.setImagen(img_proyecto.getImage());
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_MODIFICADO.getDescripcion(), Constantes.AVISO_PROYECTO_MODIFICADO.getDescripcion());
-        }
-        //TODO mismo problema que con el progreso
-        System.out.println(proyecto.toString());
-    }
-
-    private boolean validarCampos() {
+        //TODO revisar
         try {
-            // Validar que no estén vacíos
-            if (txt_nombre.getText().isEmpty() ||txt_alto.getText().isEmpty() || txt_largo.getText().isEmpty() ||
-                    txt_puntadasTotales.getText().isEmpty()) {
-                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-                return false;
-            }
+            String diseniador = !txt_diseniador.getText().isEmpty() ? txt_diseniador.getText() : "No especificado";
+            String descripcion = !txt_descripcion.getText().isEmpty() ? txt_descripcion.getText() : "Sin descripción";
 
-            // Validar números (que sean enteros y positivos)
             int alto = Integer.parseInt(txt_alto.getText());
             int largo = Integer.parseInt(txt_largo.getText());
             int puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
 
-            if (alto < 0 || largo < 0 || puntadasTotales < 0) {
-                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(),Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-                return false;
-            }
+            proyecto.setNombre(txt_nombre.getText());
+            proyecto.setDescripcion(descripcion);
+            proyecto.setDiseniador(diseniador);
+            proyecto.setAlto(alto);
+            proyecto.setLargo(largo);
+            proyecto.setEstado(txt_estado.getValue());
+            proyecto.setFechaInicio(String.valueOf(txt_fechaInicio.getValue()));
+            proyecto.setFechaFin(String.valueOf(txt_fechaFin.getValue()));
+            proyecto.setPuntadasTotales(puntadasTotales);
+            proyecto.setImagen(img_proyecto.getImage());
 
-            if(puntadasTotales > alto * largo){
-                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
+            if (proyecto.validar() == Proyecto.TipoError.SIN_ERROR && !proyecto.datosVacios()) {
+                AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_MODIFICADO.getDescripcion(), Constantes.AVISO_PROYECTO_MODIFICADO.getDescripcion());
+            } else {
+                if (proyecto.validar() == Proyecto.TipoError.NEGATIVO) {
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+                } else if (proyecto.validar() == Proyecto.TipoError.ERRORBORDADO) {
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
+                } else if (proyecto.datosVacios()) {
+                    AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+                }
             }
-
         } catch (NumberFormatException e) {
             AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-            return false;
         }
-
-        // Si pasa todas las validaciones, retorna true
-        return true;
+        //TODO redireccionar a Proyectos al guardar
     }
+
+//    private boolean validarCampos() {
+//        //TODO mirar lo de la validacion aqui
+//        try {
+//            // Validar que no estén vacíos
+//            if (txt_nombre.getText().isEmpty() ||txt_alto.getText().isEmpty() || txt_largo.getText().isEmpty() ||
+//                    txt_puntadasTotales.getText().isEmpty()) {
+//                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+//                return false;
+//            }
+//
+//            // Validar números (que sean enteros y positivos)
+//            int alto = Integer.parseInt(txt_alto.getText());
+//            int largo = Integer.parseInt(txt_largo.getText());
+//            int puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
+//
+//            if (alto < 0 || largo < 0 || puntadasTotales < 0) {
+//                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(),Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+//                return false;
+//            }
+//
+//            if(puntadasTotales > alto * largo){
+//                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
+//            }
+//
+//        } catch (NumberFormatException e) {
+//            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+//            return false;
+//        }
+//        return true;
+//    }
 
     public void initialize(){
         File f = new File("src/main/resources/imagenesProyecto/candado.png");
@@ -192,7 +217,6 @@ public class DetallesProyectoController {
 
         btn_addFoto.setVisible(false);
         btn_guardarCambios.setVisible(false);
-        estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
     }
 
     public void cargaDatos(){

@@ -86,8 +86,10 @@ public class CalculadoraController {
         String texto = textField.getText().trim();
         if (texto.isEmpty()) {
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+            throw new IllegalArgumentException("El campo no puede estar vacío");
         }else if(!texto.matches("-?\\d+")){
             AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+            throw new IllegalArgumentException("El campo debe contener solo números");
         }
         return Integer.parseInt(texto);
     }

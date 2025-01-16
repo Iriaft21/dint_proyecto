@@ -29,6 +29,10 @@ public class Proyecto {
         this.imagen = imagen;
     }
 
+    public enum TipoError {
+        ERRORBORDADO, NEGATIVO, SIN_ERROR
+    }
+
     public float getProgreso() {
         return progreso;
     }
@@ -122,17 +126,32 @@ public class Proyecto {
         return ((float) puntadasRegistradas / puntadasTotales) * 100;
     }
 
-    //TODO hacer validaciones aqui
+    public Proyecto.TipoError validar(){
+        if(alto <= 0 || largo <= 0 || puntadasTotales < 0){
+            return Proyecto.TipoError.NEGATIVO;
+        }else if (puntadasTotales > alto * largo){
+            return Proyecto.TipoError.ERRORBORDADO;
+        }else{
+            return Proyecto.TipoError.SIN_ERROR;
+        }
+    }
+
+    public boolean datosVacios(){
+        if(nombre.trim().isEmpty() || diseniador.trim().isEmpty() || descripcion.trim().isEmpty()){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {
         return "Nombre del proyecto: " + nombre +
-                ", descripcion: " + (descripcion != null? descripcion : "Sin descripción") +
-                ", diseñador: " + (diseniador != null? diseniador : "Desconocido") +
+                ", descripcion: " +
+                ", diseñador: " +
                 ", alto: " + alto +
                 ", largo: " + largo +
                 ", estado: " + estado +
-                ", puntadas totales" + puntadasTotales +
+                ", puntadas totales: " + puntadasTotales +
                 ", progreso: " + progreso + "% " +
                 ", fecha de inicio: " + (fechaInicio != null? fechaInicio : "Sin especificar" ) +
                 ", fecha de fin: " + (fechaFin != null? fechaFin : "Sin especificar" ) +

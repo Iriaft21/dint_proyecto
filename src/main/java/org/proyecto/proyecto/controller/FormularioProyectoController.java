@@ -14,10 +14,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.ImagenesUtils;
 import org.proyecto.proyecto.utils.PantallaUtils;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
@@ -68,22 +71,9 @@ public class FormularioProyectoController {
 
     private ObservableList<String> estados;
 
-    int alto = 0;
-    int largo = 0;
-    int puntadasTotales = 0;
-
     @FXML
     void handleSeleccionarImagen(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar Imagen");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.jpeg")
-        );
-        File selectedFile = fileChooser.showOpenDialog(null);
-        if (selectedFile != null) {
-            Image image = new Image(selectedFile.toURI().toString());
-            img.setImage(image);
-        }
+        ImagenesUtils.seleccionarImagen(img);
     }
 
     public void initialize(){
@@ -116,48 +106,45 @@ public class FormularioProyectoController {
         String fechaFin = String.valueOf(dp_fechaFin.getValue());
         String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : "Sin descripción";
         String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
-        if(validarCampos() == true){
-            alto = Integer.parseInt(txt_alto.getText());
-            largo = Integer.parseInt(txt_largo.getText());
-            puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
+        int alto = validar(txt_alto);
+        int largo = validar(txt_largo);
+        int puntadasTotales = validar(txt_puntadasTotales);
 
-            proyecto = new Proyecto(nombre, descripcion, diseniador, alto, largo, estado, puntadasTotales, fechaInicio, fechaFin, img.getImage());
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_CREADO.getDescripcion(), Constantes.AVISO_PROYECTO_CREADO.getDescripcion());
-        }
-
-        return proyecto;
+        proyecto = new Proyecto(nombre, descripcion, diseniador, alto, largo, estado, puntadasTotales, fechaInicio, fechaFin, img.getImage());
+        return avisosValidar(proyecto);
     }
 
-    private boolean validarCampos() {
-        try {
-            // Validar que no estén vacíos
-            if (txt_nombre.getText().isEmpty() ||txt_alto.getText().isEmpty() || txt_largo.getText().isEmpty() ||
-                    txt_puntadasTotales.getText().isEmpty() ) {
-                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-                return false;
-            }
-
-            // Validar números (que sean enteros y positivos)
-            int alto = Integer.parseInt(txt_alto.getText());
-            int largo = Integer.parseInt(txt_largo.getText());
-            int puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
-
-            if (alto < 0 || largo < 0 || puntadasTotales < 0) {
-                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(),Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-                return false;
-            }
-
-            if(puntadasTotales > alto * largo){
-                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
-                return false;
-            }
-
-        } catch (NumberFormatException e) {
+    private int validar(TextField textField){
+        String texto = textField.getText().trim();
+        if (texto.isEmpty()) {
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+            throw new IllegalArgumentException("El campo no puede estar vacío");
+        }else if(!texto.matches("-?\\d+")){
+            System.out.println(textField.getText());
             AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-            return false;
+            throw new IllegalArgumentException("El campo debe contener solo números");
         }
+        return Integer.parseInt(texto);
+    }
 
-        return true;
+    private Proyecto avisosValidar(Proyecto proyecto){
+        Proyecto.TipoError tipoError = proyecto.validar();
+        if (!proyecto.datosVacios()) {
+            switch (tipoError) {
+                case ERRORBORDADO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
+                    break;
+                case NEGATIVO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+                    break;
+                case SIN_ERROR:
+                    AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_CREADO.getDescripcion(), Constantes.AVISO_PROYECTO_CREADO.getDescripcion());
+                    return proyecto;
+            }
+        }else{
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+        }
+        return null;
     }
 
     @FXML
