@@ -36,38 +36,38 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <children>
-      <Label text="Crear nuevo proyecto" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+      <Label fx:id="lbl_titulo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label text="Nombre*:" GridPane.rowIndex="1" />
-      <Label text="Diseñador/a:" GridPane.rowIndex="2" />
-      <Label text="Alto*:" GridPane.rowIndex="4" />
-      <Label text="Estado*:" GridPane.rowIndex="3" />
-      <Label text="Fecha inicio:" GridPane.rowIndex="5" />
-      <Label text="Fecha fin:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Label text="Descripción:" GridPane.rowIndex="6" />
-      <Button fx:id="btn_crear" mnemonicParsing="false" onAction="#onClickCrear" text="Crear" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
-      <Label text="Largo*:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label text="Los campos que contienen un * es necesario cubrirlos." GridPane.columnSpan="2147483647" GridPane.rowIndex="9">
+      <Label fx:id="lbl_nombre" GridPane.rowIndex="1" />
+      <Label fx:id="lbl_diseniador" GridPane.rowIndex="2" />
+      <Label fx:id="lbl_alto" GridPane.rowIndex="4" />
+      <Label fx:id="lbl_estado" GridPane.rowIndex="3" />
+      <Label fx:id="lbl_fechaInicio" GridPane.rowIndex="5" />
+      <Label fx:id="lbl_fechaFin" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <Label fx:id="lbl_descripcion" GridPane.rowIndex="6" />
+      <Button fx:id="btn_crear" mnemonicParsing="false" onAction="#onClickCrear" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+      <Label fx:id="lbl_largo" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <Label fx:id="lbl_necesarios" GridPane.columnSpan="2147483647" GridPane.rowIndex="9">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <ImageView fx:id="img" fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-      <Button fx:id="btn_imagen" mnemonicParsing="false" onAction="#handleSeleccionarImagen" text="Seleccionar imagen" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
+      <Button fx:id="btn_imagen" mnemonicParsing="false" onAction="#handleSeleccionarImagen" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.rowSpan="3" />
       <TextField fx:id="txt_nombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <TextField fx:id="txt_diseniador" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <TextField fx:id="txt_alto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <TextField fx:id="txt_largo" GridPane.columnIndex="3" GridPane.rowIndex="4" />
       <TextField fx:id="txt_descripcion" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" GridPane.columnSpan="2147483647" GridPane.rowIndex="7" GridPane.rowSpan="2" GridPane.valignment="CENTER" />
-      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
-      <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" text="Limpiar campos" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
+      <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="10" />
       <ComboBox fx:id="combo_estado" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <DatePicker fx:id="dp_fechaInicio" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <DatePicker fx:id="dp_fechaFin" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-      <Label text="Puntadas totales*:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label fx:id="lbl_puntadas_totales" GridPane.columnIndex="2" GridPane.rowIndex="3" />
       <TextField fx:id="txt_puntadasTotales" GridPane.columnIndex="3" GridPane.rowIndex="3" />
    </children>
 </GridPane>

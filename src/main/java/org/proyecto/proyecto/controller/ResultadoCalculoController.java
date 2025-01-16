@@ -4,11 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.CalculoTela;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
+import org.proyecto.proyecto.utils.Strings;
 
 import java.io.IOException;
 
@@ -16,6 +18,27 @@ public class ResultadoCalculoController {
 
     @FXML
     private Button btnAtras;
+
+    @FXML
+    private Label lbl_result1;
+
+    @FXML
+    private Label lbl_result2;
+
+    @FXML
+    private Label lbl_result3;
+
+    @FXML
+    private Label lbl_result4;
+
+    @FXML
+    private Label lbl_subtitulo1;
+
+    @FXML
+    private Label lbl_subtitulo2;
+
+    @FXML
+    private Label lbl_titulo;
 
     @FXML
     private TextField txt_altoBordado;
@@ -37,6 +60,17 @@ public class ResultadoCalculoController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void initialize(){
+        btnAtras.setText(Strings.BOTON_ATRAS.getDescripcion());
+        lbl_titulo.setText(Strings.TITULO_RESULTADO_CALCULO.getDescripcion());
+        lbl_subtitulo1.setText(Strings.SUBTITULO_RESULTADO1.getDescripcion());
+        lbl_subtitulo2.setText(Strings.SUBTITULO_RESULTADO2.getDescripcion());
+        lbl_result1.setText(Strings.RESULTADO1.getDescripcion());
+        lbl_result2.setText(Strings.RESULTADO2.getDescripcion());
+        lbl_result3.setText(Strings.RESULTADO3.getDescripcion());
+        lbl_result4.setText(Strings.RESULTADO4.getDescripcion());
     }
 
     public void setCalculoFromMain(CalculoTela calculoTela){

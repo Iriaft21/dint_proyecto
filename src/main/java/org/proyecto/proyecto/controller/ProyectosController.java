@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
+import org.proyecto.proyecto.utils.Strings;
 
 import java.io.IOException;
 
@@ -29,6 +30,12 @@ public class ProyectosController {
 
     @FXML
     private Button btn_salir;
+
+    @FXML
+    private Label lbl_titulo;
+
+    @FXML
+    private Menu menu;
 
     @FXML
     private ListView<Proyecto> listView;
@@ -91,6 +98,17 @@ public class ProyectosController {
 
         listView.setItems(proyectos);
         listViewPersonalizado();
+        asignarStrings();
+    }
+
+    private void asignarStrings(){
+        btn_aniadir.setText(Strings.BOTON_CREAR.getDescripcion());
+        btn_eliminar.setText(Strings.BOTON_ELIMINAR.getDescripcion());
+        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
+        lbl_titulo.setText(Strings.TITULO_PROYECTOS.getDescripcion());
+        menu.setText(Strings.MENU.getDescripcion());
+        menuItem_calculadora.setText(Strings.TITULO_CALCULADORA.getDescripcion());
+        menuItem_inventario.setText(Strings.TITULO_INVENTARIO.getDescripcion());
     }
 
     public void listViewPersonalizado(){

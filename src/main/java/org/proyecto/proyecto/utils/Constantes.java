@@ -5,6 +5,7 @@ package org.proyecto.proyecto.utils;
  * Esta clase es un enumerado para albergar las constantes de la aplicación.
  */
 public enum Constantes {
+    //TODO aqui van tambien todos los Strings de la interfaz
     PAGINA_INICIAL("menu-view.fxml"),
     PAGINA_PANTALLA_INVENTARIO("inventario-view.fxml"),
     PAGINA_PANTALLA_CALCULADORA("calculadora-view.fxml"),

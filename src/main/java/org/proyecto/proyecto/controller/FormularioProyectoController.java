@@ -6,20 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.modelo.Proyecto;
-import org.proyecto.proyecto.utils.AlertaUtils;
-import org.proyecto.proyecto.utils.Constantes;
-import org.proyecto.proyecto.utils.ImagenesUtils;
-import org.proyecto.proyecto.utils.PantallaUtils;
+import org.proyecto.proyecto.utils.*;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -41,6 +35,40 @@ public class FormularioProyectoController {
 
     @FXML
     private ComboBox<String> combo_estado;
+
+    @FXML
+    private Label lbl_alto;
+
+    @FXML
+    private Label lbl_descripcion;
+
+    @FXML
+    private Label lbl_diseniador;
+
+    @FXML
+    private Label lbl_estado;
+
+    @FXML
+    private Label lbl_fechaFin;
+
+    @FXML
+    private Label lbl_fechaInicio;
+
+    @FXML
+    private Label lbl_largo;
+
+    @FXML
+    private Label lbl_necesarios;
+
+    @FXML
+    private Label lbl_nombre;
+
+    @FXML
+    private Label lbl_puntadas_totales;
+
+    @FXML
+    private Label lbl_titulo;
+
 
     @FXML
     private DatePicker dp_fechaFin;
@@ -80,6 +108,26 @@ public class FormularioProyectoController {
         estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
         combo_estado.setItems(estados);
         combo_estado.setValue("En proceso");
+
+        asignarStrings();
+    }
+
+    private void asignarStrings(){
+        lbl_titulo.setText(Strings.TITULO_FORMULARIO_PROYECTO.getDescripcion());
+        lbl_necesarios.setText(Strings.LABEL_NECECESARIOS.getDescripcion());
+        btn_crear.setText(Strings.BOTON_CREAR.getDescripcion());
+        btn_imagen.setText(Strings.BOTON_SELECCIONAR_IMAGEN.getDescripcion());
+        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
+        btn_limpiarCampos.setText(Strings.BOTON_LIMPIAR_CAMPOS.getDescripcion());
+        lbl_alto.setText(Strings.LABEL_ALTO.getDescripcion());
+        lbl_descripcion.setText(Strings.LABEL_DESCRIPCION.getDescripcion());
+        lbl_diseniador.setText(Strings.LABEL_DISENIADOR.getDescripcion());
+        lbl_estado.setText(Strings.LABEL_ESTADO.getDescripcion());
+        lbl_fechaFin.setText(Strings.LABEL_FECHA_FIN.getDescripcion());
+        lbl_fechaInicio.setText(Strings.LABEL_FECHA_INICIO.getDescripcion());
+        lbl_largo.setText(Strings.LABEL_LARGO.getDescripcion());
+        lbl_nombre.setText(Strings.LABEL_NOMBRE.getDescripcion());
+        lbl_puntadas_totales.setText(Strings.LABEL_PUNTADAS_TOTALES.getDescripcion());
     }
 
     @FXML
@@ -116,10 +164,7 @@ public class FormularioProyectoController {
 
     private int validar(TextField textField){
         String texto = textField.getText().trim();
-        if (texto.isEmpty()) {
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-            throw new IllegalArgumentException("El campo no puede estar vacío");
-        }else if(!texto.matches("-?\\d+")){
+        if(!texto.matches("-?\\d+")){
             System.out.println(textField.getText());
             AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
             throw new IllegalArgumentException("El campo debe contener solo números");

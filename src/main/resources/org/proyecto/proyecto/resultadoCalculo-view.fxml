@@ -28,11 +28,11 @@
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
    </padding>
    <children>
-      <Label text="Resultado:" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+      <Label fx:id="lbl_titulo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
          <font>
             <Font size="36.0" />
          </font></Label>
-      <Label text="El tamaño del bordado sería:" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <Label fx:id="lbl_subtitulo1" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
             <Font size="24.0" />
          </font></Label>
@@ -40,24 +40,24 @@
       <TextField fx:id="txt_altoBordado" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <TextField fx:id="txt_largoTotal" GridPane.rowIndex="4" />
       <TextField fx:id="txt_altoTotal" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Button fx:id="btnAtras" mnemonicParsing="false" onAction="#onClickAtras" text="Atrás" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-      <Label text="cm de largo y " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+      <Button fx:id="btnAtras" mnemonicParsing="false" onAction="#onClickAtras" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+      <Label fx:id="lbl_result1" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label text=" cm de alto." GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+      <Label fx:id="lbl_result2" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label text="Necesitarás una tela de las siguientes dimensiones:" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <Label fx:id="lbl_subtitulo2" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Label text=" cm. de largo y  " GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <Label fx:id="lbl_result3" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <font>
             <Font size="14.0" />
          </font></Label>
-      <Label text=" cm. de alto." GridPane.columnIndex="3" GridPane.rowIndex="4">
+      <Label fx:id="lbl_result4" GridPane.columnIndex="3" GridPane.rowIndex="4">
          <font>
             <Font size="14.0" />
          </font></Label>

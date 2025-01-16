@@ -33,36 +33,36 @@
    <children>
       <MenuBar GridPane.columnSpan="2147483647" GridPane.valignment="TOP">
         <menus>
-          <Menu mnemonicParsing="false" text="Menú">
+          <Menu fx:id="menu" mnemonicParsing="false">
                <items>
-                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" text="Inventario" />
-                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" text="Proyectos" />
+                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" />
+                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" />
                </items></Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" />
-      <Label text="Calculadora de tela" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" />
+      <Label fx:id="lbl_titulo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label text=" Alto (en puntadas):" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <Label text="Dimensiones del dibujo:" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+      <Label fx:id="lbl_form1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Label fx:id="lbl_dimensiones" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label text="Largo(en puntadas):" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label fx:id="lbl_form2" GridPane.columnIndex="2" GridPane.rowIndex="3" />
       <TextField fx:id="txt_alto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextField fx:id="txt_largo" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Label text="Conteo de la tela:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <Label fx:id="lbl_form3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <ComboBox fx:id="spinner_ct" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label text="Tela a dejar como borde:" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
+      <Label fx:id="lbl_form4" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
       <TextField fx:id="txt_telaBorde" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <TextField fx:id="txt_telaAcabado" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-      <Label text="Tela  a dejar para acabado:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Button fx:id="btn_calcular" mnemonicParsing="false" onAction="#onClickCalcular" text="Calcular" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" text="Limpiar campos" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label fx:id="lbl_form5" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+      <Button fx:id="btn_calcular" mnemonicParsing="false" onAction="#onClickCalcular" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
+      <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
    </children>
    <padding>
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

@@ -6,16 +6,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.CalculoTela;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
+import org.proyecto.proyecto.utils.Strings;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -31,6 +29,30 @@ public class CalculadoraController {
 
     @FXML
     private Button btn_salir;
+
+    @FXML
+    private Label lbl_dimensiones;
+
+    @FXML
+    private Label lbl_form1;
+
+    @FXML
+    private Label lbl_form2;
+
+    @FXML
+    private Label lbl_form3;
+
+    @FXML
+    private Label lbl_form4;
+
+    @FXML
+    private Label lbl_form5;
+
+    @FXML
+    private Label lbl_titulo;
+
+    @FXML
+    private Menu menu;
 
     @FXML
     private MenuItem menuItem_inventario;
@@ -120,6 +142,23 @@ public class CalculadoraController {
                 "18 ct (7 hilos/cm)", "20 ct (7,8 hilos/cm)", "22 ct (8,5 hilos/cm)", "24 ct (9,3 hilos/cm)");
         spinner_ct.setItems(tiposTelas);
         spinner_ct.setValue("14 ct (5,4 hilos/cm)");
+        asignarStrings();
+    }
+
+    private void asignarStrings(){
+        menu.setText(Strings.MENU.getDescripcion());
+        menuItem_inventario.setText(Strings.TITULO_INVENTARIO.getDescripcion());
+        menuItem_proyectos.setText(Strings.TITULO_PROYECTOS.getDescripcion());
+        lbl_titulo.setText(Strings.TITULO_CALCULADORA2.getDescripcion());
+        lbl_dimensiones.setText(Strings.SUBTITULO_DIMENSIONES.getDescripcion());
+        lbl_form1.setText(Strings.LABEL_FORMULARIO1.getDescripcion());
+        lbl_form2.setText(Strings.LABEL_FORMULARIO2.getDescripcion());
+        lbl_form3.setText(Strings.LABEL_FORMULARIO3.getDescripcion());
+        lbl_form4.setText(Strings.LABEL_FORMULARIO4.getDescripcion());
+        lbl_form5.setText(Strings.LABEL_FORMULARIO5.getDescripcion());
+        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
+        btn_calcular.setText(Strings.BOTON_CALCULAR.getDescripcion());
+        btn_limpiarCampos.setText(Strings.BOTON_LIMPIAR_CAMPOS.getDescripcion());
     }
 
 

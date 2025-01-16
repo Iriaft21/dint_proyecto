@@ -8,7 +8,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.AlertaUtils;
@@ -105,108 +104,102 @@ public class DetallesProyectoController {
         }
     }
 
+
     @FXML
     void onClickModificable(ActionEvent event) {
         if(editable){
-            editable= false;
-            txt_nombre.setEditable(false);
-            txt_diseniador.setEditable(false);
-            txt_alto.setEditable(false);
-            txt_largo.setEditable(false);
-            txt_estado.setEditable(false);
-            txt_fechaInicio.setEditable(false);
-            txt_fechaFin.setEditable(false);
-            txt_puntadasTotales.setEditable(false);
-            txt_descripcion.setEditable(false);
-            btn_addFoto.setVisible(false);
-            btn_guardarCambios.setVisible(false);
+            noModificable();
         }else{
-            editable = true;
-            txt_nombre.setEditable(true);
-            txt_diseniador.setEditable(true);
-            txt_alto.setEditable(true);
-            txt_largo.setEditable(true);
-            txt_estado.setEditable(true);
-            ObservableList<String> estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
-            txt_estado.setItems(estados);
-            txt_fechaInicio.setEditable(true);
-            txt_fechaFin.setEditable(true);
-            txt_puntadasTotales.setEditable(true);
-            txt_descripcion.setEditable(true);
-            btn_addFoto.setVisible(true);
-            btn_guardarCambios.setVisible(true);
+            modificable();
         }
+    }
+
+    private void noModificable(){
+        editable= false;
+        txt_nombre.setEditable(false);
+        txt_diseniador.setEditable(false);
+        txt_alto.setEditable(false);
+        txt_largo.setEditable(false);
+        txt_estado.setEditable(false);
+        txt_fechaInicio.setEditable(false);
+        txt_fechaFin.setEditable(false);
+        txt_puntadasTotales.setEditable(false);
+        txt_descripcion.setEditable(false);
+        btn_addFoto.setVisible(false);
+        btn_guardarCambios.setVisible(false);
+    }
+
+    private void modificable(){
+        editable = true;
+        txt_nombre.setEditable(true);
+        txt_diseniador.setEditable(true);
+        txt_alto.setEditable(true);
+        txt_largo.setEditable(true);
+        txt_estado.setEditable(true);
+        ObservableList<String> estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
+        txt_estado.setItems(estados);
+        txt_fechaInicio.setEditable(true);
+        txt_fechaFin.setEditable(true);
+        txt_puntadasTotales.setEditable(true);
+        txt_descripcion.setEditable(true);
+        btn_addFoto.setVisible(true);
+        btn_guardarCambios.setVisible(true);
     }
 
     @FXML
     void onClickGuardarCambios(ActionEvent event) {
-        //TODO revisar
-        try {
             String diseniador = !txt_diseniador.getText().isEmpty() ? txt_diseniador.getText() : "No especificado";
             String descripcion = !txt_descripcion.getText().isEmpty() ? txt_descripcion.getText() : "Sin descripción";
-
-            int alto = Integer.parseInt(txt_alto.getText());
-            int largo = Integer.parseInt(txt_largo.getText());
-            int puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
 
             proyecto.setNombre(txt_nombre.getText());
             proyecto.setDescripcion(descripcion);
             proyecto.setDiseniador(diseniador);
-            proyecto.setAlto(alto);
-            proyecto.setLargo(largo);
+            proyecto.setAlto(validar(txt_alto));
+            proyecto.setLargo(validar(txt_largo));
             proyecto.setEstado(txt_estado.getValue());
             proyecto.setFechaInicio(String.valueOf(txt_fechaInicio.getValue()));
             proyecto.setFechaFin(String.valueOf(txt_fechaFin.getValue()));
-            proyecto.setPuntadasTotales(puntadasTotales);
+            proyecto.setPuntadasTotales(validar(txt_puntadasTotales));
             proyecto.setImagen(img_proyecto.getImage());
 
-            if (proyecto.validar() == Proyecto.TipoError.SIN_ERROR && !proyecto.datosVacios()) {
-                AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_MODIFICADO.getDescripcion(), Constantes.AVISO_PROYECTO_MODIFICADO.getDescripcion());
-            } else {
-                if (proyecto.validar() == Proyecto.TipoError.NEGATIVO) {
-                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-                } else if (proyecto.validar() == Proyecto.TipoError.ERRORBORDADO) {
-                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
-                } else if (proyecto.datosVacios()) {
-                    AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-                }
-            }
-        } catch (NumberFormatException e) {
-            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-        }
-        //TODO redireccionar a Proyectos al guardar
+            revisarErrores();
+            //TODO revisar que guarde los valores bien
     }
 
-//    private boolean validarCampos() {
-//        //TODO mirar lo de la validacion aqui
-//        try {
-//            // Validar que no estén vacíos
-//            if (txt_nombre.getText().isEmpty() ||txt_alto.getText().isEmpty() || txt_largo.getText().isEmpty() ||
-//                    txt_puntadasTotales.getText().isEmpty()) {
-//                AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-//                return false;
-//            }
-//
-//            // Validar números (que sean enteros y positivos)
-//            int alto = Integer.parseInt(txt_alto.getText());
-//            int largo = Integer.parseInt(txt_largo.getText());
-//            int puntadasTotales = Integer.parseInt(txt_puntadasTotales.getText());
-//
-//            if (alto < 0 || largo < 0 || puntadasTotales < 0) {
-//                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(),Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-//                return false;
-//            }
-//
-//            if(puntadasTotales > alto * largo){
-//                AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
-//            }
-//
-//        } catch (NumberFormatException e) {
-//            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-//            return false;
-//        }
-//        return true;
-//    }
+    private int validar(TextField textField){
+        String texto = textField.getText().trim();
+        if(!texto.matches("-?\\d+")){
+            System.out.println(textField.getText());
+            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+            throw new IllegalArgumentException("El campo debe contener solo números");
+        }
+        return Integer.parseInt(texto);
+    }
+
+    private void revisarErrores(){
+        Proyecto.TipoError tipoError = proyecto.validar();
+        if (!proyecto.datosVacios()) {
+            switch (tipoError) {
+                case ERRORBORDADO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
+                    break;
+                case NEGATIVO:
+                    AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
+                    break;
+                case SIN_ERROR:
+                    AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_CREADO.getDescripcion(), Constantes.AVISO_PROYECTO_CREADO.getDescripcion());
+            }
+        }else {
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+            try {
+                Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_atras);
+                ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
+                //TODO no pasa los cambios, el bug de siempre
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void initialize(){
         File f = new File("src/main/resources/imagenesProyecto/candado.png");

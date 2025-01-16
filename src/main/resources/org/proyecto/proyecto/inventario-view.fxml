@@ -41,7 +41,7 @@
             <TableColumn fx:id="colCant" prefWidth="100.0" />
         </columns>
       </TableView>
-      <Label fx:id="lbl_titulo" text="Inventario" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+      <Label fx:id="lbl_titulo" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="1">
          <font>
             <Font size="36.0" />
          </font>
@@ -49,21 +49,21 @@
             <Insets bottom="10.0" top="10.0" />
          </padding>
       </Label>
-      <Button fx:id="btn_add" minWidth="-Infinity" mnemonicParsing="false" onAction="#onClickAdd" text="Añadir" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-      <Button fx:id="btn_eliminar" mnemonicParsing="false" onAction="#onClickEliminar" text="Eliminar" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
-      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+      <Button fx:id="btn_add" minWidth="-Infinity" mnemonicParsing="false" onAction="#onClickAdd" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
+      <Button fx:id="btn_eliminar" mnemonicParsing="false" onAction="#onClickEliminar" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
       <TextField fx:id="txt_num" GridPane.rowIndex="4" />
       <TextField fx:id="txt_cant" GridPane.columnIndex="1" GridPane.rowIndex="4" />
       <ComboBox fx:id="txt_marca" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label text="Número:" GridPane.rowIndex="3" />
-      <Label text="Cantidad:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <Label text="Marca:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <Label fx:id="lbl_nombreHilo" GridPane.rowIndex="3" />
+      <Label fx:id="lbll_cantidad" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <Label fx:id="lbl_marca" GridPane.columnIndex="2" GridPane.rowIndex="3" />
       <MenuBar GridPane.columnSpan="4" GridPane.valignment="TOP">
         <menus>
-          <Menu mnemonicParsing="false" text="Menú">
+          <Menu fx:id="menu" mnemonicParsing="false">
                <items>
-                  <MenuItem fx:id="menuItem_calculadora" mnemonicParsing="false" onAction="#onClickMenuItemCalculadora" text="Calculadora" />
-                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" text="Proyectos" />
+                  <MenuItem fx:id="menuItem_calculadora" mnemonicParsing="false" onAction="#onClickMenuItemCalculadora" />
+                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" />
                </items></Menu>
         </menus>
       </MenuBar>

@@ -29,22 +29,22 @@
    <children>
       <MenuBar GridPane.columnSpan="2147483647" GridPane.valignment="TOP">
         <menus>
-          <Menu mnemonicParsing="false" text="Menú">
+          <Menu fx:id="menu" mnemonicParsing="false">
                <items>
-                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" text="Inventario" />
-                  <MenuItem fx:id="menuItem_calculadora" mnemonicParsing="false" onAction="#onClickMenuItemCalculadora" text="Calculadora" />
+                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" />
+                  <MenuItem fx:id="menuItem_calculadora" mnemonicParsing="false" onAction="#onClickMenuItemCalculadora" />
                </items></Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
       <ListView fx:id="listView" onMouseClicked="#onMouseClickedListView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.rowSpan="2" />
-      <Label text="Proyectos" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <Label fx:id="lbl_titulo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Button fx:id="btn_eliminar" mnemonicParsing="false" onAction="#onClickEliminar" text="Eliminar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-      <Button fx:id="btn_aniadir" mnemonicParsing="false" onAction="#onClickAniadir" text="Añadir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Button fx:id="btn_eliminar" mnemonicParsing="false" onAction="#onClickEliminar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Button fx:id="btn_aniadir" mnemonicParsing="false" onAction="#onClickAniadir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
    </children>
    <padding>
       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
