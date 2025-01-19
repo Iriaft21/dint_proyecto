@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -17,25 +16,23 @@ import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
-import org.proyecto.proyecto.utils.Strings;
+import org.proyecto.proyecto.utils.Utils;
 
 import java.io.IOException;
 
 public class ProyectosController {
+
     @FXML
     private Button btn_aniadir;
+
+    @FXML
+    private Button btn_atras;
 
     @FXML
     private Button btn_eliminar;
 
     @FXML
     private Button btn_salir;
-
-    @FXML
-    private Label lbl_titulo;
-
-    @FXML
-    private Menu menu;
 
     @FXML
     private ListView<Proyecto> listView;
@@ -48,11 +45,23 @@ public class ProyectosController {
 
     private ObservableList<Proyecto> proyectos;
 
+    public void setObservableList(ObservableList<Proyecto> proyectos){
+        this.proyectos = proyectos;
+        this.listView.setItems(this.proyectos);
+        this.listView.refresh();
+    }
+
+    @FXML
+    void onClickAtras(ActionEvent event) {
+        Utils.irAtrasMenu(btn_atras);
+    }
+
     @FXML
     private void onClickAniadir(ActionEvent event){
         try {
             Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_aniadir);
             FormularioProyectoController formularioProyectoController = new FormularioProyectoController().showEstaPantalla(stage);
+            formularioProyectoController.setObservableList(proyectos);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,6 +91,7 @@ public class ProyectosController {
 
                 DetallesProyectoController detallesProyectoController = new DetallesProyectoController().showEstaPantalla(stage);
                 detallesProyectoController.setProyecto(proyectoDetalle);
+                detallesProyectoController.setObservableList(proyectos);
                 detallesProyectoController.cargaDatos();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -91,24 +101,9 @@ public class ProyectosController {
 
     public void initialize(){
         proyectos = FXCollections.observableArrayList();
-        Proyecto p1 = new Proyecto("Persephone","Sin descripción", "StitchyNova", 120, 240, "En proceso", 650, null, null, null );
-        Proyecto p2 = new Proyecto("Marcapaginas medieval", "Regalo", "No especificado", 60, 30, "Completado", 150, null, null, null);
-        Proyecto p3 = new Proyecto("Final Fantasy", "Proyecto muy colorido con referencias a la saga de juegos Final Fantasy.", "BogDragon", 153, 151, "Reuniendo materiales", 1721, null, null,  null);
-        proyectos.addAll(p1, p2, p3);
-
         listView.setItems(proyectos);
         listViewPersonalizado();
-        asignarStrings();
-    }
-
-    private void asignarStrings(){
-        btn_aniadir.setText(Strings.BOTON_CREAR.getDescripcion());
-        btn_eliminar.setText(Strings.BOTON_ELIMINAR.getDescripcion());
-        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
-        lbl_titulo.setText(Strings.TITULO_PROYECTOS.getDescripcion());
-        menu.setText(Strings.MENU.getDescripcion());
-        menuItem_calculadora.setText(Strings.TITULO_CALCULADORA.getDescripcion());
-        menuItem_inventario.setText(Strings.TITULO_INVENTARIO.getDescripcion());
+        listView.refresh();
     }
 
     public void listViewPersonalizado(){
@@ -138,7 +133,7 @@ public class ProyectosController {
                     imageView.setPreserveRatio(true);
 
                     HBox hBox = new HBox(vBox, imageView);
-                    hBox.setSpacing(350); // Espaciado entre el texto y la imagen
+                    hBox.setSpacing(340); // Espaciado entre el texto y la imagen
                     hBox.setAlignment(Pos.CENTER_LEFT);
 
                     setGraphic(hBox);
@@ -167,14 +162,6 @@ public class ProyectosController {
             InventarioController inventarioController = new InventarioController().showEstaPantalla(stage);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    public void setProyectoFromMain(Proyecto proyecto){
-        //TODO al darle en detalles para atras no muestra el que añadimos
-        if(proyecto!= null){
-            proyectos.add(proyecto);
-            listView.refresh();
         }
     }
 

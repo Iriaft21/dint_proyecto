@@ -20,15 +20,15 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label fx:id="lbl_titulo" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
+      <Label text="Actualizar progreso" textAlignment="CENTER" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_respuesta" GridPane.rowIndex="1" />
+      <Label text="Puntadas nuevas a añadir:" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <TextField fx:id="txt_puntadasNuevas" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button fx:id="btn_actualizar" mnemonicParsing="false" onAction="#onClickActualizar" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Button fx:id="btn_actualizar" mnemonicParsing="false" onAction="#onClickActualizar" text="Actualizar" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

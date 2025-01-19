@@ -5,13 +5,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
-import org.proyecto.proyecto.utils.Strings;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,9 +34,6 @@ public class MenuController {
     @FXML
     private ImageView img_intro2;
 
-    @FXML
-    private Label lbl_titulo;
-
     public MenuController showMenu(Stage stage){
         FXMLLoader fxmlLoader = null;
         try {
@@ -58,12 +53,6 @@ public class MenuController {
         img_intro1.setFitWidth(65);
         img_intro2.setFitHeight(50);
         img_intro2.setFitWidth(65);
-
-        btn_proyectos.setText(Strings.TITULO_PROYECTOS.getDescripcion());
-        btn_calculadora.setText(Strings.TITULO_CALCULADORA.getDescripcion());
-        btn_inventario.setText(Strings.TITULO_INVENTARIO.getDescripcion());
-        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
-        lbl_titulo.setText(Strings.TITULO_PAGINA_INICIAL.getDescripcion());
     }
 
     @FXML

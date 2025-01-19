@@ -11,60 +11,84 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" vgap="10.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.proyecto.proyecto.controller.CalculadoraController">
+<GridPane hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="425.0" prefWidth="600.0" vgap="15.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.proyecto.proyecto.controller.CalculadoraController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="148.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="104.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="154.0" />
-    <ColumnConstraints hgrow="SOMETIMES" maxWidth="316.0" minWidth="10.0" prefWidth="143.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="113.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="292.0" minWidth="10.0" prefWidth="155.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="316.0" minWidth="10.0" prefWidth="111.0" />
   </columnConstraints>
   <rowConstraints>
     <RowConstraints maxHeight="233.0" minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="54.0" vgrow="SOMETIMES" />
-    <RowConstraints maxHeight="365.0" minHeight="0.0" prefHeight="51.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="365.0" minHeight="0.0" prefHeight="61.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="263.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="365.0" minHeight="0.0" prefHeight="22.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
       <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="61.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="46.0" vgrow="SOMETIMES" />
-      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="36.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="365.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
       <MenuBar GridPane.columnSpan="2147483647" GridPane.valignment="TOP">
         <menus>
-          <Menu fx:id="menu" mnemonicParsing="false">
+          <Menu mnemonicParsing="false" text="Menú">
                <items>
-                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" />
-                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" />
+                  <MenuItem fx:id="menuItem_inventario" mnemonicParsing="false" onAction="#onClickMenuItemInventario" text="Inventario" />
+                  <MenuItem fx:id="menuItem_proyectos" mnemonicParsing="false" onAction="#onClickMenuItemProyectos" text="Proyectos" />
                </items></Menu>
         </menus>
       </MenuBar>
-      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" />
-      <Label fx:id="lbl_titulo" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <Button fx:id="btn_salir" mnemonicParsing="false" onAction="#onClickSalir" text="Salir" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" />
+      <Label text="Calculadora de tela" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label fx:id="lbl_form1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-      <Label fx:id="lbl_dimensiones" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="lbl_form2" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-      <TextField fx:id="txt_alto" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <TextField fx:id="txt_largo" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <Label fx:id="lbl_form3" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-      <ComboBox fx:id="spinner_ct" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label fx:id="lbl_form4" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="5" />
-      <TextField fx:id="txt_telaBorde" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-      <TextField fx:id="txt_telaAcabado" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-      <Label fx:id="lbl_form5" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-      <Button fx:id="btn_calcular" mnemonicParsing="false" onAction="#onClickCalcular" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Button fx:id="btn_limpiarCampos" mnemonicParsing="false" onAction="#onClickLimpiarCampos" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-   </children>
+       <StackPane prefHeight="286.0" prefWidth="402.0" styleClass="stack-pane" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" GridPane.rowSpan="5">
+           <children>
+               <GridPane hgap="20.0" prefHeight="248.0" prefWidth="550.0" vgap="15.0">
+                   <!-- Reubica los elementos aquí dentro -->
+                   <Label text="Dimensiones del dibujo:" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                       <font>
+                           <Font size="20.0" />
+                       </font>
+                   </Label>
+                   <Label text="Alto (en puntadas):" GridPane.rowIndex="1" />
+                   <TextField fx:id="txt_alto" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                   <Label text="Largo(en puntadas):" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                   <TextField fx:id="txt_largo" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                   <Label text="Conteo de la tela:" GridPane.rowIndex="2" />
+                   <ComboBox fx:id="spinner_ct" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                   <Label text="Tela para el borde:" GridPane.rowIndex="3" />
+                   <TextField fx:id="txt_telaBorde" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                   <Label text="Tela para el acabado:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                   <TextField fx:id="txt_telaAcabado" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                   <Button fx:id="btn_calcular" onAction="#onClickCalcular" text="Calcular" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                   <Button fx:id="btn_limpiarCampos" onAction="#onClickLimpiarCampos" text="Limpiar campos" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+               <columnConstraints>
+                  <ColumnConstraints maxWidth="134.0" minWidth="112.0" prefWidth="119.0" />
+                  <ColumnConstraints maxWidth="131.0" minWidth="109.0" prefWidth="124.0" />
+                  <ColumnConstraints maxWidth="153.0" minWidth="123.0" prefWidth="126.0" />
+                  <ColumnConstraints maxWidth="124.0" minWidth="94.0" prefWidth="110.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+               </GridPane>
+           </children>
+       </StackPane>
+      <Button fx:id="btn_atras" mnemonicParsing="false" onAction="#onClickAtras" text="Atrás" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" /> </children>
    <padding>
-      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
    </padding>
 </GridPane>

@@ -1,15 +1,96 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 .root {
-	-fx-background-color: linear-gradient(to top, #9bf4e9, #48d2a7);
+	-fx-background-color: linear-gradient(to top, #48d2a7, #9bf4e9);
 }
 
-.button {
+.menu-bar {
+    -fx-background-color: #f0ffff;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-radius: 10 10 10 10;
+}
+
+.menu, .menu-item {
+    -fx-background-color: #f0ffff;
+    -fx-text-fill: black;
+}
+
+.menu:hover, .menu-item:hover {
+    -fx-background-color: #e0ffff;
+}
+
+.menu .label, .menu-item .label {
+    -fx-text-fill: black;
+}
+
+.menu:hover .label, .menu-item:hover, .label, .list-cell, .list-cell:hover{
+    -fx-text-fill: black;
+}
+
+.button, .text-field  {
 	-fx-font-weight: bold;
-	-fx-background-color: #b7ffff;
+	-fx-background-color: #e0ffff;
 	-fx-font-color: black;
 }
 
+.combo-box{
+    -fx-background-color: #e0ffff;
+    -fx-font-color: black;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-radius: 10 10 10 10;
+}
+
+.hbox {
+    -fx-background-radius: 18 18 18 18;
+    -fx-border-radius: 18 18 18 18;
+    -fx-background-color: #f0ffff;
+}
+
+.list-view {
+    -fx-background-color: #f0ffff;
+    -fx-border-color: #38a282;
+    -fx-border-width: 2px;
+    -fx-background-radius: 10 10 10 10;
+    -fx-border-radius: 10 10 10 10;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+}
+
+.list-cell:hover {
+    -fx-background-color: #b7ffff;
+}
+
+.label{
+    -fx-font-color: black;
+    -fx-font-weight: bold;
+}
+
 .table-view {
-	-fx-background-color: white;
-	-fx-border-color: black;
+    -fx-background-color: #f8ffff;
+    -fx-border-color: black;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f8ffff;
+}
+
+.table-column-header {
+    -fx-background-color: #f8ffff;
+    -fx-text-fill: black; /* Asegura que el texto sea negro */
+}
+
+.table-view .text, .table-view .table-cell {
+    -fx-text-fill: black; /* Asegura que el texto en la tabla sea negro */
+}
+
+.table-view .table-row-cell:hover .text, .table-view .table-row-cell:hover .table-cell {
+    -fx-text-fill: black; /* Asegura que el texto sea negro también en hover */
+}
+
+.stack-pane {
+    -fx-background-color: white;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-background-radius: 5px;
 }

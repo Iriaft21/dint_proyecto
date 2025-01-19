@@ -1,17 +1,17 @@
 package org.proyecto.proyecto.controller;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
-import org.proyecto.proyecto.utils.Strings;
 
 import java.io.IOException;
 
@@ -24,44 +24,40 @@ public class ActualizarProgresoController {
     private Button btn_salir;
 
     @FXML
-    private Label lbl_respuesta;
-
-    @FXML
-    private Label lbl_titulo;
-
-    @FXML
     private TextField txt_puntadasNuevas;
 
     private Proyecto proyecto;
+
+    private ObservableList<Proyecto> proyectos;
 
     public void setProyecto(Proyecto proyecto) {
         this.proyecto = proyecto;
     }
 
+    public void setObservableList(ObservableList<Proyecto> proyectos){
+        this.proyectos = proyectos;
+    }
+
     @FXML
     void onClickActualizar(ActionEvent event) {
         int puntadasNuevas = 0;
-        if(txt_puntadasNuevas != null){
+        if(txt_puntadasNuevas != null && proyecto!= null){
             puntadasNuevas = Integer.parseInt(txt_puntadasNuevas.getText());
             float redondeado = Math.round(proyecto.calcularProgreso(puntadasNuevas) * 100)/100f;
             proyecto.setProgreso(redondeado);
+            if(proyecto.getProgreso()==100){
+                proyecto.setEstado("Completado");
+            }
         }
-        //TODO en el lisrView no se refleja el cambio
         try {
             Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_actualizar);
             DetallesProyectoController detallesProyectoController = new DetallesProyectoController().showEstaPantalla(stage);
             detallesProyectoController.setProyecto(this.proyecto);
+            detallesProyectoController.setObservableList(this.proyectos);
             detallesProyectoController.cargaDatos();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void initialize(){
-        lbl_respuesta.setText(Strings.LBL_RESPUESTA.getDescripcion());
-        lbl_titulo.setText(Strings.TITULO_ACTUALIZAR_PROGRESO.getDescripcion());
-        btn_actualizar.setText(Strings.BOTON_ACTUALIZAR.getDescripcion());
-        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
     }
 
     @FXML

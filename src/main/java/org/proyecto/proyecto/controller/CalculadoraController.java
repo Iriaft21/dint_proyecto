@@ -9,17 +9,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.CalculoTela;
-import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
-import org.proyecto.proyecto.utils.Strings;
+import org.proyecto.proyecto.utils.Utils;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CalculadoraController {
+
+    @FXML
+    private Button btn_atras;
 
     @FXML
     private Button btn_calcular;
@@ -29,30 +31,6 @@ public class CalculadoraController {
 
     @FXML
     private Button btn_salir;
-
-    @FXML
-    private Label lbl_dimensiones;
-
-    @FXML
-    private Label lbl_form1;
-
-    @FXML
-    private Label lbl_form2;
-
-    @FXML
-    private Label lbl_form3;
-
-    @FXML
-    private Label lbl_form4;
-
-    @FXML
-    private Label lbl_form5;
-
-    @FXML
-    private Label lbl_titulo;
-
-    @FXML
-    private Menu menu;
 
     @FXML
     private MenuItem menuItem_inventario;
@@ -76,6 +54,11 @@ public class CalculadoraController {
     private TextField txt_telaBorde;
 
     private ObservableList<String> tiposTelas;
+
+    @FXML
+    void onClickAtras(ActionEvent event) {
+        Utils.irAtrasMenu(btn_atras);
+    }
 
     @FXML
     private void  onClickCalcular(ActionEvent event) {
@@ -142,23 +125,6 @@ public class CalculadoraController {
                 "18 ct (7 hilos/cm)", "20 ct (7,8 hilos/cm)", "22 ct (8,5 hilos/cm)", "24 ct (9,3 hilos/cm)");
         spinner_ct.setItems(tiposTelas);
         spinner_ct.setValue("14 ct (5,4 hilos/cm)");
-        asignarStrings();
-    }
-
-    private void asignarStrings(){
-        menu.setText(Strings.MENU.getDescripcion());
-        menuItem_inventario.setText(Strings.TITULO_INVENTARIO.getDescripcion());
-        menuItem_proyectos.setText(Strings.TITULO_PROYECTOS.getDescripcion());
-        lbl_titulo.setText(Strings.TITULO_CALCULADORA2.getDescripcion());
-        lbl_dimensiones.setText(Strings.SUBTITULO_DIMENSIONES.getDescripcion());
-        lbl_form1.setText(Strings.LABEL_FORMULARIO1.getDescripcion());
-        lbl_form2.setText(Strings.LABEL_FORMULARIO2.getDescripcion());
-        lbl_form3.setText(Strings.LABEL_FORMULARIO3.getDescripcion());
-        lbl_form4.setText(Strings.LABEL_FORMULARIO4.getDescripcion());
-        lbl_form5.setText(Strings.LABEL_FORMULARIO5.getDescripcion());
-        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
-        btn_calcular.setText(Strings.BOTON_CALCULAR.getDescripcion());
-        btn_limpiarCampos.setText(Strings.BOTON_LIMPIAR_CAMPOS.getDescripcion());
     }
 
 
@@ -190,7 +156,7 @@ public class CalculadoraController {
     }
 
     public CalculadoraController showEstaPantalla(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_CALCULADORA.getDescripcion(),Constantes.TITULO_PANTALLA_CALCULADORA.getDescripcion(),600,600);
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_CALCULADORA.getDescripcion(),Constantes.TITULO_PANTALLA_CALCULADORA.getDescripcion(),600,425);
         return fxmlLoader.getController();
     }
 }

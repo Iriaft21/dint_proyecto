@@ -9,6 +9,9 @@ import org.proyecto.proyecto.MenuApplication;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Clase con métodos estáticos relacionados con las pantallas del programa
+ */
 public class PantallaUtils {
 
     /**
@@ -19,18 +22,26 @@ public class PantallaUtils {
      * @param vista le pasamos la vista que se va a cargar
      */
     public FXMLLoader showEstaPantalla(Stage stage, String vista, String titulo, int ancho, int alto) throws IOException {
+        //Se cre un FXMLLoader para cargar el archivo FXML de la vista
         FXMLLoader fxmlLoader = new FXMLLoader(MenuApplication.class.getResource(vista));
+        //Se crea una nueva escena con el ancho y alto especificados y cargar el contenido del archivo FXML
         Scene scene = new Scene(fxmlLoader.load(), ancho, alto);
 
-        // Por algun motivo esto no funciona de ninguna forma:
+        // Por algún motivo esto no funciona de ninguna forma:
         // scene.getStylesheets().add(MenuApplication.class.getResource("css/application.css").toExternalForm());
         // Workaround para que funcione, forzandolo con el path absoluto:
+        // Creamos un objeto File al que le pasamos la direccion del archivo css
         File f = new File("src/main/java/css/application.css");
+        // Agregamos la hoja de estilos CSS a la escena utilizando el path absoluto
         scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
 
+        //Le asignamos un titulo a la ventana
         stage.setTitle(titulo);
+        // Establecemos la escena en la ventana
         stage.setScene(scene);
+        // Mostramos la ventana
         stage.show();
+        // Devolvemos el FXMLLoader utilizado para cargar la vista
         return fxmlLoader;
     }
 
@@ -42,8 +53,11 @@ public class PantallaUtils {
      * @param botonDelAction el pasamos el botón que accionó
      */
     public Stage cerrarEstaPantalla(Button botonDelAction){
+        // Se obtiene el Stage actual desde la escena donde se encuentra botón
         Stage stageAhora = (Stage) botonDelAction.getScene().getWindow();
+        //Cerramos la ventana actual
         stageAhora.close();
+        //Devolvemos el objeto Stage que se cerró
         return stageAhora;
     }
 }

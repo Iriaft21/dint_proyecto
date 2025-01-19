@@ -7,16 +7,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.*;
-import org.w3c.dom.Text;
 
-import java.io.File;
 import java.io.IOException;
 
 public class FormularioProyectoController {
@@ -35,40 +30,6 @@ public class FormularioProyectoController {
 
     @FXML
     private ComboBox<String> combo_estado;
-
-    @FXML
-    private Label lbl_alto;
-
-    @FXML
-    private Label lbl_descripcion;
-
-    @FXML
-    private Label lbl_diseniador;
-
-    @FXML
-    private Label lbl_estado;
-
-    @FXML
-    private Label lbl_fechaFin;
-
-    @FXML
-    private Label lbl_fechaInicio;
-
-    @FXML
-    private Label lbl_largo;
-
-    @FXML
-    private Label lbl_necesarios;
-
-    @FXML
-    private Label lbl_nombre;
-
-    @FXML
-    private Label lbl_puntadas_totales;
-
-    @FXML
-    private Label lbl_titulo;
-
 
     @FXML
     private DatePicker dp_fechaFin;
@@ -99,35 +60,21 @@ public class FormularioProyectoController {
 
     private ObservableList<String> estados;
 
+    private ObservableList<Proyecto> proyectos;
+
+    public void setObservableList(ObservableList<Proyecto> proyectos){
+        this.proyectos = proyectos;
+    }
+
     @FXML
     void handleSeleccionarImagen(ActionEvent event) {
-        ImagenesUtils.seleccionarImagen(img);
+        Utils.seleccionarImagen(img);
     }
 
     public void initialize(){
         estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
         combo_estado.setItems(estados);
         combo_estado.setValue("En proceso");
-
-        asignarStrings();
-    }
-
-    private void asignarStrings(){
-        lbl_titulo.setText(Strings.TITULO_FORMULARIO_PROYECTO.getDescripcion());
-        lbl_necesarios.setText(Strings.LABEL_NECECESARIOS.getDescripcion());
-        btn_crear.setText(Strings.BOTON_CREAR.getDescripcion());
-        btn_imagen.setText(Strings.BOTON_SELECCIONAR_IMAGEN.getDescripcion());
-        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
-        btn_limpiarCampos.setText(Strings.BOTON_LIMPIAR_CAMPOS.getDescripcion());
-        lbl_alto.setText(Strings.LABEL_ALTO.getDescripcion());
-        lbl_descripcion.setText(Strings.LABEL_DESCRIPCION.getDescripcion());
-        lbl_diseniador.setText(Strings.LABEL_DISENIADOR.getDescripcion());
-        lbl_estado.setText(Strings.LABEL_ESTADO.getDescripcion());
-        lbl_fechaFin.setText(Strings.LABEL_FECHA_FIN.getDescripcion());
-        lbl_fechaInicio.setText(Strings.LABEL_FECHA_INICIO.getDescripcion());
-        lbl_largo.setText(Strings.LABEL_LARGO.getDescripcion());
-        lbl_nombre.setText(Strings.LABEL_NOMBRE.getDescripcion());
-        lbl_puntadas_totales.setText(Strings.LABEL_PUNTADAS_TOTALES.getDescripcion());
     }
 
     @FXML
@@ -139,7 +86,10 @@ public class FormularioProyectoController {
                 Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_crear);
 
                 ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-                proyectosController.setProyectoFromMain(proyecto);
+                proyectos.add(proyecto);
+
+                // proyectosController.setProyectoFromMain(proyecto);
+                proyectosController.setObservableList(proyectos);
             } catch (Exception e) {
                 e.printStackTrace();
             }

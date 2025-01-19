@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
@@ -20,7 +19,7 @@ import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
-import org.proyecto.proyecto.utils.Strings;
+import org.proyecto.proyecto.utils.Utils;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,6 +35,9 @@ public class InventarioController {
     private Button btn_salir;
 
     @FXML
+    private Button btn_atras;
+
+    @FXML
     private TableColumn<Hilo, String> colCant;
 
     @FXML
@@ -45,19 +47,7 @@ public class InventarioController {
     private TableColumn<Hilo, String> colNombre;
 
     @FXML
-    private Label lbl_marca;
-
-    @FXML
-    private Label lbl_nombreHilo;
-
-    @FXML
     private Label lbl_titulo;
-
-    @FXML
-    private Label lbll_cantidad;
-
-    @FXML
-    private Menu menu;
 
     @FXML
     private TableView<Hilo> table_hilos;
@@ -89,31 +79,22 @@ public class InventarioController {
     }
 
     @FXML
+    void onClickAtras(ActionEvent event) {
+        Utils.irAtrasMenu(btn_atras);
+    }
+
+    @FXML
     void onClickSalir(ActionEvent event) {
         Platform.exit();
     }
 
     public void initialize(){
         crearTabla();
-        asignarStrings();
 
         ObservableList<Hilo> datosHilos = FXCollections.observableArrayList();
         table_hilos.setItems(datosHilos);
 
         modificarDatos();
-    }
-
-    private void asignarStrings(){
-        btn_salir.setText(Strings.BOTON_SALIR.getDescripcion());
-        btn_add.setText(Strings.BOTON_ADD.getDescripcion());
-        btn_eliminar.setText(Strings.BOTON_ELIMINAR.getDescripcion());
-        lbl_titulo.setText(Strings.TITULO_INVENTARIO.getDescripcion());
-        lbl_nombreHilo.setText(Strings.LABEL_NOMBRE_HILO.getDescripcion());
-        lbl_marca.setText(Strings.LABEL_MARCA_HILO.getDescripcion());
-        lbll_cantidad.setText(Strings.LABEL_CANTIDAD_HILO.getDescripcion());
-        menu.setText(Strings.MENU.getDescripcion());
-        menuItem_calculadora.setText(Strings.TITULO_CALCULADORA.getDescripcion());
-        menuItem_proyectos.setText(Strings.TITULO_PROYECTOS.getDescripcion());
     }
 
     void crearTabla(){
@@ -124,15 +105,15 @@ public class InventarioController {
 
         colMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
         colMarca.setText("Marca");
-        colMarca.setPrefWidth(175);
+        colMarca.setPrefWidth(200);
 
         colNombre.setCellValueFactory(new PropertyValueFactory<Hilo, String>("nombre"));
         colNombre.setText("Nombre");
-        colNombre.setPrefWidth(175);
+        colNombre.setPrefWidth(200);
 
         colCant.setCellValueFactory(new PropertyValueFactory<Hilo, String>("cantidad"));
         colCant.setText("Cantidad");
-        colCant.setPrefWidth(175);
+        colCant.setPrefWidth(200);
     }
 
     @FXML

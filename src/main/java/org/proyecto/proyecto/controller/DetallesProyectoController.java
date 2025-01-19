@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.AlertaUtils;
 import org.proyecto.proyecto.utils.Constantes;
-import org.proyecto.proyecto.utils.ImagenesUtils;
+import org.proyecto.proyecto.utils.Utils;
 import org.proyecto.proyecto.utils.PantallaUtils;
 
 import java.io.File;
@@ -74,13 +74,19 @@ public class DetallesProyectoController {
 
     @FXML
     void handlerSeleccionarFoto(ActionEvent event) {
-        ImagenesUtils.seleccionarImagen(img_proyecto);
+        Utils.seleccionarImagen(img_proyecto);
     }
 
     private Proyecto proyecto;
 
+    private ObservableList<Proyecto> proyectos;
+
     public void setProyecto(Proyecto proyecto) {
         this.proyecto = proyecto;
+    }
+
+    public void setObservableList(ObservableList<Proyecto> proyectos){
+        this.proyectos = proyectos;
     }
 
     @FXML
@@ -88,6 +94,7 @@ public class DetallesProyectoController {
         try {
             Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_atras);
             ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
+            proyectosController.setObservableList(proyectos);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -99,6 +106,7 @@ public class DetallesProyectoController {
             Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_nuevoProgreso);
             ActualizarProgresoController actualizarProgresoController = new ActualizarProgresoController().showEstaPantalla(stage);
             actualizarProgresoController.setProyecto(this.proyecto);
+            actualizarProgresoController.setObservableList(this.proyectos);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,9 +169,7 @@ public class DetallesProyectoController {
             proyecto.setFechaFin(String.valueOf(txt_fechaFin.getValue()));
             proyecto.setPuntadasTotales(validar(txt_puntadasTotales));
             proyecto.setImagen(img_proyecto.getImage());
-
             revisarErrores();
-            //TODO revisar que guarde los valores bien
     }
 
     private int validar(TextField textField){
@@ -187,17 +193,17 @@ public class DetallesProyectoController {
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
                     break;
                 case SIN_ERROR:
-                    AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_CREADO.getDescripcion(), Constantes.AVISO_PROYECTO_CREADO.getDescripcion());
+                    AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_MODIFICADO.getDescripcion(), Constantes.AVISO_PROYECTO_MODIFICADO.getDescripcion());
+                    try {
+                        Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_atras);
+                        ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
+                        proyectosController.setObservableList(proyectos);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
             }
         }else {
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-            try {
-                Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_atras);
-                ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-                //TODO no pasa los cambios, el bug de siempre
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -218,7 +224,7 @@ public class DetallesProyectoController {
         txt_alto.setText(String.valueOf(this.proyecto.getAlto()));
         txt_largo.setText(String.valueOf(this.proyecto.getLargo()));
         txt_estado.setValue(this.proyecto.getEstado());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         String fechaInicio = this.proyecto.getFechaInicio();
         String fechaFin = this.proyecto.getFechaFin();
@@ -234,8 +240,6 @@ public class DetallesProyectoController {
         txt_descripcion.setText(this.proyecto.getDescripcion());
         img_proyecto.setImage(this.proyecto.getImagen());
     }
-
-
 
     public DetallesProyectoController showEstaPantalla(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_DETALLES_PROYECTO.getDescripcion(),Constantes.TITULO_PANTALLA_DETALLES_PROYECTO.getDescripcion(),600,650);
