@@ -1,5 +1,6 @@
 package org.proyecto.proyecto.controller;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,6 +15,11 @@ import org.proyecto.proyecto.utils.*;
 
 import java.io.IOException;
 
+/**
+ * Controlador de la pantalla del formulario de creación de un proyecto
+ *
+ * Contiene metodos para obtener datos de TextField, así como validarlos
+ */
 public class FormularioProyectoController {
 
     @FXML
@@ -62,78 +68,143 @@ public class FormularioProyectoController {
 
     private ObservableList<Proyecto> proyectos;
 
-    public void setObservableList(ObservableList<Proyecto> proyectos){
+    /**
+     * Establece la lista de proyectos y actualiza el ListView asociado
+     *
+     * @param proyectos La lista e de proyectos a establecer
+     */
+    public void setObservableList(ObservableList<Proyecto> proyectos) {
+        // Asigna la lista de proyectos a la variable de instancia
         this.proyectos = proyectos;
     }
 
+    /**
+     * Método que llama a un Util para seleccionar una imagen y establecerla en el ImageView
+     *
+     * @param event El evento de la acción
+     */
     @FXML
     void handleSeleccionarImagen(ActionEvent event) {
+        //Se llama al método de Utils y le pasamos el ImageView necesario
         Utils.seleccionarImagen(img);
     }
 
+    /**
+     * Inicializa el controlador configurando un comboBox con sus valores y el que tendrá por defecto
+     */
     public void initialize(){
         estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
+        //Añadimos al ComboBox el ObservableList con los distintos estados del proyecto
         combo_estado.setItems(estados);
+        //Se pone un valor por defecto
         combo_estado.setValue("En proceso");
     }
 
+    /**
+     * Método para crear un nuevo proyecto a partir de la información pasada
+     * @param event El evento de la acción
+     */
     @FXML
     private void onClickCrear(ActionEvent event){
+        //Se llama al método que va a extraer los datos y nos devuelve un objeto Proyecto
         Proyecto proyecto = extraerDatos();
-        System.out.println(proyecto);
+        //Si el proyecto no es nulo
         if (proyecto != null){
             try {
+                // Obtenemos la ventana actual y la cerramos
                 Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_crear);
-
+                // Mostramos la pantalla del seguimiento de proyectos
                 ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
+                //Se añade el proyecto creado a la lista de royectos
                 proyectos.add(proyecto);
-
-                // proyectosController.setProyectoFromMain(proyecto);
+                //Le pasamos al controlador la lista de proyectos
                 proyectosController.setObservableList(proyectos);
             } catch (Exception e) {
+                //En caso de error, mostramos la causa
                 e.printStackTrace();
             }
         }
     }
 
+    /**
+     * Método que extraer los datos de los correspondientes campos y se los pasa a otro método para validarlos
+     *
+     * @return Resultado de la validación del proyecto
+     */
     private Proyecto extraerDatos(){
         Proyecto proyecto =  null;
+        // Obtiene el nombre del proyecto desde el campo de texto
         String nombre = txt_nombre.getText();
+        // Obtiene el estado del proyecto desde el combo box
         String estado = combo_estado.getValue();
+        // Obtiene las fechas de inicio y fin del proyecto y las convierte a String
         String fechaInicio = String.valueOf(dp_fechaInicio.getValue());
         String fechaFin = String.valueOf(dp_fechaFin.getValue());
+        // Se obtiene la descripción del proyecto y si está vacío, establece "Sin descripción"
         String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : "Sin descripción";
+        // Se obtiene el diseñador del proyecto y si está vacío, establece "No especificado"
         String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
+        // Valida y obtiene las dimensiones del proyecto
         int alto = validar(txt_alto);
         int largo = validar(txt_largo);
+        // Valida y obtiene el número total de puntadas del proyecto
         int puntadasTotales = validar(txt_puntadasTotales);
 
+        // Crea un nuevo objeto Proyecto con los datos obtenidos
         proyecto = new Proyecto(nombre, descripcion, diseniador, alto, largo, estado, puntadasTotales, fechaInicio, fechaFin, img.getImage());
+        // Valida el proyecto y devuelve el resultado
         return avisosValidar(proyecto);
     }
 
+    /**
+     * Método que valida los TextFields para que no se encuentren vacíoso o con el formato equivocado
+     *
+     * @param textField El TextField del que extraen los datos
+     * @return El valor de los campos ya extraído como un int
+     */
     private int validar(TextField textField){
         String texto = textField.getText().trim();
-        if(!texto.matches("-?\\d+")){
-            System.out.println(textField.getText());
+        //Comprobamos que el texto no vaya vacío
+        if (texto.isEmpty()) {
+            // Mostrar alerta informativa si los datos del hilo están vacíos
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+            //De paso lanzamos una excepcion para avisar del error
+            throw new IllegalArgumentException("El campo no puede estar vacío");
+            //Se verifica que la String sea un número entero, tanto positivo como negativo
+        }else if(!texto.matches("-?\\d+")){
+            // Mostramos alerta de error de formato
             AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
+            //Se lanza una excepcion para visar del error
             throw new IllegalArgumentException("El campo debe contener solo números");
         }
+        //Se devuelve el valor del TextField ya extraído y como un Int
         return Integer.parseInt(texto);
     }
 
+    /**
+     * Método para extraer valores, validarlos y que envíe errores en base a eso
+     *
+     * @param proyecto El objeto a validar
+     * @return El objeto proyecto si no hay errores, sino un null
+     */
     private Proyecto avisosValidar(Proyecto proyecto){
+        //Validamos los datos y obtenemos el tipo de error
         Proyecto.TipoError tipoError = proyecto.validar();
         if (!proyecto.datosVacios()) {
+            // Evaluamos el tipo de error de acuerdo al resultado de la validación
             switch (tipoError) {
                 case ERRORBORDADO:
+                    // Mostrar alerta de error cuando las puntadas totales sean mayoree al area del bordado
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
                     break;
                 case NEGATIVO:
+                    // Mostrar alerta de error por cantidad negativa
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
                     break;
                 case SIN_ERROR:
+                    //Si no da error, se avsia de la creación del proyecto
                     AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_CREADO.getDescripcion(), Constantes.AVISO_PROYECTO_CREADO.getDescripcion());
+                    //Devolvemos el objeto
                     return proyecto;
             }
         }else{
@@ -142,29 +213,52 @@ public class FormularioProyectoController {
         return null;
     }
 
+    /**
+     * Método para limpiar los TextFields
+     *
+     * @param event El evento de la acción
+     */
     @FXML
     void onClickLimpiarCampos(ActionEvent event) {
+        //Ponemos el valor por defecto en el ComboBox
         combo_estado.setValue("En proceso");
+        //Se ponen los valores de los DatePicker en null
         dp_fechaInicio.setValue(null);
         dp_fechaFin.setValue(null);
+        //Limpiamos los campos
         txt_alto.clear();
         txt_largo.clear();
         txt_descripcion.clear();
         txt_nombre.clear();
         txt_diseniador.clear();
+        //Eliminamos la imagen del ImageView
         img.setImage(null);
     }
 
+    /**
+     * Método de un botón para salir del programa
+     *
+     * @param event El evento de acción
+     */
     @FXML
     void onClickSalir(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
+        //TODO utils
+        Platform.exit();
     }
 
+    /**
+     * Método para mostrar la pantalla del formulario de creación del proyecto
+     *
+     * @param stage La ventana principal donde se mostrará la pantalla
+     * @return El controlador de la pantalla
+     * @throws IOException Si ocurre un error al cargar el archivo FXML
+     */
     public FormularioProyectoController showEstaPantalla(Stage stage) throws IOException {
+        // Utiliza PantallaUtils para cargar la pantalla del formulario de creación del proyecto con las dimensiones especificadas
         FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_FORMULARIO_PROYECTO.getDescripcion(),Constantes.TITULO_PANTALLA_FORMULARIO_PROYECTO.getDescripcion(),550,600);
+        // Obtenemos el controlador de la pantalla del formulario de creación del proyecto
         FormularioProyectoController controller = fxmlLoader.getController();
-
+        // Devuelve el controlador de la pantalla del formulario de creación del proyecto
         return controller;
     }
 }

@@ -26,6 +26,12 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * Controlador de la pantalla del inventario
+ *
+ * Tiene distintos métodos relacionados con una tabla, tales como añadir, eliminar y modificar.
+ * Así como enviar errores de los distintos valores que se validan.
+ */
 public class InventarioController {
 
     @FXML
@@ -72,163 +78,282 @@ public class InventarioController {
 
     private ObservableList<String> marcasHilos;
 
+    /**
+     * Método para eliminar algún hilo de la tabla
+     *
+     * @param event El evento de la acción
+     */
     @FXML
     void onClickEliminar(ActionEvent event) {
+        //Buscamos que hilo es el que se ha seleccionado en la tabla
         Hilo hiloSeleccionado = table_hilos.getSelectionModel().getSelectedItem();
+        //Eliminamos el hilo de la tabla
         table_hilos.getItems().remove(hiloSeleccionado);
     }
 
+    /**
+     * Método para volver al menú
+     *
+     * @param event
+     */
     @FXML
     void onClickAtras(ActionEvent event) {
+        //Llamamos al método estático de utils para que nos lleve de vuelta al menú
         Utils.irAtrasMenu(btn_atras);
     }
 
+    /**
+     * Método para salir del programa
+     *
+     * @param event
+     */
     @FXML
     void onClickSalir(ActionEvent event) {
+        //TODO utils
         Platform.exit();
     }
 
+    /**
+     * Inicializa el controlador configurando la tabla y una alerta personalizada, asi como la modificacion de datos
+     */
     public void initialize(){
+        //Llamamos la metodo que crea la tabla
         crearTabla();
-
+        //Añadimos a la tabla el ObservableList donde se almacenarán los hilos
         ObservableList<Hilo> datosHilos = FXCollections.observableArrayList();
         table_hilos.setItems(datosHilos);
-
+        //Llamamos al método de modificacion de datos
         modificarDatos();
     }
 
+    /**
+     * Método que configuara y crea la tabla
+     */
     void crearTabla(){
+        // Inicializa la lista de marcas de hilos con algunas opciones predeterminadas
         marcasHilos = FXCollections.observableArrayList("DMC", "Anchor", "Kreinik", "Madeira", "Otros");
+        // Permite la edición en la tabla de hilos
         table_hilos.setEditable(true);
+        // Establece las opciones del ComboBox para seleccionar la marca
         txt_marca.setItems(marcasHilos);
+        //Establece un valor por defecto del ComboBox
         txt_marca.setValue("DMC");
 
+        // Configura la columna de marcas
         colMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
         colMarca.setText("Marca");
         colMarca.setPrefWidth(200);
 
+        // Configura la columna de nombres
         colNombre.setCellValueFactory(new PropertyValueFactory<Hilo, String>("nombre"));
         colNombre.setText("Nombre");
         colNombre.setPrefWidth(200);
 
+        // Configura la columna de cantidad
         colCant.setCellValueFactory(new PropertyValueFactory<Hilo, String>("cantidad"));
         colCant.setText("Cantidad");
         colCant.setPrefWidth(200);
     }
 
+    /**
+     * Método para añadir hilos a la tabla
+     *
+     * @param event El eventp de la acción
+     */
     @FXML
     void onClickAdd(ActionEvent event) {
+        //Se extrean de los TextFields los valores que hacen falta
         String nombre = txt_num.getText();
         String marca = txt_marca.getValue();
         String cantStr = txt_cant.getText();
 
+        //Se crea un objeto Hilo con esos valores
         Hilo hilo = new Hilo(nombre, marca, cantStr);
+        //Llamamos al método que valida y llama alertas en caso de error
         validarDatos(hilo);
+        //Lllamamos al método que limpia los TextFields
         limpiarCampos();
     }
 
+    /**
+     * Método para validar valores y en caso negativo llamar alertas
+     *
+     * @param hilo  El objeto del que deseamos validar los valores
+     */
     public void validarDatos(Hilo hilo) {
+        // Validamos la cantidad del hilo y obtenemos el tipo de error
         Hilo.TipoError tipoError = hilo.validarCantidad();
+
+        //Comprobamos que los datos no estén vacíos
         if (!hilo.datosVacios()) {
+            // Evaluamos el tipo de error de acuerdo al resultado de la validación
             switch (tipoError) {
                 case FORMATO:
+                    // Mostramos alerta de error de formato
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
                     break;
                 case NUMEXCESIVO:
+                    // Mostrar alerta de error por demasiadas unidades de un hilo añadidas de golpe
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_DEMASIADAS_UNIDADES.getDescripcion(), Constantes.AVISO_DEMASIADAS_UNIDADES.getDescripcion());
                     break;
                 case NEGATIVO:
+                    // Mostramos alerta de error por cantidad negativa
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
                     break;
                 case SIN_ERROR:
+                    // Añadimos el hilo a la tabla si no hay errores
                     table_hilos.getItems().add(hilo);
             }
         }else{
+            // Mostrar alerta informativa si los datos del hilo están vacíos
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
         }
     }
 
+    /**
+     * Método para modificar datos
+     */
     public void modificarDatos(){
+        // Crear un hipervínculo con el texto "Comprar hilos"
         Hyperlink hyperlink = new Hyperlink("Comprar hilos");
+        // Establecer una acción para cuando se clique en el hipervínculo
         hyperlink.setOnAction(e -> {
             try {
+                // Se abre el navegador predeterminado y navega a la URL especificada
                 Desktop.getDesktop().browse(new URI("https://www.casacenina.es/hilos-y-hilados.html"));
             } catch (IOException | URISyntaxException ex) {
+                // En caso de error, imprimimos la causa
                 ex.printStackTrace();
             }
         });
+        // Llamamos al método para modificar la marca del hilo
         modificarMarca();
+        // Llamamos al método para modificar el nombre del hilo
         modificarNombre();
+        // Llamamos al método para modificar la cantidad del hilo
         modificarCantidad(hyperlink);
+        //TODO no validan al modificar
     }
 
+    /**
+     * Método para modificar la marca de un hilo
+     */
     public void modificarMarca(){
+        // Establecemos la celda de la columna de marcas como un ComboBoxTableCell y le pasamos la lista de hilos del ComboBox
         colMarca.setCellFactory(ComboBoxTableCell.<Hilo, String>forTableColumn(marcasHilos));
+        //Evento cuando se modifica la columna
         colMarca.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
+                    // Obtenemos el objeto Hilo de la fila editada y actualizamos su marca con el nuevo valor
                     ((Hilo) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                     ).setMarca(t.getNewValue());
                 });
     }
 
+    /**
+     * Método para modificar la marca de un hilo
+     */
     public void modificarNombre(){
+        // Establecemos la celda de la columna de nombre como un TextFieldTableCell
         colNombre.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
+        //Evento cuando se modifica la columna
         colNombre.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
+                    // Obtenemos el objeto Hilo de la fila editada y actualizamos su nombre con el nuevo valor
                     ((Hilo) t.getTableView().getItems().get(
                             t.getTablePosition().getRow())
                     ).setNombre(t.getNewValue());
                 });
     }
 
+    /**
+     * Método para modificar la cantidad del hilo
+     * @param hyperlink Hipervínculo necesitamos para una alerta personalizada
+     */
     public void modificarCantidad(Hyperlink hyperlink){
+        // Establecemos la celda de la cantidad de nombre como un TextFieldTableCell
         colCant.setCellFactory(TextFieldTableCell.<Hilo>forTableColumn());
+        //Evento cuando se modifica la columna
         colCant.setOnEditCommit((TableColumn.CellEditEvent<Hilo, String> t) ->{
+            // Obtenemos el objeto Hilo de la fila editada
             Hilo hilo=  t.getTableView().getItems().get(
                     t.getTablePosition().getRow());
             String nuevoValor =t.getNewValue();
+            //Actualizamos la cantidad con el nuevo valor
             hilo.setCantidad(nuevoValor);
 
             if(nuevoValor.trim().equals("0")){
+                //Muestra una alerta personalizada en caso de que la cantidad moficada sea 0
                 AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_SIN_HILO.getDescripcion(), Constantes.AVISO_SIN_HILO.getDescripcion(), hyperlink);
             }
         });
     }
 
+    /**
+     * Método para limpiar los TextFields
+     */
     public void limpiarCampos(){
+        //Limpiamos los campos
         txt_num.clear();
-        txt_marca.setValue("DMC");
         txt_cant.clear();
+        //Ponemos el valor por defecto en el ComboBox
+        txt_marca.setValue("DMC");
     }
 
-    public InventarioController showEstaPantalla(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_INVENTARIO.getDescripcion(), Constantes.TITULO_PANTALLA_INVENTARIO.getDescripcion(), 600, 600);
-        InventarioController controller = fxmlLoader.getController();
-
-        return controller;
-    }
-
-
+    /**
+     * Evento en el menú que lleva a la pantalla de la calculadora
+     *
+     * @param event El evento de acción
+     */
     @FXML
     void onClickMenuItemCalculadora(ActionEvent event) {
+        //Todo igual podiamos meter esto en Utils
         try {
+            // Obtenemos la ventana principal desde el menú de la calculadora y la cerramos
             Stage stage = (Stage) menuItem_calculadora.getParentPopup().getOwnerWindow().getScene().getWindow();
             stage.close();
+            // Mostramos la pantalla de la calculadora
             CalculadoraController calculadoraController = new CalculadoraController().showEstaPantalla(stage);
         } catch (Exception e) {
+            //En caso de errror, imprimimos la causa
             e.printStackTrace();
         }
     }
 
+    /**
+     * Evento en el menú que lleva a la pantalla del seguimiento de proyectos
+     *
+     * @param event El evento de acción
+     */
     @FXML
     void onClickMenuItemProyectos(ActionEvent event) {
         try {
+            // Obtenemos la ventana principal desde el menú de seguimiento de proyectos y la cerramos
             Stage stage = (Stage) menuItem_proyectos.getParentPopup().getOwnerWindow().getScene().getWindow();
             stage.close();
+            // Mostramos la pantalla de seguimiento de proyectos
             ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
         } catch (Exception e) {
+            //En caso de errror, imprimimos la causa
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Método para mostrar la pantalla del inventario
+     *
+     * @param stage La ventana principal donde se mostrará la pantalla
+     * @return El controlador de la pantalla
+     * @throws IOException Si ocurre un error al cargar el archivo FXML
+     */
+    public InventarioController showEstaPantalla(Stage stage) throws IOException {
+        // Utiliza PantallaUtils para cargar la pantalla de inventario con las dimensiones especificadas
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_INVENTARIO.getDescripcion(), Constantes.TITULO_PANTALLA_INVENTARIO.getDescripcion(), 600, 600);
+        // Obtenemos el controlador de la pantalla de inventario
+        InventarioController controller = fxmlLoader.getController();
+
+        // Devuelve el controlador de la pantalla de inventario
+        return controller;
     }
 }

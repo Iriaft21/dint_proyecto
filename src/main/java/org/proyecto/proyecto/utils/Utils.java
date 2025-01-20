@@ -13,9 +13,10 @@ import java.io.File;
  * Clase que contiene métodos estáticos que se usan varias veces en el programa
  */
 public class Utils {
+    //TODO añadir nuevos métodos
 
     /**
-     * Abre un cuadro de diálogo para seleccionar una imagen y establece la imagen seleccionada en el ImageView que le pasamos.
+     * Abre un cuadro de diálogo para seleccionar una imagen y establece la imagen seleccionada en el ImageView que le pasamos
      *
      * @param img El ImageView donde se mostrará la imagen seleccionada.
      */
