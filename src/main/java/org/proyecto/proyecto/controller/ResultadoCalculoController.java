@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.CalculoTela;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
+import org.proyecto.proyecto.utils.Utils;
 
 import java.io.IOException;
 
@@ -41,15 +42,8 @@ public class ResultadoCalculoController {
      */
     @FXML
     void onClickAtras(ActionEvent event) {
-        try {
-            // Obtenemos la ventana actual y la cerramos
-            Stage stage = new PantallaUtils().cerrarEstaPantalla(btnAtras);
-            // Mostramos la pantalla de la calculadora
-            CalculadoraController calculadoraController = new CalculadoraController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            //En caso de error, mostramos la causa
-            e.printStackTrace();
-        }
+        //Se llama al método que nos lleva de vuelta a la pantalla anterior
+        Utils.irPantallaCalculdora(btnAtras);
     }
 
     /**
@@ -83,12 +77,8 @@ public class ResultadoCalculoController {
      */
     public ResultadoCalculoController showEstaPantalla(Stage stage) throws IOException {
         // Utiliza PantallaUtils para cargar la pantalla de resultados con las dimensiones especificadas
-        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_CALCULADORA.getDescripcion(),Constantes.TITULO_PANTALLA_CALCULADORA.getDescripcion(),600,425);
-
-        // Obtenemos el controlador de la pantalla de resultados
-        ResultadoCalculoController controller = fxmlLoader.getController();
-
-        // Devuelve el controlador de la pantalla de resultados
-        return controller;
+        FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_RESULTADO_CALCULADORA.getDescripcion(),Constantes.TITULO_PANTALLA_RESULTADO_CALCULADORA.getDescripcion(),600,350);
+        //Le devolvemos el controlador asociado al archivo FXML
+        return fxmlLoader.getController();
     }
 }

@@ -291,6 +291,7 @@ public class Proyecto {
      * @return true si alguno de los campos está vacío, de lo contrario false
      */
     public boolean datosVacios(){
+        //Verifica que ninguno de esos datos este vacio
         if(nombre.trim().isEmpty() || diseniador.trim().isEmpty() || descripcion.trim().isEmpty()){
             return true;
         }

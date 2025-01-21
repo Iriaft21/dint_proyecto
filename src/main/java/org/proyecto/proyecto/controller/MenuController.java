@@ -1,6 +1,5 @@
 package org.proyecto.proyecto.controller;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
+import org.proyecto.proyecto.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,15 +82,8 @@ public class MenuController {
      */
     @FXML
     private void onClickCalculadora(ActionEvent event) {
-        try {
-            // Cerramos la pantalla actual y obtenemos la ventana principal
-            Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_calculadora);
-            // Mostramos la pantalla de la calculadora
-            CalculadoraController calculadoraController = new CalculadoraController().showEstaPantalla(primaryStage);
-        } catch (Exception e) {
-            // En caso de error, imprimimos las causa
-            e.printStackTrace();
-        }
+        //Llamamos al método que nos lleva a la pantalla de la calculadora
+        Utils.irPantallaCalculdora(btn_calculadora);
     }
 
     /**
@@ -136,7 +129,8 @@ public class MenuController {
      */
     @FXML
     void onClickSalir(ActionEvent event) {
-        Platform.exit();
+        //LLamamosal correspondiente método de Utils para salir del programa
+        Utils.botonSalir();
     }
 
 }

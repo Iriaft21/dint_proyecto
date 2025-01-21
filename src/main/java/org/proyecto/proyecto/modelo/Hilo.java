@@ -104,12 +104,15 @@ public class Hilo {
      * @return El tipo de error encontrado al validar la cantidad.
      */
     public TipoError validarCantidad() {
+        //verifica que la cantidad tenga cierto formato
         if(!cantidad.matches("-?\\d+")){
             return TipoError.FORMATO;
         }else{
             int intCantidad = Integer.parseInt(cantidad);
-            if( intCantidad<= 0){
+            //verifica que la cantidad no sea un numero negativo
+            if( intCantidad< 0){
                 return TipoError.NEGATIVO;
+                //Tampoco que sea un numero demasiado exagerado
             }else if(intCantidad >= 100){
                 return TipoError.NUMEXCESIVO;
             }else{

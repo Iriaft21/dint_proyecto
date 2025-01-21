@@ -1,6 +1,5 @@
 package org.proyecto.proyecto.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -109,8 +108,8 @@ public class InventarioController {
      */
     @FXML
     void onClickSalir(ActionEvent event) {
-        //TODO utils
-        Platform.exit();
+        //LLamamosal correspondiente método de Utils para salir del programa
+        Utils.botonSalir();
     }
 
     /**
@@ -170,7 +169,10 @@ public class InventarioController {
         //Se crea un objeto Hilo con esos valores
         Hilo hilo = new Hilo(nombre, marca, cantStr);
         //Llamamos al método que valida y llama alertas en caso de error
-        validarDatos(hilo);
+        if(datosValidos(hilo)){
+            // Añadimos el hilo a la tabla si no hay errores
+            table_hilos.getItems().add(hilo);
+        }
         //Lllamamos al método que limpia los TextFields
         limpiarCampos();
     }
@@ -178,9 +180,10 @@ public class InventarioController {
     /**
      * Método para validar valores y en caso negativo llamar alertas
      *
-     * @param hilo  El objeto del que deseamos validar los valores
+     * @param hilo El objeto del que deseamos validar los valores
+     * @return
      */
-    public void validarDatos(Hilo hilo) {
+    public Boolean datosValidos(Hilo hilo) {
         // Validamos la cantidad del hilo y obtenemos el tipo de error
         Hilo.TipoError tipoError = hilo.validarCantidad();
 
@@ -191,23 +194,24 @@ public class InventarioController {
                 case FORMATO:
                     // Mostramos alerta de error de formato
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-                    break;
+                    return false;
                 case NUMEXCESIVO:
                     // Mostrar alerta de error por demasiadas unidades de un hilo añadidas de golpe
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_DEMASIADAS_UNIDADES.getDescripcion(), Constantes.AVISO_DEMASIADAS_UNIDADES.getDescripcion());
-                    break;
+                    return false;
                 case NEGATIVO:
                     // Mostramos alerta de error por cantidad negativa
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
-                    break;
+                    return false;
                 case SIN_ERROR:
-                    // Añadimos el hilo a la tabla si no hay errores
-                    table_hilos.getItems().add(hilo);
+                    return true;
             }
         }else{
             // Mostrar alerta informativa si los datos del hilo están vacíos
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
+            return false;
         }
+        return true;
     }
 
     /**
@@ -232,7 +236,6 @@ public class InventarioController {
         modificarNombre();
         // Llamamos al método para modificar la cantidad del hilo
         modificarCantidad(hyperlink);
-        //TODO no validan al modificar
     }
 
     /**
@@ -244,10 +247,19 @@ public class InventarioController {
         //Evento cuando se modifica la columna
         colMarca.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
-                    // Obtenemos el objeto Hilo de la fila editada y actualizamos su marca con el nuevo valor
-                    ((Hilo) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow())
-                    ).setMarca(t.getNewValue());
+                    // Obtenemos el objeto Hilo de la fila editada
+                    Hilo hilo = t.getTableView().getItems().get(t.getTablePosition().getRow());
+                    // Guardamos el valor original
+                    String valorOriginal = hilo.getMarca();
+                    //Guardamos el nuevo valor
+                    String nuevoValor = t.getNewValue();
+                    // Aplicamos el nuevo valor temporalmente para validarlo
+                    hilo.setMarca(nuevoValor);
+
+                    if (!datosValidos(hilo)) {
+                        // Si la validación falla, revertimos el valor original
+                        hilo.setMarca(valorOriginal);
+                    }
                 });
     }
 
@@ -260,10 +272,18 @@ public class InventarioController {
         //Evento cuando se modifica la columna
         colNombre.setOnEditCommit(
                 (TableColumn.CellEditEvent<Hilo, String> t) -> {
-                    // Obtenemos el objeto Hilo de la fila editada y actualizamos su nombre con el nuevo valor
-                    ((Hilo) t.getTableView().getItems().get(
-                            t.getTablePosition().getRow())
-                    ).setNombre(t.getNewValue());
+                    Hilo hilo = t.getTableView().getItems().get(t.getTablePosition().getRow());
+                    // Guardamos el valor original
+                    String valorOriginal = hilo.getNombre();
+                    //Guardamos el nuevo valor
+                    String nuevoValor = t.getNewValue();
+                    // Aplicamos el nuevo valor temporalmente para validarlo
+                    hilo.setNombre(nuevoValor);
+
+                    if (!datosValidos(hilo)) {
+                        // Si la validación falla, revertimos el valor original
+                        hilo.setNombre(valorOriginal);
+                    }
                 });
     }
 
@@ -277,11 +297,18 @@ public class InventarioController {
         //Evento cuando se modifica la columna
         colCant.setOnEditCommit((TableColumn.CellEditEvent<Hilo, String> t) ->{
             // Obtenemos el objeto Hilo de la fila editada
-            Hilo hilo=  t.getTableView().getItems().get(
-                    t.getTablePosition().getRow());
-            String nuevoValor =t.getNewValue();
-            //Actualizamos la cantidad con el nuevo valor
+            Hilo hilo = t.getTableView().getItems().get(t.getTablePosition().getRow());
+            // Guardamos el valor original
+            String valorOriginal = hilo.getCantidad();
+            //Guardamos el nuevo valor
+            String nuevoValor = t.getNewValue();
+            // Aplicamos el nuevo valor temporalmente para validarlo
             hilo.setCantidad(nuevoValor);
+
+            if (!datosValidos(hilo)) {
+                // Si la validación falla, revertimos el valor original
+                hilo.setCantidad(valorOriginal);
+            }
 
             if(nuevoValor.trim().equals("0")){
                 //Muestra una alerta personalizada en caso de que la cantidad moficada sea 0
@@ -308,17 +335,8 @@ public class InventarioController {
      */
     @FXML
     void onClickMenuItemCalculadora(ActionEvent event) {
-        //Todo igual podiamos meter esto en Utils
-        try {
-            // Obtenemos la ventana principal desde el menú de la calculadora y la cerramos
-            Stage stage = (Stage) menuItem_calculadora.getParentPopup().getOwnerWindow().getScene().getWindow();
-            stage.close();
-            // Mostramos la pantalla de la calculadora
-            CalculadoraController calculadoraController = new CalculadoraController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            //En caso de errror, imprimimos la causa
-            e.printStackTrace();
-        }
+        //Llamamos a Utils y al método para que nos lleven a la pantalla de la calculadora
+        Utils.menuCalculadora(menuItem_calculadora);
     }
 
     /**
@@ -328,16 +346,8 @@ public class InventarioController {
      */
     @FXML
     void onClickMenuItemProyectos(ActionEvent event) {
-        try {
-            // Obtenemos la ventana principal desde el menú de seguimiento de proyectos y la cerramos
-            Stage stage = (Stage) menuItem_proyectos.getParentPopup().getOwnerWindow().getScene().getWindow();
-            stage.close();
-            // Mostramos la pantalla de seguimiento de proyectos
-            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            //En caso de errror, imprimimos la causa
-            e.printStackTrace();
-        }
+        //Llamamos a Utils y al método para que nos lleven a la pantalla de seguimiento de los proyectos
+        Utils.menuProyectos(menuItem_proyectos);
     }
 
     /**

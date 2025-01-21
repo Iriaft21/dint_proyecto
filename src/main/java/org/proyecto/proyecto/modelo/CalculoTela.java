@@ -175,7 +175,7 @@ public class CalculoTela {
      */
     public CalculoTela.TipoError validar(){
         // Verifica si alguno de los valores es negativo o cero.
-        if(alto <= 0 || largo <= 0 || tela_acabado < 0 || ctTela < 0){
+        if(alto <= 0 || largo <= 0 || tela_acabado < 0 || tela_bordes < 0){
             return TipoError.NEGATIVO;
         }else{
             return TipoError.SIN_ERROR;

@@ -1,6 +1,5 @@
 package org.proyecto.proyecto.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -78,12 +77,12 @@ public class CalculadoraController {
     @FXML
     private void  onClickCalcular(ActionEvent event) {
         //se extraen los valores del TextField y de paso se validan parcialmente
-        int alto = validar(txt_alto);
-        int largo = validar(txt_largo);
+        int alto = Utils.validarTextFields(txt_alto);
+        int largo = Utils.validarTextFields(txt_largo);
         //en el caso del float se realizan una modificaciones del valor del ComboBox para que se adapte al tipo de dato del objeto
         float hilosTela = extraerHilos();
-        int telaAcabado = validar(txt_telaAcabado);
-        int telaBorde = validar(txt_telaBorde);
+        int telaAcabado = Utils.validarTextFields(txt_telaAcabado);
+        int telaBorde = Utils.validarTextFields(txt_telaBorde);
         //Se crea el objeto CalculoTela
         CalculoTela calculoTela = new CalculoTela(alto, largo, hilosTela, telaBorde, telaAcabado);
 
@@ -110,32 +109,6 @@ public class CalculadoraController {
                     }
                     break;
             }
-    }
-
-    /**
-     * Método para comprobar si los TextFields van vacíos o si cumplen cierto formato
-     *
-     * @param textField Los TextFields de la pantalla que necesitamos comprobar
-     * @return El valor del TextField ya extraído y pasado a int
-     * @throws IllegalArgumentException Si el valor pasado está vacío o tiene el formato incorrecto
-     */
-    private int validar(TextField textField){
-        String texto = textField.getText().trim();
-        //Comprobamos que el texto no vaya vacío
-        if (texto.isEmpty()) {
-            // Mostrar alerta informativa si los datos del hilo están vacíos
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-            //De paso lanzamos una excepcion para avisar del error
-            throw new IllegalArgumentException("El campo no puede estar vacío");
-            //Se verifica que la String sea un número entero, tanto positivo como negativo
-        }else if(!texto.matches("-?\\d+")){
-            // Mostramos alerta de error de formato
-            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-            //Se lanza una excepcion para visar del error
-            throw new IllegalArgumentException("El campo debe contener solo números");
-        }
-        //Se devuelve el valor del TextField ya extraído y como un Int
-        return Integer.parseInt(texto);
     }
 
     /**
@@ -197,13 +170,8 @@ public class CalculadoraController {
      */
     @FXML
     void onClickMenuItemInventario(ActionEvent event) {
-        try {
-            Stage stage = (Stage) menuItem_inventario.getParentPopup().getOwnerWindow().getScene().getWindow();
-            stage.close();
-            InventarioController inventarioController = new InventarioController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //Llamamos a Utils y al método para que nos lleven a la pantalla del inventario
+        Utils.menuInventario(menuItem_inventario);
     }
 
     /**
@@ -213,14 +181,8 @@ public class CalculadoraController {
      */
     @FXML
     void onClickMenuItemProyectos(ActionEvent event) {
-        //TODO lo de Utils
-        try {
-            Stage stage = (Stage) menuItem_proyectos.getParentPopup().getOwnerWindow().getScene().getWindow();
-            stage.close();
-            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //Llamamos a Utils y al método para que nos lleven a la pantalla de seguimiento de los proyectos
+        Utils.menuProyectos(menuItem_proyectos);
     }
 
     /**
@@ -230,8 +192,8 @@ public class CalculadoraController {
      */
     @FXML
     void onClickSalir(ActionEvent event) {
-        //TODO utils
-        Platform.exit();
+        //Llamamos a Utils y al método de salir
+        Utils.botonSalir();
     }
 
     /**
@@ -244,7 +206,6 @@ public class CalculadoraController {
     public CalculadoraController showEstaPantalla(Stage stage) throws IOException {
         // Utiliza PantallaUtils para cargar la pantalla de la calculadora con las dimensiones especificadas
         FXMLLoader fxmlLoader = new PantallaUtils().showEstaPantalla(stage, Constantes.PAGINA_PANTALLA_CALCULADORA.getDescripcion(),Constantes.TITULO_PANTALLA_CALCULADORA.getDescripcion(),600,425);
-
         // Obtenemos el controlador de la pantalla de la calculadora
         CalculadoraController controller = fxmlLoader.getController();
 

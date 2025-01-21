@@ -106,7 +106,7 @@ public class DetallesProyectoController {
      * @param event El evento de la acción
      */
     @FXML
-    void handleSeleccionarImagen(ActionEvent event) {
+    void handlerSeleccionarFoto(ActionEvent event) {
         //Se llama al método de Utils y le pasamos el ImageView necesario
         Utils.seleccionarImagen(img_proyecto);
     }
@@ -118,17 +118,8 @@ public class DetallesProyectoController {
      */
     @FXML
     void onClickAtras(ActionEvent event) {
-        try {
-            // Obtenemos la ventana actual y la cerramos
-            Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_atras);
-            // Mostramos la pantalla de seguimiento de los proyectos
-            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-            //Le pasamos la lista con los proyectos
-            proyectosController.setObservableList(proyectos);
-        } catch (Exception e) {
-            //En caso de error, imprimimos la causa
-            e.printStackTrace();
-        }
+        //LLamamos al método que nos permite ir a la pantalla anterior
+        Utils.irPantallaProyectosPasandoLista(btn_atras, proyectos);
     }
 
     /**
@@ -185,6 +176,7 @@ public class DetallesProyectoController {
         txt_fechaFin.setEditable(false);
         txt_puntadasTotales.setEditable(false);
         txt_descripcion.setEditable(false);
+        //Se ponen invisibles estos dos botones
         btn_addFoto.setVisible(false);
         btn_guardarCambios.setVisible(false);
     }
@@ -207,6 +199,7 @@ public class DetallesProyectoController {
         txt_fechaFin.setEditable(true);
         txt_puntadasTotales.setEditable(true);
         txt_descripcion.setEditable(true);
+        //se ponen visibles estos dos botones
         btn_addFoto.setVisible(true);
         btn_guardarCambios.setVisible(true);
     }
@@ -227,89 +220,98 @@ public class DetallesProyectoController {
             proyecto.setDescripcion(descripcion);
             proyecto.setDiseniador(diseniador);
             //Los valores numéricos se validan para asegurarse que no vayan vacíos o con formato inválido
-            proyecto.setAlto(validar(txt_alto));
-            proyecto.setLargo(validar(txt_largo));
+            proyecto.setAlto(Utils.validarTextFields(txt_alto));
+            proyecto.setLargo(Utils.validarTextFields(txt_largo));
             proyecto.setEstado(txt_estado.getValue());
             //Con las fechas primero se pasa el valor a String antes de hacer el set
             proyecto.setFechaInicio(String.valueOf(txt_fechaInicio.getValue()));
             proyecto.setFechaFin(String.valueOf(txt_fechaFin.getValue()));
-            proyecto.setPuntadasTotales(validar(txt_puntadasTotales));
+            proyecto.setPuntadasTotales(Utils.validarTextFields(txt_puntadasTotales));
             proyecto.setImagen(img_proyecto.getImage());
             //Se valida que los cambios sean válidos
             revisarErrores();
     }
 
     /**
-     *
-     * @param textField
-     * @return
+     * Método para envíar diferentes alertas en base a los  errores
      */
-    private int validar(TextField textField){
-        String texto = textField.getText().trim();
-        if(!texto.matches("-?\\d+")){
-            System.out.println(textField.getText());
-            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-            throw new IllegalArgumentException("El campo debe contener solo números");
-        }
-        return Integer.parseInt(texto);
-    }
-
     private void revisarErrores(){
+        // Acabamos de validar los datos y obtenemos el tipo de error
         Proyecto.TipoError tipoError = proyecto.validar();
         if (!proyecto.datosVacios()) {
+            // Evaluamos el tipo de error de acuerdo al resultado de la validación
             switch (tipoError) {
                 case ERRORBORDADO:
+                    // Mostrar alerta de error cuando las puntadas totales sean mayoree al area del bordado
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_PUNTADAS.getDescripcion(), Constantes.AVISO_PUNTADAS.getDescripcion());
                     break;
                 case NEGATIVO:
+                    // Mostrar alerta de error por cantidad negativa
                     AlertaUtils.showAlertError(Constantes.TITULO_AVISO_NUMERO_NEGATIVO.getDescripcion(), Constantes.AVISO_NUMERO_NEGATIVO.getDescripcion());
                     break;
                 case SIN_ERROR:
+                    //Si no da error, se avsia de la modificación del proyecto y volvemos a la pantalla de los proyectos
                     AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_MODIFICADO.getDescripcion(), Constantes.AVISO_PROYECTO_MODIFICADO.getDescripcion());
-                    try {
-                        Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_atras);
-                        ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-                        proyectosController.setObservableList(proyectos);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    //Una vez validado, se vuelve a la pantalla anterior
+                    Utils.irPantallaProyectosPasandoLista(btn_atras, proyectos);
             }
         }else {
+            //Si alguno de los datos esta vacío, salta este aviso
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
         }
     }
 
+    /**
+     * Inicializa el controlador configurando la imagen de un boton y haciendo otros dos botones no visibles
+     */
     public void initialize(){
+        // Se crea un objeto File que representa la ruta de un archivo de imagen
         File f = new File("src/main/resources/imagenesProyecto/candado.png");
+        // Creamos un ImageView con la ruta de la imagen
+        //A la cual le convertimos las barras invertidas en barras diagonales para garantizar que la ruta sea válida
         ImageView imageView = new ImageView(new Image("file:///" + f.getAbsolutePath().replace("\\", "/")));
+        // Se establece el tamaño del ImageView
         imageView.setFitHeight(15);
         imageView.setFitWidth(15);
+        // Se establece la imagen en el ImageView como un gráfico del botón
         btn_modificable.setGraphic(imageView);
 
+        //Se ponen estos dos botones invisibles por defecto
         btn_addFoto.setVisible(false);
         btn_guardarCambios.setVisible(false);
     }
 
+    /**
+     * Método que muestra los datos del proyecto
+     */
     public void cargaDatos(){
+        //Establecemos los valores de proyecto en los respectivos TextFields
         txt_nombre.setText(this.proyecto.getNombre());
         txt_diseniador.setText(this.proyecto.getDiseniador());
         txt_alto.setText(String.valueOf(this.proyecto.getAlto()));
         txt_largo.setText(String.valueOf(this.proyecto.getLargo()));
         txt_estado.setValue(this.proyecto.getEstado());
+        //Creamos un formateador para la fecha
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+        //Obtenemos la fecha del proyecto
         String fechaInicio = this.proyecto.getFechaInicio();
         String fechaFin = this.proyecto.getFechaFin();
+        //Comprobamos que la fecha de inicio no este vacía
         if (fechaInicio != null && !fechaInicio.isEmpty() && !fechaInicio.equals("null")) {
+            //Le damos un cierto formato a la fecha de inicio y la establecemos en el TextField correspondiente
             txt_fechaInicio.setValue(LocalDate.parse(fechaInicio, formatter));
         }
-
+        //Comprobamos que la fecha de fin no este vacía
         if (fechaFin != null && !fechaFin.isEmpty() && !fechaFin.equals("null")) {
+            //Le damos un cierto formato a la fecha de fin y la establecemos en el TextField correspondiente
             txt_fechaFin.setValue(LocalDate.parse(fechaFin, formatter));
         }
+        //Establecemos el resto de los valores en sus TextFields
         txt_puntadasTotales.setText(String.valueOf(this.proyecto.getPuntadasTotales()));
         txt_progreso.setText(String.valueOf(this.proyecto.getProgreso()));
         txt_descripcion.setText(this.proyecto.getDescripcion());
+        //También establecemos la imagen en su respectivo ImageView
         img_proyecto.setImage(this.proyecto.getImagen());
     }
 

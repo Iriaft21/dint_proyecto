@@ -1,12 +1,10 @@
 package org.proyecto.proyecto.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -110,19 +108,9 @@ public class FormularioProyectoController {
         Proyecto proyecto = extraerDatos();
         //Si el proyecto no es nulo
         if (proyecto != null){
-            try {
-                // Obtenemos la ventana actual y la cerramos
-                Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_crear);
-                // Mostramos la pantalla del seguimiento de proyectos
-                ProyectosController proyectosController = new ProyectosController().showEstaPantalla(stage);
-                //Se añade el proyecto creado a la lista de royectos
-                proyectos.add(proyecto);
-                //Le pasamos al controlador la lista de proyectos
-                proyectosController.setObservableList(proyectos);
-            } catch (Exception e) {
-                //En caso de error, mostramos la causa
-                e.printStackTrace();
-            }
+            proyectos.add(proyecto);
+            //Se llama al método que nos llevará de vuelta a la pantalla anterior
+            Utils.irPantallaProyectosPasandoLista(btn_crear, proyectos);
         }
     }
 
@@ -145,10 +133,10 @@ public class FormularioProyectoController {
         // Se obtiene el diseñador del proyecto y si está vacío, establece "No especificado"
         String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
         // Valida y obtiene las dimensiones del proyecto
-        int alto = validar(txt_alto);
-        int largo = validar(txt_largo);
+        int alto = Utils.validarTextFields(txt_alto);
+        int largo = Utils.validarTextFields(txt_largo);
         // Valida y obtiene el número total de puntadas del proyecto
-        int puntadasTotales = validar(txt_puntadasTotales);
+        int puntadasTotales = Utils.validarTextFields(txt_puntadasTotales);
 
         // Crea un nuevo objeto Proyecto con los datos obtenidos
         proyecto = new Proyecto(nombre, descripcion, diseniador, alto, largo, estado, puntadasTotales, fechaInicio, fechaFin, img.getImage());
@@ -157,32 +145,7 @@ public class FormularioProyectoController {
     }
 
     /**
-     * Método que valida los TextFields para que no se encuentren vacíoso o con el formato equivocado
-     *
-     * @param textField El TextField del que extraen los datos
-     * @return El valor de los campos ya extraído como un int
-     */
-    private int validar(TextField textField){
-        String texto = textField.getText().trim();
-        //Comprobamos que el texto no vaya vacío
-        if (texto.isEmpty()) {
-            // Mostrar alerta informativa si los datos del hilo están vacíos
-            AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
-            //De paso lanzamos una excepcion para avisar del error
-            throw new IllegalArgumentException("El campo no puede estar vacío");
-            //Se verifica que la String sea un número entero, tanto positivo como negativo
-        }else if(!texto.matches("-?\\d+")){
-            // Mostramos alerta de error de formato
-            AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
-            //Se lanza una excepcion para visar del error
-            throw new IllegalArgumentException("El campo debe contener solo números");
-        }
-        //Se devuelve el valor del TextField ya extraído y como un Int
-        return Integer.parseInt(texto);
-    }
-
-    /**
-     * Método para extraer valores, validarlos y que envíe errores en base a eso
+     * Método para enviar errores
      *
      * @param proyecto El objeto a validar
      * @return El objeto proyecto si no hay errores, sino un null
@@ -208,6 +171,7 @@ public class FormularioProyectoController {
                     return proyecto;
             }
         }else{
+            //Si alguno de los datos esta vacío, salta este aviso
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
         }
         return null;
@@ -229,6 +193,7 @@ public class FormularioProyectoController {
         txt_alto.clear();
         txt_largo.clear();
         txt_descripcion.clear();
+        txt_puntadasTotales.clear();
         txt_nombre.clear();
         txt_diseniador.clear();
         //Eliminamos la imagen del ImageView
@@ -242,8 +207,8 @@ public class FormularioProyectoController {
      */
     @FXML
     void onClickSalir(ActionEvent event) {
-        //TODO utils
-        Platform.exit();
+        //Llamamos al método de Utils
+        Utils.botonSalir();
     }
 
     /**

@@ -1,12 +1,10 @@
 package org.proyecto.proyecto.controller;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -59,10 +57,8 @@ public class ProyectosController {
     public void setObservableList(ObservableList<Proyecto> proyectos) {
         // Asigna la lista de proyectos a la variable de instancia
         this.proyectos = proyectos;
-
         // Establece la lista en el ListView asociado
         this.listView.setItems(this.proyectos);
-
         // Refresca el ListView para asegurar que se muestre la lista actualizada
         this.listView.refresh();
     }
@@ -121,8 +117,8 @@ public class ProyectosController {
      */
     @FXML
     void onClickSalir(ActionEvent event) {
-        //TODO se podría hacer un Utils
-        Platform.exit();
+        //LLamamos al correspondiente método de Utils para salir del programa
+        Utils.botonSalir();
     }
 
     /**
@@ -136,7 +132,6 @@ public class ProyectosController {
         if(click.getClickCount() == 2){
             //Se obtiene el proyecto que ha sido seleccionado
             Proyecto proyectoDetalle = listView.getSelectionModel().getSelectedItem();
-
             try {
                 // Obtiene el Stage actual a partir del ListView
                 Stage stage = (Stage)listView.getScene().getWindow();
@@ -184,7 +179,7 @@ public class ProyectosController {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    // Creamos etiquetas para mostrar el nombre, estado y progreso del proyecto
+                    //Creamos etiquetas para mostrar el nombre, estado y progreso del proyecto
                     Label nombreLabel = new Label("Nombre: " + proyecto.getNombre());
                     Label estadoLabel = new Label("Estado: " + proyecto.getEstado());
                     Label progresoLabel = new Label("Progreso: " + proyecto.getProgreso() + "%");
@@ -226,17 +221,8 @@ public class ProyectosController {
      */
     @FXML
     void onClickMenuItemCalculadora(ActionEvent event) {
-        //Todo igual podiamos meter esto en Utils
-        try {
-            // Obtenemos la ventana principal desde el menú de la calculadora y la cerramos
-            Stage stage = (Stage) menuItem_calculadora.getParentPopup().getOwnerWindow().getScene().getWindow();
-            stage.close();
-            // Mostramos la pantalla de la calculadora
-            CalculadoraController calculadoraController = new CalculadoraController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            //En caso de errror, imprimimos la causa
-            e.printStackTrace();
-        }
+        //Llamamos a Utils y al método para que nos lleven a la pantalla de la calculadora
+        Utils.menuCalculadora(menuItem_calculadora);
     }
 
     /**
@@ -246,14 +232,8 @@ public class ProyectosController {
      */
     @FXML
     void onClickMenuItemInventario(ActionEvent event) {
-        //TODO utils
-        try {
-            Stage stage = (Stage) menuItem_inventario.getParentPopup().getOwnerWindow().getScene().getWindow();
-            stage.close();
-            InventarioController inventarioController = new InventarioController().showEstaPantalla(stage);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //Llamamos a Utils y al método para que nos lleven a la pantalla del inventario
+        Utils.menuInventario(menuItem_inventario);
     }
 
     /**
