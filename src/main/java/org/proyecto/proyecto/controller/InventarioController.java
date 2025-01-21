@@ -181,7 +181,7 @@ public class InventarioController {
      * Método para validar valores y en caso negativo llamar alertas
      *
      * @param hilo El objeto del que deseamos validar los valores
-     * @return
+     * @return booleano que avisa si los datos son validos
      */
     public Boolean datosValidos(Hilo hilo) {
         // Validamos la cantidad del hilo y obtenemos el tipo de error

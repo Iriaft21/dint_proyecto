@@ -14,6 +14,11 @@ import org.proyecto.proyecto.utils.Utils;
 
 import java.io.IOException;
 
+/**
+ * Controlador de la pantalla de actualizar progreso
+ *
+ * Contiene un método para actualizar el susodicho
+ */
 public class ActualizarProgresoController {
 
     @FXML

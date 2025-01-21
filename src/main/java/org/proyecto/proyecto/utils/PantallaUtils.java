@@ -20,6 +20,11 @@ public class PantallaUtils {
      *
      * @param stage le pasamos un stage
      * @param vista le pasamos la vista que se va a cargar
+     * @param titulo titulo de la pantalla
+     * @param ancho ancho de la pantalla
+     * @param alto alto de la pantalla
+     * @return El cargador del FXML
+     * @thows IOException En caso de error de entrada o salida
      */
     public FXMLLoader showEstaPantalla(Stage stage, String vista, String titulo, int ancho, int alto) throws IOException {
         //Se cre un FXMLLoader para cargar el archivo FXML de la vista
@@ -51,6 +56,7 @@ public class PantallaUtils {
      * Queda genérico para cualquier botón de esta pantalla.
      *
      * @param botonDelAction el pasamos el botón que accionó
+     * @return El stage de la pantalla a cerrar
      */
     public Stage cerrarEstaPantalla(Button botonDelAction){
         // Se obtiene el Stage actual desde la escena donde se encuentra botón
