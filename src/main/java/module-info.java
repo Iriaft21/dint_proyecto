@@ -2,6 +2,7 @@ module org.proyecto.proyecto {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
+    requires java.sql;
 
 
     opens org.proyecto.proyecto to javafx.fxml, javafx.base;

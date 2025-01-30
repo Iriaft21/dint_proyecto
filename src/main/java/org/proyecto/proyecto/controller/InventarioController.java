@@ -24,6 +24,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 /**
  * Controlador de la pantalla del inventario
@@ -88,6 +89,7 @@ public class InventarioController {
         Hilo hiloSeleccionado = table_hilos.getSelectionModel().getSelectedItem();
         //Eliminamos el hilo de la tabla
         table_hilos.getItems().remove(hiloSeleccionado);
+        hiloSeleccionado.eliminarHilo(hiloSeleccionado.getId());
     }
 
     /**
@@ -120,6 +122,10 @@ public class InventarioController {
         crearTabla();
         //Añadimos a la tabla el ObservableList donde se almacenarán los hilos
         ObservableList<Hilo> datosHilos = FXCollections.observableArrayList();
+        // Llamamos al método de obtener todos los hilos y los añadimos al ObservableList
+        Hilo hilo = new Hilo();
+        List<Hilo> listaHilos = hilo.obtenerTodosHilos();
+        datosHilos.addAll(listaHilos);
         table_hilos.setItems(datosHilos);
         //Llamamos al método de modificacion de datos
         modificarDatos();
@@ -172,6 +178,7 @@ public class InventarioController {
         if(datosValidos(hilo)){
             // Añadimos el hilo a la tabla si no hay errores
             table_hilos.getItems().add(hilo);
+            hilo.insertarHilo(hilo);
         }
         //Lllamamos al método que limpia los TextFields
         limpiarCampos();
@@ -255,6 +262,7 @@ public class InventarioController {
                     String nuevoValor = t.getNewValue();
                     // Aplicamos el nuevo valor temporalmente para validarlo
                     hilo.setMarca(nuevoValor);
+                    hilo.actualizarHilo(hilo.getId(), hilo.getNombre(), hilo.getMarca(), hilo.getCantidad());
 
                     if (!datosValidos(hilo)) {
                         // Si la validación falla, revertimos el valor original
@@ -279,6 +287,7 @@ public class InventarioController {
                     String nuevoValor = t.getNewValue();
                     // Aplicamos el nuevo valor temporalmente para validarlo
                     hilo.setNombre(nuevoValor);
+                    hilo.actualizarHilo(hilo.getId(), hilo.getNombre(), hilo.getMarca(), hilo.getCantidad());
 
                     if (!datosValidos(hilo)) {
                         // Si la validación falla, revertimos el valor original
@@ -304,6 +313,7 @@ public class InventarioController {
             String nuevoValor = t.getNewValue();
             // Aplicamos el nuevo valor temporalmente para validarlo
             hilo.setCantidad(nuevoValor);
+            hilo.actualizarHilo(hilo.getId(), hilo.getNombre(), hilo.getMarca(), hilo.getCantidad());
 
             if (!datosValidos(hilo)) {
                 // Si la validación falla, revertimos el valor original

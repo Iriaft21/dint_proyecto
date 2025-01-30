@@ -1,12 +1,17 @@
 package org.proyecto.proyecto.modelo;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Clase Hilo que representa un hilo con su nombre, marca y cantidad
  * Permite validar los datos
  */
-public class Hilo {
+public class Hilo implements DatabaseOperationsHilo {
 
     //atributos de la clase
+    private String id;
     private String nombre;
     private String marca;
     private String cantidad;
@@ -22,6 +27,105 @@ public class Hilo {
         this.nombre = nombre;
         this.marca = marca;
         this.cantidad = cantidad;
+    }
+
+    public Hilo(String id,String nombre, String marca, String cantidad) {
+        this.id = id;
+        this.nombre = nombre;
+        this.marca = marca;
+        this.cantidad = cantidad;
+    }
+
+    public Hilo() {
+    }
+
+    @Override
+    public boolean insertarHilo(Hilo hilo) {
+        String url = "jdbc:sqlite:data/baseDatos.db";
+        String nombreH = hilo.getNombre();
+        String marcaH = hilo.getMarca();
+        String cantidadH = hilo.getCantidad();
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "INSERT INTO hilo (nombre, marca, cantidad) VALUES (?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nombre);
+                pstmt.setString(2, marca);
+                pstmt.setString(3, cantidad);
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Filas insertadas: " + filasAfectadas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public List<Hilo> obtenerTodosHilos() {
+        ArrayList<Hilo> hilos = new ArrayList<>();
+        String url = "jdbc:sqlite:data/baseDatos.db";
+        String query = "SELECT * FROM hilo ";
+
+        try {
+            Connection conn = DriverManager.getConnection(url);
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                // Obtener los valores del resultado
+                String id = rs.getString("id");
+                String nombre = rs.getString("nombre");
+                String marca = rs.getString("marca");
+                String cantidad = rs.getString("cantidad");
+                // Mostrar los resultados
+//                System.out.println("Id del hilo: " + id);
+//                System.out.println("nombre: " + nombre);
+//                System.out.println("marca: " + marca);
+//                System.out.println("cantidad: " + cantidad);
+                Hilo hilo = new Hilo(id, nombre, marca, cantidad);
+                hilos.add(hilo);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+        }
+        return hilos;
+    }
+
+    @Override
+    public boolean eliminarHilo(String id) {
+        String url = "jdbc:sqlite:data/baseDatos.db";
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "DELETE FROM hilo WHERE id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, id);
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Filas insertadas: " + filasAfectadas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public boolean actualizarHilo(String id, String nombre, String nuevoPwd, String cantidad) {
+        String url = "jdbc:sqlite:data/baseDatos.db";
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "UPDATE hilo SET nombre = ?, marca = ?, cantidad = ? WHERE id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nombre);
+                pstmt.setString(2, marca);
+                pstmt.setString(3, cantidad);
+                pstmt.setString(4, id);
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Filas insertadas: " + filasAfectadas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**
@@ -84,6 +188,14 @@ public class Hilo {
      */
     public void setCantidad(String cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

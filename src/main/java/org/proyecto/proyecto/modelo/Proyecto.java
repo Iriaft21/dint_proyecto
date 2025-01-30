@@ -2,14 +2,18 @@ package org.proyecto.proyecto.modelo;
 
 import javafx.scene.image.Image;
 
+import java.sql.*;
+import java.util.List;
+
 /**
  * Clase Proyecto que representa un proyecto de bordado
  *
  * Contiene métodos para calcular el progreso y para validar errores
  */
-public class Proyecto {
+public class Proyecto implements DatabaseOperationsProyecto{
 
     //atributos de la clase
+    private String id;
     private String nombre;
     private String descripcion;
     private String diseniador;
@@ -49,6 +53,107 @@ public class Proyecto {
         this.imagen = imagen;
     }
 
+    public Proyecto(String id,String nombre, String descripcion, String diseniador, int alto, int largo, String estado, float progreso, int puntadasTotales, String fechaInicio, String fechaFin) {
+        this.id = id;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.diseniador = diseniador;
+        this.alto = alto;
+        this.largo = largo;
+        this.estado = estado;
+        this.progreso = progreso;
+        this.puntadasTotales = puntadasTotales;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+    }
+
+    public Proyecto(){
+    }
+
+    @Override
+    public boolean insertarProyecto(Proyecto proyecto) {
+        String url = "jdbc:sqlite:data/baseDatos.db";
+        String nombre = "nombrePrueba";
+        String descripcion = null;
+        String diseniador = "SASticth";
+        int alto = 154;
+        int largo = 151;
+        String estado = "Reuniendo materiales";
+        float progreso = 0.0f;
+        int puntadasTotales = 17500;
+        String fechaInicio = null;
+        String fechaFin = null;
+
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "INSERT INTO proyecto (nombre, descripcion, diseniador, alto, largo, estado, progreso, puntadasTotales, fechaInicio, fechaFin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nombre);
+                pstmt.setString(2, descripcion);
+                pstmt.setString(3, diseniador);
+                pstmt.setInt(4, alto);
+                pstmt.setInt(5, largo);
+                pstmt.setString(6, estado);
+                pstmt.setFloat(7, progreso);
+                pstmt.setInt(8, puntadasTotales);
+                pstmt.setString(9, fechaInicio);
+                pstmt.setString(10, fechaFin);
+                int filasAfectadas = pstmt.executeUpdate();
+                System.out.println("Filas insertadas: " + filasAfectadas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public List<Proyecto> obtenerTodosProyectos() {
+        String url = "jdbc:sqlite:data/baseDatos.db";
+        String query = "SELECT * FROM proyecto";
+
+        // Conexión a la base de datos y ejecución de la consulta
+        try (Connection conn = DriverManager.getConnection(url);
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            // Verificar si se encontraron registros
+            while (rs.next()) {
+                // Obtener los valores del resultado
+                String id = rs.getString("id");
+                String nombre = rs.getString("nombre");
+                String descripcion = rs.getString("descripcion");
+                String diseniador = rs.getString("diseniador");
+                int alto = rs.getInt("alto");
+                int largo = rs.getInt("largo");
+                String estado = rs.getString("estado");
+                float progreso = rs.getFloat("progreso");
+                int puntadasTotales = rs.getInt("puntadasTotales");
+                String fechaInicio = rs.getString("fechaInicio");
+                String fechaFin = rs.getString("fechaFin");
+
+                Proyecto proyecto = new Proyecto(id, nombre, descripcion, diseniador, alto, largo, estado, progreso, puntadasTotales, fechaInicio, fechaFin);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+        }
+        return List.of();
+    }
+
+    @Override
+    public boolean eliminaProyecto(String id) {
+        return false;
+    }
+
+    @Override
+    public boolean actualizarProyecto() {
+        return false;
+    }
+
+    @Override
+    public boolean actualizarProgreso() {
+        return false;
+    }
+
     /**
      * Enumeración TipoError que representa los diferentes errores al validar algunos campos
      */
@@ -57,6 +162,15 @@ public class Proyecto {
     }
 
     //getters y setters
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      * Obtiene el progreso del proyecto
      *
