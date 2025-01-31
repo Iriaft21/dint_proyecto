@@ -64,9 +64,9 @@ public class MenuController {
         // Crea un objeto File para la imagen de introducción
         File f = new File("src/main/resources/imagenesProyecto/punto-de-cruz.png");
         // Establece la imagen
-        img_intro1.setImage(new Image("file:///" + f.getAbsolutePath().replace("\\", "/")));
+        img_intro1.setImage(new Image(Constantes.STRING_FILE.getDescripcion() + f.getAbsolutePath().replace("\\", "/")));
         // Establece la imagen
-        img_intro2.setImage(new Image("file:///" + f.getAbsolutePath().replace("\\", "/")));
+        img_intro2.setImage(new Image(Constantes.STRING_FILE.getDescripcion() + f.getAbsolutePath().replace("\\", "/")));
         // Ajusta el alto de las imagenes
         img_intro1.setFitHeight(50);
         img_intro2.setFitHeight(50);

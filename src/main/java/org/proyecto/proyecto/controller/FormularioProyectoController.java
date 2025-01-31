@@ -91,11 +91,12 @@ public class FormularioProyectoController {
      * Inicializa el controlador configurando un comboBox con sus valores y el que tendrá por defecto
      */
     public void initialize(){
-        estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
+        estados = FXCollections.observableArrayList(Constantes.ESTADO_PROYECTO_REUNIENDO.getDescripcion(), Constantes.ESTADO_PROYECTO_REUNIDOS.getDescripcion(),
+                Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion(), Constantes.ESTADO_PROYECTO_COMPLETADO.getDescripcion());
         //Añadimos al ComboBox el ObservableList con los distintos estados del proyecto
         combo_estado.setItems(estados);
         //Se pone un valor por defecto
-        combo_estado.setValue("En proceso");
+        combo_estado.setValue(Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion());
     }
 
     /**
@@ -108,6 +109,7 @@ public class FormularioProyectoController {
         Proyecto proyecto = extraerDatos();
         //Si el proyecto no es nulo
         if (proyecto != null){
+            proyecto.insertarProyecto(proyecto);
             proyectos.add(proyecto);
             //Se llama al método que nos llevará de vuelta a la pantalla anterior
             Utils.irPantallaProyectosPasandoLista(btn_crear, proyectos);
@@ -129,9 +131,9 @@ public class FormularioProyectoController {
         String fechaInicio = String.valueOf(dp_fechaInicio.getValue());
         String fechaFin = String.valueOf(dp_fechaFin.getValue());
         // Se obtiene la descripción del proyecto y si está vacío, establece "Sin descripción"
-        String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : "Sin descripción";
+        String descripcion = !txt_descripcion.getText().isEmpty()? txt_descripcion.getText() : Constantes.DESCRIPCION_VACIA.getDescripcion();
         // Se obtiene el diseñador del proyecto y si está vacío, establece "No especificado"
-        String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : "No especificado";
+        String diseniador = !txt_diseniador.getText().isEmpty()? txt_diseniador.getText() : Constantes.DISENIADOR_VACIO.getDescripcion();
         // Valida y obtiene las dimensiones del proyecto
         int alto = Utils.validarTextFields(txt_alto);
         int largo = Utils.validarTextFields(txt_largo);
@@ -185,7 +187,7 @@ public class FormularioProyectoController {
     @FXML
     void onClickLimpiarCampos(ActionEvent event) {
         //Ponemos el valor por defecto en el ComboBox
-        combo_estado.setValue("En proceso");
+        combo_estado.setValue(Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion());
         //Se ponen los valores de los DatePicker en null
         dp_fechaInicio.setValue(null);
         dp_fechaFin.setValue(null);

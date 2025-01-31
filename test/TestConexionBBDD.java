@@ -7,13 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestConexionBBDD {
 
     private static final String NOMBRE = "310";
     private static final String MARCA = "DMC";
     private static final String CANTIDAD = "1";
-    private static final String URL = "jdbc:sqlite:data/bbdd_prueba.db";
+    private static final String URL = "jdbc:sqlite:data/baseDatos.db";
     private Connection conn;
 
     // Método que se ejecuta antes de cada prueba: Establecer la conexión a la base de datos
@@ -24,7 +25,7 @@ public class TestConexionBBDD {
             System.out.println("Conexión establecida.");
         } catch (Exception e) {
             e.printStackTrace();
-            //fail("Error al establecer la conexión antes de la prueba.");
+            fail("Error al establecer la conexión antes de la prueba.");
         }
     }
 
@@ -45,7 +46,7 @@ public class TestConexionBBDD {
             assertTrue(filasAfectadas == 1, "La inserción no afectó exactamente una fila. Filas afectadas: " + filasAfectadas);
         } catch (Exception e) {
             e.printStackTrace();
-            //fail("Error al insertar o verificar el usuario.");
+            fail("Error al insertar o verificar el usuario.");
         }
     }
 
@@ -77,14 +78,14 @@ public class TestConexionBBDD {
             //assertTrue(foundPepe, "El usuario 'pepe' no fue encontrado en el listado.");
         } catch (Exception e) {
             e.printStackTrace();
-            //fail("Error al insertar o verificar el usuario.");
+            fail("Error al insertar o verificar el usuario.");
         }
     }
 
     @Test
     public void tearDown3() {
         // Realizar una consulta para verificar si la fila fue insertada correctamente
-        String selectSql = "SELECT COUNT(*) FROM HILO WHERE NOMBRE = ?,  MARCA = ? AND CANTIDAD = ?";
+        String selectSql = "SELECT COUNT(*) FROM HILO WHERE NOMBRE = ? AND  MARCA = ? AND CANTIDAD = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(selectSql)) {
             pstmt.setString(1, NOMBRE);
             pstmt.setString(2, MARCA);
@@ -100,7 +101,7 @@ public class TestConexionBBDD {
             System.out.println("Conexión cerrada.");
         } catch (Exception e) {
             e.printStackTrace();
-            //fail("Error al cerrar la conexión después de la prueba.");
+            fail("Error al cerrar la conexión después de la prueba.");
         }
     }
 }

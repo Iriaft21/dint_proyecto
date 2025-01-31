@@ -1,8 +1,11 @@
 package org.proyecto.proyecto.modelo;
 
 import javafx.scene.image.Image;
+import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.Utils;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,6 +56,21 @@ public class Proyecto implements DatabaseOperationsProyecto{
         this.imagen = imagen;
     }
 
+    /**
+     * Constructor para inicializar un objeto Proyecto con sus atributos
+     *
+     * @param id              El id del proyecto
+     * @param nombre          El nombre del proyecto
+     * @param descripcion     La descripción del proyecto
+     * @param diseniador      El diseñador del proyecto
+     * @param alto            La altura del proyecto
+     * @param largo           La longitud del proyecto
+     * @param estado          El estado del proyecto
+     * @param progreso        El progreso del proyecto
+     * @param puntadasTotales El número total de puntadas del proyecto
+     * @param fechaInicio     La fecha de inicio del proyecto
+     * @param fechaFin        La fecha de fin del proyecto
+     */
     public Proyecto(String id,String nombre, String descripcion, String diseniador, int alto, int largo, String estado, float progreso, int puntadasTotales, String fechaInicio, String fechaFin) {
         this.id = id;
         this.nombre = nombre;
@@ -67,91 +85,151 @@ public class Proyecto implements DatabaseOperationsProyecto{
         this.fechaFin = fechaFin;
     }
 
+    /**
+     * Constructor para inicializar un objeto Proyecto sin pasarle atributos
+     */
     public Proyecto(){
     }
 
+    /**
+     * Inserta un nuevo proyecto en la base de datos.
+     *
+     * @param proyecto El objeto Proyecto que contiene la información del proyecto a insertar.
+     * @return true si se insertó correctamente, false en caso contrario.
+     */
     @Override
     public boolean insertarProyecto(Proyecto proyecto) {
-        String url = "jdbc:sqlite:data/baseDatos.db";
-        String nombre = "nombrePrueba";
-        String descripcion = null;
-        String diseniador = "SASticth";
-        int alto = 154;
-        int largo = 151;
-        String estado = "Reuniendo materiales";
-        float progreso = 0.0f;
-        int puntadasTotales = 17500;
-        String fechaInicio = null;
-        String fechaFin = null;
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "INSERT INTO proyecto (nombre, descripcion, diseniador, alto, largo, estado, progreso, puntadasTotales, fechaInicio, fechaFin) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nombre);
-                pstmt.setString(2, descripcion);
-                pstmt.setString(3, diseniador);
-                pstmt.setInt(4, alto);
-                pstmt.setInt(5, largo);
-                pstmt.setString(6, estado);
-                pstmt.setFloat(7, progreso);
-                pstmt.setInt(8, puntadasTotales);
-                pstmt.setString(9, fechaInicio);
-                pstmt.setString(10, fechaFin);
-                int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("Filas insertadas: " + filasAfectadas);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        // Ejecuta la consulta utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar(Constantes.CONSULTA_INSERTAR_PROYECTO.getDescripcion(),
+                proyecto.getNombre(),
+                proyecto.getDescripcion(),
+                proyecto.getDiseniador(),
+                proyecto.getAlto(),
+                proyecto.getLargo(),
+                proyecto.getEstado(),
+                proyecto.getProgreso(),
+                proyecto.getPuntadasTotales(),
+                proyecto.getFechaInicio(),
+                proyecto.getFechaFin());
+        // Imprime el número de filas insertadas en la consola
+        System.out.println(Constantes.FILAS_INSERTADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se insertó al menos una fila, false en caso contrario
+        return filasAfectadas > 0;
     }
 
+    /**
+     * Obtiene todos los proyectos de la base de datos
+     *
+     * @return Una lista de objetos Proyecto que representan todos los proyectos en la base de datos
+     */
     @Override
     public List<Proyecto> obtenerTodosProyectos() {
-        String url = "jdbc:sqlite:data/baseDatos.db";
-        String query = "SELECT * FROM proyecto";
+        // Lista para almacenar los proyectos
+        List<Proyecto> proyectos = new ArrayList<>();
+        Connection conn = null;
+        ResultSet rs = null;
+        PreparedStatement pstmt = null;
 
-        // Conexión a la base de datos y ejecución de la consulta
-        try (Connection conn = DriverManager.getConnection(url);
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
-
-            // Verificar si se encontraron registros
+        try {
+            // Abre la conexión
+            conn = Utils.conexion();
+            // Prepara la declaración
+            pstmt = conn.prepareStatement(Constantes.CONSULTA_MOSTRAR_PROYECTOS.getDescripcion());
+            // Ejecuta la consulta
+            rs = pstmt.executeQuery();
+            // Itera sobre el ResultSet para extraer los datos de cada proyecto
             while (rs.next()) {
-                // Obtener los valores del resultado
-                String id = rs.getString("id");
-                String nombre = rs.getString("nombre");
-                String descripcion = rs.getString("descripcion");
-                String diseniador = rs.getString("diseniador");
-                int alto = rs.getInt("alto");
-                int largo = rs.getInt("largo");
-                String estado = rs.getString("estado");
-                float progreso = rs.getFloat("progreso");
-                int puntadasTotales = rs.getInt("puntadasTotales");
-                String fechaInicio = rs.getString("fechaInicio");
-                String fechaFin = rs.getString("fechaFin");
-
-                Proyecto proyecto = new Proyecto(id, nombre, descripcion, diseniador, alto, largo, estado, progreso, puntadasTotales, fechaInicio, fechaFin);
+                Proyecto proyecto = new Proyecto(
+                        rs.getString("id"),
+                        rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        rs.getString("diseniador"),
+                        rs.getInt("alto"),
+                        rs.getInt("largo"),
+                        rs.getString("estado"),
+                        rs.getFloat("progreso"),
+                        rs.getInt("puntadasTotales"),
+                        rs.getString("fechaInicio"),
+                        rs.getString("fechaFin"));
+                // Añade el proyecto a la lista
+                proyectos.add(proyecto);
             }
         } catch (SQLException e) {
-            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+            // Muestra un mensaje de error en caso de excepción SQL
+            System.out.println(Constantes.ERROR_BBDD + e.getMessage());
+        } finally {
+            // Cierra el ResultSet, PreparedStatement y Connection en el bloque finally para asegurarse de que se cierran
+            try {
+                if (rs != null) rs.close();
+                if (pstmt != null) pstmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        return List.of();
+        // Devuelve la lista de proyectos
+        return proyectos;
     }
 
+    /**
+     * Elimina un proyecto de la base de datos
+     *
+     * @param id El ID del proyecto que se va a eliminar
+     * @return true si se eliminó correctamente, false en caso contrario
+     */
     @Override
     public boolean eliminaProyecto(String id) {
-        return false;
+        // Ejecuta la consulta de eliminación utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar(Constantes.CONSULTA_BORRAR_PROYECTOS.getDescripcion(), id);
+        // Imprime el número de filas eliminadas en la consola
+        System.out.println(Constantes.FILAS_ELIMINADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se eliminó al menos una fila, false en caso contrario
+        return filasAfectadas > 0;
     }
 
+    /**
+     * Actualiza un proyecto existente en la base de datos
+     *
+     * @param proyecto El objeto Proyecto que contiene la información del proyecto a actualizar
+     * @return true si se actualizó correctamente, false en caso contrario
+     */
     @Override
-    public boolean actualizarProyecto() {
-        return false;
+    public boolean actualizarProyecto(Proyecto proyecto) {
+        // Ejecuta la consulta de actualización utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar(Constantes.CONSULTA_ACTUALIZAR_PROYECTO.getDescripcion(),
+                proyecto.getNombre(),
+                proyecto.getDescripcion(),
+                proyecto.getDiseniador(),
+                proyecto.getAlto(),
+                proyecto.getLargo(),
+                proyecto.getEstado(),
+                proyecto.getProgreso(),
+                proyecto.getPuntadasTotales(),
+                proyecto.getFechaInicio(),
+                proyecto.getFechaFin(),
+                proyecto.getId());
+        // Imprime el número de filas modificadas en la consola
+        System.out.println(Constantes.FILAS_MODIFICADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se modificó al menos una fila, false en caso contrario
+        return filasAfectadas > 0;
     }
 
+    /**
+     * Actualiza el progreso de un proyecto existente en la base de datos
+     *
+     * @param id El id de un proyecto
+     * @param progreso  El progreso de un proyecto
+     * @param estado El estado de un proyecto
+     * @return true si se actualizó correctamente, false en caso contrario
+     */
     @Override
-    public boolean actualizarProgreso() {
-        return false;
+    public boolean actualizarProgreso(String id, float progreso, String estado) {
+        // Ejecuta la consulta de actualización utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar( Constantes.CONSULTA_ACTUALIZAR_PROGRESO.getDescripcion(), estado, progreso, id);
+        // Imprime el número de filas modificadas en la consola
+        System.out.println(Constantes.FILAS_MODIFICADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se modificó al menos una fila, false en caso contrario
+        return filasAfectadas > 0;
     }
 
     /**
@@ -163,10 +241,20 @@ public class Proyecto implements DatabaseOperationsProyecto{
 
     //getters y setters
 
+    /**
+     * Obtiene el id del proyecto
+     *
+     * @return El id del proyecto
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Establece el id del proyecto
+     *
+     * @param id El id del proyecto
+     */
     public void setId(String id) {
         this.id = id;
     }

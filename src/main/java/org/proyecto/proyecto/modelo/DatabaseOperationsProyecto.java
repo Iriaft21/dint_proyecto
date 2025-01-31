@@ -10,7 +10,7 @@ public interface DatabaseOperationsProyecto {
 
     boolean eliminaProyecto(String id);
 
-    boolean actualizarProyecto();
+    boolean actualizarProyecto(Proyecto proyecto);
 
-    boolean actualizarProgreso();
+    boolean actualizarProgreso(String id, float progreso, String estado);
 }

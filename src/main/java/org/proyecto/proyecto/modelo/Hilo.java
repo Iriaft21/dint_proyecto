@@ -1,5 +1,8 @@
 package org.proyecto.proyecto.modelo;
 
+import org.proyecto.proyecto.utils.Constantes;
+import org.proyecto.proyecto.utils.Utils;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,14 @@ public class Hilo implements DatabaseOperationsHilo {
         this.cantidad = cantidad;
     }
 
+    /**
+     * Constructor para inicializar un objeto Hilo con su id, nombre, marca y cantidad
+     *
+     * @param id       El id del hilo
+     * @param nombre   El nombre del hilo
+     * @param marca    La marca del hilo
+     * @param cantidad La cantidad del hilo
+     */
     public Hilo(String id,String nombre, String marca, String cantidad) {
         this.id = id;
         this.nombre = nombre;
@@ -36,96 +47,93 @@ public class Hilo implements DatabaseOperationsHilo {
         this.cantidad = cantidad;
     }
 
+    /**
+     * Constructor para inicializar un objeto Hilo sin pasarle atributos
+     */
     public Hilo() {
     }
 
+    /**
+     * Inserta un nuevo hilo en la base de datos.
+     *
+     * @param hilo El objeto Hilo que contiene la información del hilo a insertar
+     * @return true si se insertó correctamente, false en caso contrario
+     */
     @Override
     public boolean insertarHilo(Hilo hilo) {
-        String url = "jdbc:sqlite:data/baseDatos.db";
-        String nombreH = hilo.getNombre();
-        String marcaH = hilo.getMarca();
-        String cantidadH = hilo.getCantidad();
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "INSERT INTO hilo (nombre, marca, cantidad) VALUES (?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nombre);
-                pstmt.setString(2, marca);
-                pstmt.setString(3, cantidad);
-                int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("Filas insertadas: " + filasAfectadas);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        // Ejecuta la consulta utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar(Constantes.CONSULTA_INSERTAR_HILO.getDescripcion(),
+                hilo.getNombre(),
+                hilo.getMarca(),
+                hilo.getCantidad());
+        // Imprime el número de filas insertadas en la consola
+        System.out.println(Constantes.FILAS_INSERTADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se insertó al menos una fila; false en caso contrario
+        return filasAfectadas > 0;
     }
 
+    /**
+     * Obtiene todos los hilos de la base de datos
+     *
+     * @return Una lista que contiene todos los hilos en la base de datos
+     */
     @Override
     public List<Hilo> obtenerTodosHilos() {
-        ArrayList<Hilo> hilos = new ArrayList<>();
-        String url = "jdbc:sqlite:data/baseDatos.db";
-        String query = "SELECT * FROM hilo ";
-
-        try {
-            Connection conn = DriverManager.getConnection(url);
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            ResultSet rs = pstmt.executeQuery();
+        // Lista para almacenar los hilos
+        List<Hilo> hilos = new ArrayList<>();
+        // Ejecuta la consulta y obtiene el ResultSet
+        try (ResultSet rs = Utils.ejecutarQuery(Constantes.CONSULTA_MOSTRAR_HILOS.getDescripcion())) {
             while (rs.next()) {
-                // Obtener los valores del resultado
-                String id = rs.getString("id");
-                String nombre = rs.getString("nombre");
-                String marca = rs.getString("marca");
-                String cantidad = rs.getString("cantidad");
-                // Mostrar los resultados
-//                System.out.println("Id del hilo: " + id);
-//                System.out.println("nombre: " + nombre);
-//                System.out.println("marca: " + marca);
-//                System.out.println("cantidad: " + cantidad);
-                Hilo hilo = new Hilo(id, nombre, marca, cantidad);
+                // Crea un nuevo objeto Hilo con los datos obtenidos
+                Hilo hilo = new Hilo(
+                        rs.getString("id"),
+                        rs.getString("nombre"),
+                        rs.getString("marca"),
+                        rs.getString("cantidad"));
+                // Añade el hilo a la lista
                 hilos.add(hilo);
             }
         } catch (SQLException e) {
-            System.out.println("Error al conectar con la base de datos: " + e.getMessage());
+            // Muestra un mensaje de error en caso de excepción SQL
+            System.out.println(Constantes.ERROR_BBDD.getDescripcion() + e.getMessage());
         }
+        // Retorna la lista de hilos
         return hilos;
     }
 
+    /**
+     * Elimina un hilo de la base de datos
+     *
+     * @param id El ID del hilo que se va a eliminar
+     * @return true si se eliminó correctamente, false en caso contrario
+     */
     @Override
     public boolean eliminarHilo(String id) {
-        String url = "jdbc:sqlite:data/baseDatos.db";
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "DELETE FROM hilo WHERE id = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, id);
-                int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("Filas insertadas: " + filasAfectadas);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+        // Ejecuta la consulta de eliminación utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar(Constantes.CONSULTA_BORRAR_HILO.getDescripcion(), id);
+        // Imprime el número de filas eliminadas en la consola
+        System.out.println(Constantes.FILAS_ELIMINADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se eliminó al menos una fila, false en caso contrario
+        return filasAfectadas > 0;
     }
 
+    /**
+     * Actualiza un hilo de la base de datos
+     *
+     * @param id El ID del hilo que se va a modificar
+     * @param nombre El nuevo nombre del hilo
+     * @param marca La nueva marca del hilo
+     * @param cantidad La nueva cantidad del hilo
+     * @return true si se modificó correctamente, false en caso contrario
+     */
     @Override
-    public boolean actualizarHilo(String id, String nombre, String nuevoPwd, String cantidad) {
-        String url = "jdbc:sqlite:data/baseDatos.db";
-
-        try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "UPDATE hilo SET nombre = ?, marca = ?, cantidad = ? WHERE id = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nombre);
-                pstmt.setString(2, marca);
-                pstmt.setString(3, cantidad);
-                pstmt.setString(4, id);
-                int filasAfectadas = pstmt.executeUpdate();
-                System.out.println("Filas insertadas: " + filasAfectadas);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
+    public boolean actualizarHilo(String id, String nombre, String marca, String cantidad) {
+        // Ejecuta la consulta de modificación utilizando el método Utils.actualizar
+        int filasAfectadas = Utils.actualizar(Constantes.CONSULTA_ACTUALIZAR_HILO.getDescripcion(), nombre, marca, cantidad, id);
+        // Imprime el número de filas modificadas en la consola
+        System.out.println(Constantes.FILAS_MODIFICADAS.getDescripcion() + filasAfectadas);
+        // Retorna true si se modificó al menos una fila, false en caso contrario
+        return filasAfectadas > 0;
     }
 
     /**
@@ -190,10 +198,20 @@ public class Hilo implements DatabaseOperationsHilo {
         this.cantidad = cantidad;
     }
 
+    /**
+     * Obtiene el id del hilo
+     *
+     * @return El id del hilo
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Establece el id del hilo
+     *
+     * @param id El id del hilo
+     */
     public void setId(String id) {
         this.id = id;
     }
@@ -217,7 +235,7 @@ public class Hilo implements DatabaseOperationsHilo {
      */
     public TipoError validarCantidad() {
         //verifica que la cantidad tenga cierto formato
-        if(!cantidad.matches("-?\\d+")){
+        if(!cantidad.matches(Constantes.PATRON_VALIDAR_HILO.getDescripcion())){
             return TipoError.FORMATO;
         }else{
             int intCantidad = Integer.parseInt(cantidad);

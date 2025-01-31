@@ -55,10 +55,10 @@ public class ResultadoCalculoController {
         //Si el objeto no es nulo
         if (calculoTela != null) {
             //El objeto realiza los cálculos pertinentes y se redondea el resultado
-            String alto = String.format("%.2f", calculoTela.tamanhoBordadoAlto());
-            String largo = String.format("%.2f", calculoTela.tamanhoBordadoLargo());
-            String largoTotal = String.format("%.2f", calculoTela.tamanhoTelaLargo());
-            String altoTotal = String.format("%.2f", calculoTela.tamanhoTelaAlto());
+            String alto = String.format(Constantes.STRING_REDONDEAR.getDescripcion(), calculoTela.tamanhoBordadoAlto());
+            String largo = String.format(Constantes.STRING_REDONDEAR.getDescripcion(), calculoTela.tamanhoBordadoLargo());
+            String largoTotal = String.format(Constantes.STRING_REDONDEAR.getDescripcion(), calculoTela.tamanhoTelaLargo());
+            String altoTotal = String.format(Constantes.STRING_REDONDEAR.getDescripcion(), calculoTela.tamanhoTelaAlto());
 
             // Actualizar los campos de texto
             txt_altoBordado.setText(alto);

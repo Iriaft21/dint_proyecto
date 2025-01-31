@@ -136,13 +136,14 @@ public class InventarioController {
      */
     void crearTabla(){
         // Inicializa la lista de marcas de hilos con algunas opciones predeterminadas
-        marcasHilos = FXCollections.observableArrayList("DMC", "Anchor", "Kreinik", "Madeira", "Otros");
+        marcasHilos = FXCollections.observableArrayList(Constantes.MARCA_DMC.getDescripcion(), Constantes.MARCA_ANCHOR.getDescripcion(),
+                Constantes.MARCA_KREINIK.getDescripcion(), Constantes.MARCA_MADEIRA.getDescripcion(), Constantes.MARCA_OTROS.getDescripcion());
         // Permite la edición en la tabla de hilos
         table_hilos.setEditable(true);
         // Establece las opciones del ComboBox para seleccionar la marca
         txt_marca.setItems(marcasHilos);
         //Establece un valor por defecto del ComboBox
-        txt_marca.setValue("DMC");
+        txt_marca.setValue(Constantes.MARCA_DMC.getDescripcion());
 
         // Configura la columna de marcas
         colMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
@@ -226,12 +227,12 @@ public class InventarioController {
      */
     public void modificarDatos(){
         // Crear un hipervínculo con el texto "Comprar hilos"
-        Hyperlink hyperlink = new Hyperlink("Comprar hilos");
+        Hyperlink hyperlink = new Hyperlink(Constantes.TITULO_HIPERVINCULO.getDescripcion());
         // Establecer una acción para cuando se clique en el hipervínculo
         hyperlink.setOnAction(e -> {
             try {
                 // Se abre el navegador predeterminado y navega a la URL especificada
-                Desktop.getDesktop().browse(new URI("https://www.casacenina.es/hilos-y-hilados.html"));
+                Desktop.getDesktop().browse(new URI(Constantes.URL_HIPERVINCULO.getDescripcion()));
             } catch (IOException | URISyntaxException ex) {
                 // En caso de error, imprimimos la causa
                 ex.printStackTrace();
@@ -335,7 +336,7 @@ public class InventarioController {
         txt_num.clear();
         txt_cant.clear();
         //Ponemos el valor por defecto en el ComboBox
-        txt_marca.setValue("DMC");
+        txt_marca.setValue(Constantes.MARCA_DMC.getDescripcion());
     }
 
     /**

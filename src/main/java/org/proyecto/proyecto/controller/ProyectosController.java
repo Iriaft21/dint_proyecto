@@ -11,12 +11,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
 import org.proyecto.proyecto.utils.Utils;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Controlador de la pantalla de seguimiento de los proyectos
@@ -105,6 +107,7 @@ public class ProyectosController {
         // Si dicho proyecto no es nulo
         if(proyectoBorrar != null){
             // Se procede a eliminarlo del ListView
+            proyectoBorrar.eliminaProyecto(proyectoBorrar.getId());
             listView.getItems().remove(proyectoBorrar);
         }
     }
@@ -158,6 +161,9 @@ public class ProyectosController {
     public void initialize(){
         // Inicializa la lista observable de proyectos
         proyectos = FXCollections.observableArrayList();
+        Proyecto proyecto = new Proyecto();
+        List<Proyecto> listaProyectos = proyecto.obtenerTodosProyectos();
+        proyectos.addAll(listaProyectos);
         // Establece la lista en el ListView
         listView.setItems(proyectos);
         //Llamamos al método que genera celdas personalizadas
@@ -180,9 +186,9 @@ public class ProyectosController {
                     setGraphic(null);
                 } else {
                     //Creamos etiquetas para mostrar el nombre, estado y progreso del proyecto
-                    Label nombreLabel = new Label("Nombre: " + proyecto.getNombre());
-                    Label estadoLabel = new Label("Estado: " + proyecto.getEstado());
-                    Label progresoLabel = new Label("Progreso: " + proyecto.getProgreso() + "%");
+                    Label nombreLabel = new Label(Constantes.LABEL_NOMBRE.getDescripcion() + proyecto.getNombre());
+                    Label estadoLabel = new Label(Constantes.LABEL_ESTADO.getDescripcion() + proyecto.getEstado());
+                    Label progresoLabel = new Label(Constantes.LABEL_PROGRESO.getDescripcion() + proyecto.getProgreso() + Constantes.LABEL_PROGRESO_PORCENTAJE.getDescripcion());
                     // Añadimos las etiquetas a un VBox para organizarlas verticalmente
                     VBox vBox = new VBox(nombreLabel, estadoLabel, progresoLabel);
                     //Ponemos espacio entre las etiquetas
@@ -195,7 +201,7 @@ public class ProyectosController {
                             imageView.setImage(proyecto.getImagen());
                         } catch (Exception e) {
                             // Si da error, se da aviso de ello
-                            System.out.println("Invalid URL: " + e.getMessage());
+                            System.out.println(Constantes.URL_INVALIDA + e.getMessage());
                         }
                     }
                     //Se modifica el anchoy alto de la imagen, además de  mantener la proporción de la imagen

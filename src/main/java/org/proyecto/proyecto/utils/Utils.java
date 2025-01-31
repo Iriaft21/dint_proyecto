@@ -16,6 +16,9 @@ import org.proyecto.proyecto.controller.ProyectosController;
 import org.proyecto.proyecto.modelo.Proyecto;
 
 import java.io.File;
+import java.sql.*;
+
+import static java.sql.DriverManager.getConnection;
 
 /**
  * Clase que contiene métodos estáticos que se usan varias veces en el programa
@@ -31,10 +34,11 @@ public class Utils {
         // Crear un FileChooser para seleccionar archivos
         FileChooser fileChooser = new FileChooser();
         // Establecer el título del cuadro de diálogo
-        fileChooser.setTitle("Seleccionar imagen");
+        fileChooser.setTitle(Constantes.TITULO_FILE_CHOOSER.getDescripcion());
         // Agregar filtros de extensión para permitir solo archivos de imagen
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.jpeg")
+                new FileChooser.ExtensionFilter(Constantes.FILTRO_FILE_CHOOSER.getDescripcion(), Constantes.TIPO_ARCHIVO1_FILE_CHOOSER.getDescripcion(),
+                        Constantes.TIPO_ARCHIVO12_FILE_CHOOSER.getDescripcion(), Constantes.TIPO_ARCHIVO3_FILE_CHOOSER.getDescripcion())
         );
         // Mostrar el cuadro de diálogo para seleccionar un archivo
         File selectedFile = fileChooser.showOpenDialog(null);
@@ -174,15 +178,79 @@ public class Utils {
             // Mostrar alerta informativa si los datos del hilo están vacíos
             AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_DATOS_VACIOS.getDescripcion(), Constantes.AVISO_DATOS_VACIOS.getDescripcion());
             //De paso lanzamos una excepcion para avisar del error
-            throw new IllegalArgumentException("El campo no puede estar vacío");
+            throw new IllegalArgumentException(Constantes.THROW_CAMPOS_VACIOS.getDescripcion());
             //Se verifica que la String sea un número entero, tanto positivo como negativo
-        }else if(!texto.matches("-?\\d+")){
+        }else if(!texto.matches(Constantes.PATRON_VALIDAR.getDescripcion())){
             // Mostramos alerta de error de formato
             AlertaUtils.showAlertError(Constantes.TITULO_AVISO_ERROR_FORMATO.getDescripcion(), Constantes.AVISO_ERROR_FORMATO.getDescripcion());
             //Se lanza una excepcion para visar del error
-            throw new IllegalArgumentException("El campo debe contener solo números");
+            throw new IllegalArgumentException(Constantes.THROW_SOLO_NUMEROS.getDescripcion());
         }
         //Se devuelve el valor del TextField ya extraído y como un Int
         return Integer.parseInt(texto);
+    }
+
+    /**
+     * Establece una conexión con la base de datos
+     *
+     * @return Un objeto Connection que representa la conexión establecida con la base de datos
+     * @throws SQLException si ocurre un error al establecer la conexión
+     */
+    public static Connection conexion() throws SQLException {
+        // Obtiene la conexión utilizando la URL de la base de datos definida en Constantes
+        return getConnection(Constantes.URL_BBDD.getDescripcion());
+    }
+
+    /**
+     * Ejecuta una consulta de actualización en la base de datos
+     *
+     * @param sql La consulta SQL de actualización a ejecutar
+     * @param parameters Los parámetros de la consulta SQL
+     * @return El número de filas afectadas por la consulta, o 0 en caso de error
+     */
+    public static int actualizar(String sql, Object... parameters) {
+        //Se obtiene la conexion y se cierra automaticamente
+        try (Connection conn = conexion();
+            // Prepara la declaración SQL
+            PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            for (int i = 0; i < parameters.length; i++) {
+                // Establece los parámetros de la consulta
+                pstmt.setObject(i + 1, parameters[i]);
+            }
+            // Ejecuta la consulta y devuelve el número de filas afectadas
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            // Imprime los errores en caso de excepción SQL
+            e.printStackTrace();
+        }
+        // Retorna 0 en caso de error
+        return 0;
+    }
+
+    /**
+     * Ejecuta una consulta SQL y devuelve el ResultSet
+     *
+     * @param sql La consulta SQL a ejecutar
+     * @param parameters Los parámetros de la consulta SQL
+     * @return El ResultSet resultante de la consulta SQL, o null en caso de error
+     */
+    public static ResultSet ejecutarQuery(String sql, Object... parameters) {
+        try {
+            //Se obtiene la conexion y no se cierra
+            Connection conn = conexion();
+            // Prepara la declaración
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            for (int i = 0; i < parameters.length; i++) {
+                // Establece los parámetros de la consulta
+                pstmt.setObject(i + 1, parameters[i]);
+            }
+            // Devuelve el ResultSet
+            return pstmt.executeQuery();
+        } catch (SQLException e) {
+            // Imprime los errores en caso de excepción SQL
+            e.printStackTrace();
+        }
+        // Devuelve null en caso de error
+        return null;
     }
 }

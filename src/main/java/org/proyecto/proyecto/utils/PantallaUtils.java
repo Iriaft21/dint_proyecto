@@ -24,7 +24,7 @@ public class PantallaUtils {
      * @param ancho ancho de la pantalla
      * @param alto alto de la pantalla
      * @return El cargador del FXML
-     * @thows IOException En caso de error de entrada o salida
+     * @throws IOException En caso de error de entrada o salida
      */
     public FXMLLoader showEstaPantalla(Stage stage, String vista, String titulo, int ancho, int alto) throws IOException {
         //Se cre un FXMLLoader para cargar el archivo FXML de la vista
@@ -36,9 +36,9 @@ public class PantallaUtils {
         // scene.getStylesheets().add(MenuApplication.class.getResource("css/application.css").toExternalForm());
         // Workaround para que funcione, forzandolo con el path absoluto:
         // Creamos un objeto File al que le pasamos la direccion del archivo css
-        File f = new File("src/main/java/css/application.css");
+        File f = new File(Constantes.ARCHIVO_CSS.getDescripcion());
         // Agregamos la hoja de estilos CSS a la escena utilizando el path absoluto
-        scene.getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
+        scene.getStylesheets().add(Constantes.STRING_FILE.getDescripcion() + f.getAbsolutePath().replace("\\", "/"));
 
         //Le asignamos un titulo a la ventana
         stage.setTitle(titulo);

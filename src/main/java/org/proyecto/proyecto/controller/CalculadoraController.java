@@ -124,7 +124,7 @@ public class CalculadoraController {
         txt_telaAcabado.clear();
         txt_telaBorde.clear();
         //Ponemos el valor por defecto en el ComboBox
-        spinner_ct.setValue("14 ct (5,4 hilos/cm)");
+        spinner_ct.setValue(Constantes.CT_14.getDescripcion());
     }
 
     /**
@@ -136,7 +136,7 @@ public class CalculadoraController {
         // Obtiene el tipo de tela seleccionado del spinner
         String tipoTela = spinner_ct.getValue();
         // Se define el patrón para buscar el número de hilos por cm
-        Pattern pattern = Pattern.compile("\\((\\d+,?\\d*) hilos/cm\\)");
+        Pattern pattern = Pattern.compile(Constantes.PATRON_EXTRAER_HILOS.getDescripcion());
         //Se aplica el patrón a la cadena
         Matcher matcher = pattern.matcher(tipoTela);
         // Si encuentra una coincidencia
@@ -155,12 +155,13 @@ public class CalculadoraController {
      */
     public void initialize(){
         // Se añaden los distintos valores al observableArrayList
-        tiposTelas = FXCollections.observableArrayList("11 ct (4,2 hilos/cm)", "12 ct (4,6 hilos/cm)", "14 ct (5,4 hilos/cm)", "16ct (6,2 hilos/cm)",
-                "18 ct (7 hilos/cm)", "20 ct (7,8 hilos/cm)", "22 ct (8,5 hilos/cm)", "24 ct (9,3 hilos/cm)");
+        tiposTelas = FXCollections.observableArrayList(Constantes.CT_11.getDescripcion(), Constantes.CT_12.getDescripcion(),
+                Constantes.CT_14.getDescripcion(), Constantes.CT_16.getDescripcion(), Constantes.CT_18.getDescripcion(),
+                Constantes.CT_20.getDescripcion(), Constantes.CT_22.getDescripcion(), Constantes.CT_24.getDescripcion());
         // Se añade ese observableArrayList al comboBox
         spinner_ct.setItems(tiposTelas);
         // Se pone uno de los valores por defecto
-        spinner_ct.setValue("14 ct (5,4 hilos/cm)");
+        spinner_ct.setValue(Constantes.CT_14.getDescripcion());
     }
 
     /**

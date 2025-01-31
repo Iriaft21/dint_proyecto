@@ -70,8 +70,9 @@ public class ActualizarProgresoController {
             proyecto.setProgreso(redondeado);
             if(proyecto.getProgreso()==100){
                 //Marcamos el proyecto como completado si el progreso es 100%
-                proyecto.setEstado("Completado");
+                proyecto.setEstado(Constantes.ESTADO_PROYECTO_COMPLETADO.getDescripcion());
             }
+            proyecto.actualizarProgreso(proyecto.getId(), proyecto.getProgreso(), proyecto.getEstado());
         }
         try {
             // Obtiene la pantalla actual y se cierra

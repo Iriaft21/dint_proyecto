@@ -193,7 +193,8 @@ public class DetallesProyectoController {
         txt_largo.setEditable(true);
         txt_estado.setEditable(true);
         //Al comboBox se le pasan los valores que debe tener
-        ObservableList<String> estados = FXCollections.observableArrayList("Reuniendo materiales", "Materiales reunidos", "En proceso", "Completado");
+        ObservableList<String> estados = FXCollections.observableArrayList(Constantes.ESTADO_PROYECTO_REUNIENDO.getDescripcion(), Constantes.ESTADO_PROYECTO_REUNIDOS.getDescripcion(),
+                Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion(), Constantes.ESTADO_PROYECTO_COMPLETADO.getDescripcion());
         txt_estado.setItems(estados);
         txt_fechaInicio.setEditable(true);
         txt_fechaFin.setEditable(true);
@@ -212,8 +213,8 @@ public class DetallesProyectoController {
     @FXML
     void onClickGuardarCambios(ActionEvent event) {
         //Se extraen los valores de descripcion y de diseñador, si están vacío se les asigna un valor por defecto
-            String diseniador = !txt_diseniador.getText().isEmpty() ? txt_diseniador.getText() : "No especificado";
-            String descripcion = !txt_descripcion.getText().isEmpty() ? txt_descripcion.getText() : "Sin descripción";
+            String diseniador = !txt_diseniador.getText().isEmpty() ? txt_diseniador.getText() : Constantes.DISENIADOR_VACIO.getDescripcion();
+            String descripcion = !txt_descripcion.getText().isEmpty() ? txt_descripcion.getText() : Constantes.DESCRIPCION_VACIA.getDescripcion();
 
             //Mediante los set se van modificando los valores del proyecto
             proyecto.setNombre(txt_nombre.getText());
@@ -253,6 +254,7 @@ public class DetallesProyectoController {
                     //Si no da error, se avsia de la modificación del proyecto y volvemos a la pantalla de los proyectos
                     AlertaUtils.showAlertInformativa(Constantes.TITULO_PROYECTO_MODIFICADO.getDescripcion(), Constantes.AVISO_PROYECTO_MODIFICADO.getDescripcion());
                     //Una vez validado, se vuelve a la pantalla anterior
+                    proyecto.actualizarProyecto(proyecto);
                     Utils.irPantallaProyectosPasandoLista(btn_atras, proyectos);
             }
         }else {
@@ -266,10 +268,10 @@ public class DetallesProyectoController {
      */
     public void initialize(){
         // Se crea un objeto File que representa la ruta de un archivo de imagen
-        File f = new File("src/main/resources/imagenesProyecto/candado.png");
+        File f = new File(Constantes.IMG_CANDADO.getDescripcion());
         // Creamos un ImageView con la ruta de la imagen
         //A la cual le convertimos las barras invertidas en barras diagonales para garantizar que la ruta sea válida
-        ImageView imageView = new ImageView(new Image("file:///" + f.getAbsolutePath().replace("\\", "/")));
+        ImageView imageView = new ImageView(new Image(Constantes.STRING_FILE.getDescripcion() + f.getAbsolutePath().replace("\\", "/")));
         // Se establece el tamaño del ImageView
         imageView.setFitHeight(15);
         imageView.setFitWidth(15);
@@ -292,18 +294,18 @@ public class DetallesProyectoController {
         txt_largo.setText(String.valueOf(this.proyecto.getLargo()));
         txt_estado.setValue(this.proyecto.getEstado());
         //Creamos un formateador para la fecha
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constantes.FORMATO_FECHA.getDescripcion());
 
         //Obtenemos la fecha del proyecto
         String fechaInicio = this.proyecto.getFechaInicio();
         String fechaFin = this.proyecto.getFechaFin();
         //Comprobamos que la fecha de inicio no este vacía
-        if (fechaInicio != null && !fechaInicio.isEmpty() && !fechaInicio.equals("null")) {
+        if (fechaInicio != null && !fechaInicio.isEmpty() && !fechaInicio.equals(Constantes.STRING_NULL.getDescripcion())) {
             //Le damos un cierto formato a la fecha de inicio y la establecemos en el TextField correspondiente
             txt_fechaInicio.setValue(LocalDate.parse(fechaInicio, formatter));
         }
         //Comprobamos que la fecha de fin no este vacía
-        if (fechaFin != null && !fechaFin.isEmpty() && !fechaFin.equals("null")) {
+        if (fechaFin != null && !fechaFin.isEmpty() && !fechaFin.equals(Constantes.STRING_NULL.getDescripcion())) {
             //Le damos un cierto formato a la fecha de fin y la establecemos en el TextField correspondiente
             txt_fechaFin.setValue(LocalDate.parse(fechaFin, formatter));
         }
