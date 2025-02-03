@@ -148,7 +148,7 @@ public class Utils {
      * Método para ir a la pantalla de seguimiento de proyectos a la vez que se le pasa al controller una lista
      *
      * @param btn El botón que llama a la acción
-     * @params proyectos Lista que contiene los proyectos
+     * @param proyectos Lista que contiene los proyectos
      */
     public static void irPantallaProyectosPasandoLista(Button btn, ObservableList<Proyecto> proyectos){
         try {

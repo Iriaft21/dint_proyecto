@@ -1,10 +1,13 @@
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.*;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *   Clase de prueba para comprobar la conexión a la base de datos y la manipulación de datos en las tablas "hilo" y "proyecto"
@@ -43,7 +46,7 @@ public class TestConexionBBDD {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Fallar la prueba explícitamente en caso de error al establecer la conexión
-            fail("Error al establecer la conexión antes de la prueba.");
+            Assertions.fail("Error al establecer la conexión antes de la prueba.");
         }
     }
 
@@ -67,12 +70,12 @@ public class TestConexionBBDD {
             // Imprimimos el resultado en la consola
             System.out.println("Hilo insertado correctamente. El valor de filasAfectadas es="+filasAfectadas);
             // Verificamos si la inserción fue exitosa
-            assertTrue(filasAfectadas == 1, "La inserción no afectó exactamente una fila. Filas afectadas: " + filasAfectadas);
+            Assertions.assertTrue(filasAfectadas == 1, "La inserción no afectó exactamente una fila. Filas afectadas: " + filasAfectadas);
         } catch (Exception e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcar la prueba como fallida explícitamente en caso de error al insertar o verificar el hilo
-            fail("Error al insertar o verificar el hilo.");
+            Assertions.fail("Error al insertar o verificar el hilo.");
         }
     }
 
@@ -107,12 +110,12 @@ public class TestConexionBBDD {
                 }
             }
             // Verifica si el el hilo 310 de marca DMC está en el listado
-            assertTrue(found310, "El hilo 310 de marca DMC no fue encontrado en el listado");
+            Assertions.assertTrue(found310, "El hilo 310 de marca DMC no fue encontrado en el listado");
         } catch (Exception e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcar la prueba como fallida explícitamente en caso de error al insertar o verificar el hilo
-            fail("Error al insertar o verificar el hilo");
+            Assertions.fail("Error al insertar o verificar el hilo");
         }
     }
 
@@ -136,13 +139,13 @@ public class TestConexionBBDD {
             rs.next();
             int count = rs.getInt(1);
             // Verificamos que el hilo ha sido insertado correctamente
-            assertTrue(count > 0, "El hilo debería haber sido insertado correctamente");
+            Assertions.assertTrue(count > 0, "El hilo debería haber sido insertado correctamente");
             System.out.println("Han salido: "+count+" resultados - Debería de aparecer 1 resultado");
         } catch (Exception e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida en caso de error al insertar o verificar el hilo
-            fail("Error al cerrar la conexión después de la prueba");
+            Assertions.fail("Error al cerrar la conexión después de la prueba");
         }
     }
 
@@ -166,14 +169,14 @@ public class TestConexionBBDD {
                 filasEliminadas = pstmt.executeUpdate();
                 // Imprimimos el resultado en la consola
                 System.out.println("Hilo eliminado correctamente.");
-                assertTrue(filasEliminadas > 0, "El hilo debería haber sido insertado correctamente");
+                Assertions.assertTrue(filasEliminadas > 0, "El hilo debería haber sido insertado correctamente");
                 System.out.println("Han salido: "+ filasEliminadas +" resultados - Debería de aparecer 1 resultado");
             }
         } catch (Exception e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida en caso de error al eliminar el hilo
-            fail("Error al eliminar el hilo");
+            Assertions.fail("Error al eliminar el hilo");
         }
     }
 
@@ -205,13 +208,13 @@ public class TestConexionBBDD {
                 // Imprimimos el resultado en la consola
                 System.out.println("Filas insertadas: " + filasAfectadas);
                 // Verificamos que se haya insertado exactamente una fila
-                assertEquals(1, filasAfectadas, "Debería haberse insertado una fila");
+                Assertions.assertEquals(1, filasAfectadas, "Debería haberse insertado una fila");
             }
         } catch (SQLException e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida en caso de error al insertar el proyecto
-            fail("Error al insertar el proyecto");
+            Assertions.fail("Error al insertar el proyecto");
         }
     }
 
@@ -255,12 +258,12 @@ public class TestConexionBBDD {
                 }
             }
             // Verificamos si el proyecto con nombre PruebaBD está en el listado
-            assertTrue(foundPruebaBD, "El proyecto PruebaBD no fue encontrado en el listado");
+            Assertions.assertTrue(foundPruebaBD, "El proyecto PruebaBD no fue encontrado en el listado");
         } catch (SQLException e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida en caso de error al insertar o verificar el proyecto
-            fail("Error al insertar o verificar el proyecto");
+            Assertions.fail("Error al insertar o verificar el proyecto");
         }
     }
 
@@ -282,13 +285,13 @@ public class TestConexionBBDD {
             rs.next();
             int count = rs.getInt(1);
             // Verificamos que el proyecto ha sido insertado correctamente
-            assertTrue(count > 0, "El proyecto debería haber sido insertado correctamente");
+            Assertions.assertTrue(count > 0, "El proyecto debería haber sido insertado correctamente");
             System.out.println("Han salido: "+count+" resultados - Debería de aparecer 1 resultado");
         } catch (Exception e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida en caso de error al insertar o verificar el proyecto
-            fail("Error al cerrar la conexión después de la prueba");
+            Assertions.fail("Error al cerrar la conexión después de la prueba");
         }
     }
 
@@ -311,14 +314,14 @@ public class TestConexionBBDD {
                 // Imprimimos el resultado en la consola
                 System.out.println("Filas eliminadas: " + filasAfectadas);
                 // Verificamos que se haya eliminado al menos una fila
-                assertTrue(filasAfectadas > 0, "Debería haberse eliminado al menos una fila");
+                Assertions.assertTrue(filasAfectadas > 0, "Debería haberse eliminado al menos una fila");
                 System.out.println("Han salido: "+ filasAfectadas +" resultados - Debería de aparecer 1 resultado");
             }
         } catch (SQLException e) {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida en caso de error al eliminar el proyecto
-            fail("Error al eliminar el proyecto");
+            Assertions.fail("Error al eliminar el proyecto");
         }
     }
 
@@ -339,7 +342,7 @@ public class TestConexionBBDD {
             // En caso de que haya un fallo, imprimimos la causa
             e.printStackTrace();
             // Marcamos la prueba como fallida explícitamente en caso de error al cerrar la conexión
-            fail("Error al cerrar la conexión después de la prueba");
+            Assertions.fail("Error al cerrar la conexión después de la prueba");
         }
     }
 }
