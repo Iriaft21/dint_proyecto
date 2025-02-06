@@ -159,6 +159,7 @@ public class ProyectosController {
      * Inicializa el controlador configurando el ListView y sus celdas personalizadas y lo actualiza
      */
     public void initialize(){
+        btn_eliminar.setId("eliminar");
         // Inicializa la lista observable de proyectos
         proyectos = FXCollections.observableArrayList();
         Proyecto proyecto = new Proyecto();

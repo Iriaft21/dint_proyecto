@@ -154,6 +154,7 @@ public class CalculadoraController {
      * Inicializa el controlador configurando el comboBox y los valores que va a tener así como el valor por defecto
      */
     public void initialize(){
+        btn_limpiarCampos.setId("limpiar");
         // Se añaden los distintos valores al observableArrayList
         tiposTelas = FXCollections.observableArrayList(Constantes.CT_11.getDescripcion(), Constantes.CT_12.getDescripcion(),
                 Constantes.CT_14.getDescripcion(), Constantes.CT_16.getDescripcion(), Constantes.CT_18.getDescripcion(),

@@ -21,6 +21,9 @@ import java.io.IOException;
 public class FormularioProyectoController {
 
     @FXML
+    private Button btn_atras;
+
+    @FXML
     private Button btn_crear;
 
     @FXML
@@ -91,12 +94,23 @@ public class FormularioProyectoController {
      * Inicializa el controlador configurando un comboBox con sus valores y el que tendrá por defecto
      */
     public void initialize(){
+        btn_limpiarCampos.setId("limpiar");
         estados = FXCollections.observableArrayList(Constantes.ESTADO_PROYECTO_REUNIENDO.getDescripcion(), Constantes.ESTADO_PROYECTO_REUNIDOS.getDescripcion(),
                 Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion(), Constantes.ESTADO_PROYECTO_COMPLETADO.getDescripcion());
         //Añadimos al ComboBox el ObservableList con los distintos estados del proyecto
         combo_estado.setItems(estados);
         //Se pone un valor por defecto
         combo_estado.setValue(Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion());
+    }
+
+    /**
+     * Método para volver a la pantalla anterior
+     *
+     * @param event El evento de la acción
+     */
+    @FXML
+    void onClickAtras(ActionEvent event) {
+        Utils.irPantallaProyectos(btn_atras);
     }
 
     /**

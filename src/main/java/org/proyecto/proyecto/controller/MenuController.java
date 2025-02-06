@@ -111,15 +111,7 @@ public class MenuController {
      */
     @FXML
     private void onClickProyectos(ActionEvent event) {
-        try {
-            // Cerramos la pantalla actual y obtenemos la ventana principal
-            Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn_proyectos);
-            // Mostramos la pantalla del seguimiento de proyectos
-            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(primaryStage);
-        } catch (Exception e) {
-            // En caso de error, imprimimos las causa
-            e.printStackTrace();
-        }
+        Utils.irPantallaProyectos(btn_proyectos);
     }
 
     /**

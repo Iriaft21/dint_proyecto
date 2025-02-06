@@ -118,6 +118,7 @@ public class InventarioController {
      * Inicializa el controlador configurando la tabla y una alerta personalizada, asi como la modificacion de datos
      */
     public void initialize(){
+        btn_eliminar.setId("eliminar");
         //Llamamos la metodo que crea la tabla
         crearTabla();
         //Añadimos a la tabla el ObservableList donde se almacenarán los hilos
@@ -180,6 +181,7 @@ public class InventarioController {
             // Añadimos el hilo a la tabla si no hay errores
             table_hilos.getItems().add(hilo);
             hilo.insertarHilo(hilo);
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_HILO_NUEVO.getDescripcion(), Constantes.AVISO_HILO_NUEVO.getDescripcion());
         }
         //Lllamamos al método que limpia los TextFields
         limpiarCampos();
@@ -269,6 +271,7 @@ public class InventarioController {
                         // Si la validación falla, revertimos el valor original
                         hilo.setMarca(valorOriginal);
                     }
+                    AlertaUtils.showAlertInformativa(Constantes.TITULO_HILO_MODIFICADO.getDescripcion(), Constantes.AVISO_HILO_MODIFICADO.getDescripcion());
                 });
     }
 
@@ -294,6 +297,7 @@ public class InventarioController {
                         // Si la validación falla, revertimos el valor original
                         hilo.setNombre(valorOriginal);
                     }
+                    AlertaUtils.showAlertInformativa(Constantes.TITULO_HILO_MODIFICADO.getDescripcion(), Constantes.AVISO_HILO_MODIFICADO.getDescripcion());
                 });
     }
 
@@ -325,6 +329,7 @@ public class InventarioController {
                 //Muestra una alerta personalizada en caso de que la cantidad moficada sea 0
                 AlertaUtils.showAlertInformativa(Constantes.TITULO_AVISO_SIN_HILO.getDescripcion(), Constantes.AVISO_SIN_HILO.getDescripcion(), hyperlink);
             }
+            AlertaUtils.showAlertInformativa(Constantes.TITULO_HILO_MODIFICADO.getDescripcion(), Constantes.AVISO_HILO_MODIFICADO.getDescripcion());
         });
     }
 

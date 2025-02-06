@@ -145,6 +145,23 @@ public class Utils {
     }
 
     /**
+     * Método para ir a la pantalla de proyectos
+     *
+     * @param btn El botón que llama a la acción
+     */
+    public static void irPantallaProyectos(Button btn){
+        try {
+            // Cerramos la pantalla actual y obtenemos la ventana principal
+            Stage primaryStage = new PantallaUtils().cerrarEstaPantalla(btn);
+            // Mostramos la pantalla del seguimiento de proyectos
+            ProyectosController proyectosController = new ProyectosController().showEstaPantalla(primaryStage);
+        } catch (Exception e) {
+            // En caso de error, imprimimos las causa
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Método para ir a la pantalla de seguimiento de proyectos a la vez que se le pasa al controller una lista
      *
      * @param btn El botón que llama a la acción
