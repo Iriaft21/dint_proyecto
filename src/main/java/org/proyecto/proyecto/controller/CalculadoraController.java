@@ -3,9 +3,12 @@ package org.proyecto.proyecto.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.CalculoTela;
 import org.proyecto.proyecto.utils.AlertaUtils;
@@ -163,6 +166,34 @@ public class CalculadoraController {
         spinner_ct.setItems(tiposTelas);
         // Se pone uno de los valores por defecto
         spinner_ct.setValue(Constantes.CT_14.getDescripcion());
+        Utils.setComboBoxBehavior(spinner_ct);
+    }
+
+    /**
+     * Atajo de teclado del comboBox para que al pulsar abajo lo despliegue
+     * @param comboBox El comboBox a desplegar
+     */
+    private void setComboBoxBehavior(ComboBox<String> comboBox) {
+        comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Si se presiona la tecla de flecha abajo
+                if (event.getCode() == KeyCode.DOWN) {
+                    event.consume(); // Evita el comportamiento predeterminado
+                    comboBox.show(); // Despliega el ComboBox
+                }
+            }
+        });
+
+        // Navegar por los elementos del ComboBox con la tecla abajo
+        comboBox.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.DOWN) {
+                    comboBox.show(); // Asegura que el ComboBox siga desplegado
+                }
+            }
+        });
     }
 
     /**

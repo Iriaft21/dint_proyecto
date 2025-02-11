@@ -3,6 +3,7 @@ package org.proyecto.proyecto.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -13,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
@@ -130,7 +133,10 @@ public class InventarioController {
         table_hilos.setItems(datosHilos);
         //Llamamos al método de modificacion de datos
         modificarDatos();
+        Utils.setComboBoxBehavior(txt_marca);
     }
+
+
 
     /**
      * Método que configuara y crea la tabla

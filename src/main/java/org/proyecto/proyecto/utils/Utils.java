@@ -2,11 +2,15 @@ package org.proyecto.proyecto.utils;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.controller.CalculadoraController;
@@ -142,6 +146,33 @@ public class Utils {
             //En caso de error, mostramos la causa
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Atajo de teclado del comboBox para que al pulsar abajo lo despliegue
+     * @param comboBox El comboBox a desplegar
+     */
+    public static void setComboBoxBehavior(ComboBox<String> comboBox) {
+        comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Si se presiona la tecla de flecha abajo
+                if (event.getCode() == KeyCode.DOWN) {
+                    event.consume(); // Evita el comportamiento predeterminado
+                    comboBox.show(); // Despliega el ComboBox
+                }
+            }
+        });
+
+        // Navegar por los elementos del ComboBox con la tecla abajo
+        comboBox.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.DOWN) {
+                    comboBox.show(); // Asegura que el ComboBox siga desplegado
+                }
+            }
+        });
     }
 
     /**

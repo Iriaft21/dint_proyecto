@@ -3,11 +3,17 @@ package org.proyecto.proyecto.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.AlertaUtils;
@@ -206,6 +212,30 @@ public class DetallesProyectoController {
     }
 
     /**
+     * Atajo de teclado para que al pulsar control + s se guarden las modificaciones hechas
+     * @param currentField
+     */
+    private void atajoGuardar(Node currentField) {
+        // Establece un evento de teclado en el campo actual
+        currentField.setOnKeyPressed(new EventHandler<javafx.scene.input.KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                // Si se presiona Control + S
+                if (new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN).match(event)) {
+                    // Evita el comportamiento predeterminado
+                    event.consume();
+                    //Si los datos son editables
+                    if (editable) {
+                        // Llama al método para guardar cambios
+                        onClickGuardarCambios(new ActionEvent());
+                    }
+                }
+            }
+        });
+    }
+
+
+    /**
      * Método para guardar los cambios realizados en el proyecto
      *
      * @param event El evento de la acción
@@ -263,6 +293,8 @@ public class DetallesProyectoController {
         }
     }
 
+
+
     /**
      * Inicializa el controlador configurando la imagen de un boton y haciendo otros dos botones no visibles
      */
@@ -281,6 +313,8 @@ public class DetallesProyectoController {
         //Se ponen estos dos botones invisibles por defecto
         btn_addFoto.setVisible(false);
         btn_guardarCambios.setVisible(false);
+        //Se llama al atajo de teclado
+        atajoGuardar(txt_nombre);
     }
 
     /**

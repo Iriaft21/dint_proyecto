@@ -3,10 +3,13 @@ package org.proyecto.proyecto.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Proyecto;
 import org.proyecto.proyecto.utils.*;
@@ -101,6 +104,7 @@ public class FormularioProyectoController {
         combo_estado.setItems(estados);
         //Se pone un valor por defecto
         combo_estado.setValue(Constantes.ESTADO_PROYECTO_EN_PROCESO.getDescripcion());
+        Utils.setComboBoxBehavior(combo_estado);
     }
 
     /**

@@ -65,6 +65,13 @@
     -fx-border-radius: 10 10 10 10;
 }
 
+.combo-box .list-cell:focused, .combo-box .list-cell:selected {
+    -fx-background-color: #b7ffff;
+    -fx-text-fill: black;
+    -fx-background-radius: 5 5 5 5;
+        -fx-border-radius: 5 5 5 5;
+}
+
 .hbox {
     -fx-background-radius: 18 18 18 18;
     -fx-border-radius: 18 18 18 18;
