@@ -3,7 +3,6 @@ package org.proyecto.proyecto.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -14,8 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.utils.AlertaUtils;
@@ -27,6 +24,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -45,6 +43,9 @@ public class InventarioController {
 
     @FXML
     private Button btn_atras;
+
+    @FXML
+    private Button btn_informe;
 
     @FXML
     private TableColumn<Hilo, String> colCant;
@@ -109,12 +110,30 @@ public class InventarioController {
     /**
      * Método para salir del programa
      *
-     * @param event
+     * @param event El evento de la acción
      */
     @FXML
     void onClickSalir(ActionEvent event) {
         //LLamamosal correspondiente método de Utils para salir del programa
         Utils.botonSalir();
+    }
+
+    /**
+     * Método para ir a la pantalla de generar informes
+     * @param event
+     * @throws SQLException
+     */
+    @FXML
+    void onClickInformes(ActionEvent event) {
+        try {
+            // Obtenemos la ventana principal y la cerramos
+            Stage stage = new PantallaUtils().cerrarEstaPantalla(btn_informe);
+            // Mostramos la pantalla del resultado del calculo
+            GenerarInformeController generarInformeController = new GenerarInformeController().showEstaPantalla(stage);
+        } catch (Exception e) {
+            //En caso de error, se muestra la causa
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -13,11 +13,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.proyecto.proyecto.modelo.Hilo;
 import org.proyecto.proyecto.modelo.Proyecto;
+import org.proyecto.proyecto.reports.Reporte;
 import org.proyecto.proyecto.utils.Constantes;
 import org.proyecto.proyecto.utils.PantallaUtils;
 import org.proyecto.proyecto.utils.Utils;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -39,6 +42,9 @@ public class ProyectosController {
 
     @FXML
     private Button btn_salir;
+
+    @FXML
+    private Button btn_informes;
 
     @FXML
     private ListView<Proyecto> listView;
@@ -109,6 +115,25 @@ public class ProyectosController {
             // Se procede a eliminarlo del ListView
             proyectoBorrar.eliminaProyecto(proyectoBorrar.getId());
             listView.getItems().remove(proyectoBorrar);
+        }
+    }
+
+    /**
+     * Método para generar informes de la tabla
+     *
+     * @param event El evento de la acción
+     */
+    @FXML
+    void onClickInformes(ActionEvent event) throws SQLException {
+        //Se realiza la conexion para realizar las consultas
+        Connection conn = Utils.conexion();
+        if (conn != null) {
+            //Llamamos a la clase Reporte
+            Reporte generator = new Reporte();
+            //llamamos al metodo que genera el reporte
+            generator.generateReport(conn);
+        } else {
+            System.out.println("Error al conectar a la base de datos.");
         }
     }
 

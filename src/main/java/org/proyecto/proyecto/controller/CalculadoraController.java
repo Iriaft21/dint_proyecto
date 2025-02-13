@@ -170,33 +170,6 @@ public class CalculadoraController {
     }
 
     /**
-     * Atajo de teclado del comboBox para que al pulsar abajo lo despliegue
-     * @param comboBox El comboBox a desplegar
-     */
-    private void setComboBoxBehavior(ComboBox<String> comboBox) {
-        comboBox.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                // Si se presiona la tecla de flecha abajo
-                if (event.getCode() == KeyCode.DOWN) {
-                    event.consume(); // Evita el comportamiento predeterminado
-                    comboBox.show(); // Despliega el ComboBox
-                }
-            }
-        });
-
-        // Navegar por los elementos del ComboBox con la tecla abajo
-        comboBox.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode() == KeyCode.DOWN) {
-                    comboBox.show(); // Asegura que el ComboBox siga desplegado
-                }
-            }
-        });
-    }
-
-    /**
      * Evento en el menú que lleva a la pantalla del inventario
      *
      * @param event El evento de acción

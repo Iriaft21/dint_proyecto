@@ -3,6 +3,8 @@ module org.proyecto.proyecto {
     requires javafx.fxml;
     requires java.desktop;
     requires java.sql;
+    requires kernel;
+    requires layout;
 
 
     opens org.proyecto.proyecto to javafx.fxml, javafx.base;

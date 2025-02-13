@@ -68,6 +68,7 @@
         </menus>
       </MenuBar>
       <Button fx:id="btn_atras" mnemonicParsing="false" onAction="#onClickAtras" text="Atrás" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="7" />
+      <Button fx:id="btn_informe" mnemonicParsing="false" onAction="#onClickInformes" text="Generar informes" GridPane.rowIndex="7" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

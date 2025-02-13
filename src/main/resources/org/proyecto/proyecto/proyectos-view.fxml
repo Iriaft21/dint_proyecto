@@ -46,6 +46,7 @@
       <Button fx:id="btn_eliminar" alignment="CENTER" mnemonicParsing="false" onAction="#onClickEliminar" text="Eliminar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Button fx:id="btn_aniadir" mnemonicParsing="false" onAction="#onClickAniadir" text="Añadir" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Button fx:id="btn_atras" mnemonicParsing="false" onAction="#onClickAtras" text="Atrás" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
+      <Button fx:id="btn_informes" mnemonicParsing="false" onAction="#onClickInformes" text="Informes" GridPane.rowIndex="5" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

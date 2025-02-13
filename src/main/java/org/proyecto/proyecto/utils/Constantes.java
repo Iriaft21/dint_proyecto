@@ -14,6 +14,7 @@ public enum Constantes {
     PAGINA_PANTALLA_FORMULARIO_PROYECTO("formularioProyecto-view.fxml"),
     PAGINA_PANTALLA_DETALLES_PROYECTO("detallesProyecto-view.fxml"),
     PAGINA_PANTALLA_ACTUALIZAR_PROGRESO("actualizarProgreso-view.fxml"),
+    PAGINA_PANTALLA_GENERAR_INFORMES("generarInforme-view.fxml"),
     //Titulo de las diferentes pantallas
     TITULO_PAGINA_INICIAL("Menú"),
     TITULO_PANTALLA_INVENTARIO("Inventario"),
@@ -23,6 +24,7 @@ public enum Constantes {
     TITULO_PANTALLA_DETALLES_PROYECTO("Detalle del proyecto"),
     TITULO_PANTALLA_FORMULARIO_PROYECTO("Crear nuevo proyecto"),
     TITULO_PANTALLA_ACTUALIZAR_PROGRESO("Actualizar progreso"),
+    TITULO_PANTALLA_GENERAR_INFORMES("Generar informe"),
     //Titulo de los diferentes avisos, asi como el texto de los avisos en si
     TITULO_AVISO_DATOS_VACIOS("Datos vacíos"),
     AVISO_DATOS_VACIOS("Alguno de los datos se encuentra vacío, rellene el formulario completo"),
@@ -99,7 +101,10 @@ public enum Constantes {
     CONSULTA_MOSTRAR_PROYECTOS("SELECT * FROM proyecto"),
     CONSULTA_BORRAR_PROYECTOS("DELETE FROM proyecto WHERE id = ?"),
     CONSULTA_ACTUALIZAR_PROYECTO("UPDATE proyecto SET nombre = ?, descripcion = ?, diseniador = ?, alto = ?, largo = ?, estado = ?, progreso = ?, puntadasTotales = ?, fechaInicio = ?, fechaFin = ? WHERE id = ?"),
-    CONSULTA_ACTUALIZAR_PROGRESO("UPDATE proyecto SET estado = ?, progreso = ? WHERE id = ?");
+    CONSULTA_ACTUALIZAR_PROGRESO("UPDATE proyecto SET estado = ?, progreso = ? WHERE id = ?"),
+    CAMPO_NOMBRE("Nombre"),
+    CAMPO_MARCA("Marca"),
+    CAMPO_CANTIDAD("Cantidad");
 
     private final String descripcion;
 
