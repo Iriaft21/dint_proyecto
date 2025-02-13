@@ -9,6 +9,8 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 
+import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -78,6 +80,18 @@ public class Reporte {
 
             // Cerrar el documento
             document.close();
+
+            //Leer el documento
+            if (Desktop.isDesktopSupported()) {
+                Desktop desktop = Desktop.getDesktop();
+                //se crea un File que se asociara al PDF
+                File pdfFile = new File("reports/reporte_proyectos.pdf");
+                //Si el archivo existe
+                if (pdfFile.exists()) {
+                    //lo abre
+                    desktop.open(pdfFile);
+                }
+            }
 
             System.out.println("Reporte generado exitosamente.");
 
